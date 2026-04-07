@@ -1,0 +1,10 @@
+/photo
+/output
+/cache
+/dist
+/build
+/src/*.log
+**/__pycache__
+*.log
+*/node_modules
+.env

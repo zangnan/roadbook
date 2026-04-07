@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>路书 RoadBook - 照片GPS轨迹生成器</title>
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon-48.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><img src="{{ url_for('static', filename='assets/favicon-48.png') }}" alt="icon"> 路书 RoadBook</h1>
+            <p class="subtitle">照片 GPS 轨迹生成器</p>
+        </header>
+
+        <main>
+            <!-- 生成表单 -->
+            <section class="card" id="generate-section">
+                <h2>生成轨迹</h2>
+
+                <div class="form-group">
+                    <label for="photo-dir">
+                        照片目录
+                        <span class="help-icon" title="包含 GPS 信息的照片所在目录。将照片按旅行名称组织到 photo 目录下，如 photo/beijing-2024/">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </span>
+                    </label>
+                    <div class="dir-input-row">
+                        <select id="photo-dir-select">
+                            <option value="">-- 选择目录 --</option>
+                            {% for dir in photo_dirs %}
+                            <option value="{{ dir }}">{{ dir }}</option>
+                            {% endfor %}
+                        </select>
+                        <span class="or-text">或</span>
+                        <input type="text" id="photo-dir-input" placeholder="输入目录名">
+                    </div>
+                    <div class="photo-base-hint">
+                        照片目录: <code>{{ photo_base | replace('\\', '/') }}/&lt;目录名&gt;/</code>
+                    </div>
+                </div>
+
+                <details class="collapsible-section">
+                    <summary>
+                        <h3>参数配置</h3>
+                        <span class="collapse-icon"></span>
+                    </summary>
+                    <div class="collapsible-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="distance-threshold">
+                                距离阈值 (米)
+                                <span class="help-icon" title="当两张照片的 GPS 坐标距离小于此值且时间间隔小于时间阈值时，将被合并为同一个途经点。数值越小，途经点越密集。">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <input type="number" id="distance-threshold" min="100" max="10000"
+                                   value="{{ config.distance_threshold }}">
+                            <small>相近坐标合并的距离阈值，默认 1000 米</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="time-threshold">
+                                时间阈值 (秒)
+                                <span class="help-icon" title="当两张照片的时间差小于此值且距离小于距离阈值时，将被合并为同一个途经点。数值越小，时间判定越严格。">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <input type="number" id="time-threshold" min="60" max="86400"
+                                   value="{{ config.time_threshold }}">
+                            <small>相近坐标合并的时间阈值，默认 7200 秒 (2小时)</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="thumbnail-width">
+                                缩略图宽度 (px)
+                                <span class="help-icon" title="生成缩略图的宽度。数值越大图片越清晰，但生成速度越慢、文件越大。">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <input type="number" id="thumbnail-width" min="100" max="2000"
+                                   value="{{ config.thumbnail_width }}">
+                            <small>缩略图宽度</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thumbnail-height">
+                                缩略图高度 (px)
+                                <span class="help-icon" title="生成缩略图的高度。数值越大图片越清晰，但生成速度越慢、文件越大。">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <input type="number" id="thumbnail-height" min="100" max="2000"
+                                   value="{{ config.thumbnail_height }}">
+                            <small>缩略图高度</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image-quality">
+                                图片压缩质量
+                                <span class="help-icon" title="缩略图的压缩质量，范围 1-100。数值越小文件越小，但质量越低。">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <input type="number" id="image-quality" min="1" max="100"
+                                   value="{{ config.image_quality }}">
+                            <small>1-100，越高质量越好</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cache-type">
+                                缓存类型
+                                <span class="help-icon" title="地理编码（坐标转地点名）的缓存方式。SQLite 性能更好，JSON 便于查看和迁移。">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <select id="cache-type">
+                                <option value="sqlite" {% if config.cache_type == 'sqlite' %}selected{% endif %}>SQLite</option>
+                                <option value="json" {% if config.cache_type == 'json' %}selected{% endif %}>JSON</option>
+                            </select>
+                            <small>地理编码缓存存储方式</small>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="single-html">
+                                单一HTML输出
+                                <span class="help-icon" title="将所有图片转为 base64 内嵌到 HTML 中，生成单一文件方便离线分享和传输。">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <small>将所有资源内联到 HTML 中，方便离线分享</small>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="html-only">
+                                HTML Only 模式
+                                <span class="help-icon" title="跳过照片解析步骤，直接使用已有的 JSON 数据重新生成 HTML。用于仅修改模板或参数时加速。">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
+                            </label>
+                            <small>跳过照片解析，复用已有 JSON 数据</small>
+                        </div>
+                    </div>
+                    </div>
+                </details>
+
+                <div class="api-keys-info">
+                    <h4>API 配置</h4>
+                    <div class="api-key-row">
+                        <span class="api-key-label">高德 Web API Key:</span>
+                        <code>{{ config.amap_web_ak }}</code>
+                    </div>
+                    <div class="api-key-row">
+                        <span class="api-key-label">高德 Server API Key:</span>
+                        <code>{{ config.amap_server_ak }}</code>
+                    </div>
+                    <small>API Key 需要在 .env 文件中配置</small>
+                </div>
+
+                <div class="button-row">
+                    <button type="button" id="btn-run" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        开始生成
+                    </button>
+                </div>
+            </section>
+
+            <!-- 进度显示 -->
+            <section class="card" id="progress-section" style="display: none;">
+                <h2>生成进度</h2>
+                <div class="progress-info">
+                    <span id="progress-status">准备中...</span>
+                    <span id="progress-photo-dir"></span>
+                </div>
+                <div class="log-container" id="log-container">
+                    <div class="log-output" id="log-output"></div>
+                </div>
+            </section>
+
+            <!-- 历史记录 -->
+            <section class="card">
+                <h2>历史记录</h2>
+                <div id="history-list">
+                    {% if output_dirs %}
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>目录</th>
+                                <th>生成时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in output_dirs %}
+                            <tr data-dir="{{ item.name }}">
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.mtime }}</td>
+                                <td>
+                                    {% if item.has_output %}
+                                    <a href="/output/{{ item.name }}/track_output.html" class="btn-link btn-track">轨迹地图</a>
+                                    {% endif %}
+                                    {% if item.has_timeline %}
+                                    <a href="/output/{{ item.name }}/timeline.html" class="btn-link btn-timeline">时间轴</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="empty">暂无生成记录</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="empty">暂无生成记录</p>
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>路书 RoadBook - 照片 GPS 轨迹生成器</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+        // 传递配置到前端
+        window.APP_CONFIG = {
+            baseDir: '{{ config_base | default(BASE_DIR) }}'
+        };
+    </script>
+</body>
+</html>
