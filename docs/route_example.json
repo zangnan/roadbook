@@ -1,0 +1,226 @@
+{
+  "basic_info": {
+    "title": "大连出发・8天无回头草原环线自驾路书",
+    "travel_date": "7.15-7.22",
+    "days": 8,
+    "car_type": "轿车",
+    "people_count": 5,
+    "room_count": 2,
+    "total_distance_km": 2800,
+    "fuel_consumption": "6.5L/100km",
+    "elevation_range": "20-1400m",
+    "high_altitude_warning": false,
+    "route_summary": "大连→通辽→霍林郭勒→乌拉盖→锡林浩特→经棚→热水塘→赤峰→大连"
+  },
+
+  "daily_itinerary": [
+    {
+      "day_number": 1,
+      "date": "7.15",
+      "origin": "大连",
+      "destination": "通辽",
+      "distance_km": 580,
+      "duration_hours": 6.5,
+      "elevation_m": "20-190",
+      "route": "沈海高速→阜营高速→新鲁高速",
+      "highlights": ["科尔沁博物馆", "大青沟（顺路可选）"],
+      "accommodation": {
+        "location": "通辽市区",
+        "type": "连锁酒店",
+        "price_per_room": 280
+      },
+      "food": ["蒙式奶茶", "手把肉", "东北锅包肉"],
+      "tips": ["大青沟骑马漂流先问价", "高速口特产慎买"],
+      "gas_station": "通辽市区加满"
+    },
+    {
+      "day_number": 2,
+      "date": "7.16",
+      "origin": "通辽",
+      "destination": "霍林郭勒",
+      "distance_km": 320,
+      "duration_hours": 4,
+      "elevation_m": "190-850",
+      "route": "G304国道（草原景观大道）",
+      "highlights": ["珠日河草原", "扎鲁特山地草原", "风车天路"],
+      "accommodation": {
+        "location": "霍林郭勒市区",
+        "type": "酒店",
+        "price_per_room": 300
+      },
+      "food": ["涮羊肉", "羊汤面", "草原烧烤"],
+      "tips": ["不碾压草场", "不买路边无检疫羊肉"],
+      "gas_station": "霍林郭勒市区加满"
+    },
+    {
+      "day_number": 3,
+      "date": "7.17",
+      "origin": "霍林郭勒",
+      "destination": "乌拉盖草原深度游",
+      "distance_km": 180,
+      "duration_hours": 2.5,
+      "elevation_m": "850-920",
+      "route": "乌拉盖内部景观公路",
+      "highlights": ["布林泉", "兵团小镇", "乌拉盖九曲湾", "野狼谷"],
+      "accommodation": {
+        "location": "乌拉盖巴彦胡硕镇",
+        "type": "酒店",
+        "price_per_room": 350
+      },
+      "food": ["烤羊腿", "手抓肉", "铁锅炖"],
+      "tips": ["九曲湾必坐景区车", "蒙古包做好防蚊"],
+      "gas_station": "巴彦胡硕镇加满"
+    },
+    {
+      "day_number": 4,
+      "date": "7.18",
+      "origin": "乌拉盖",
+      "destination": "锡林浩特",
+      "distance_km": 360,
+      "duration_hours": 5,
+      "elevation_m": "900-1000",
+      "route": "S307→G306（天边草原公路）",
+      "highlights": ["乌珠穆沁草原", "平顶山火山群远景"],
+      "accommodation": {
+        "location": "锡林浩特市区",
+        "type": "酒店",
+        "price_per_room": 350
+      },
+      "food": ["正宗蒙餐", "血肠肉肠", "铜锅涮肉"],
+      "tips": ["部分路段无信号，提前下离线地图"],
+      "gas_station": "锡林浩特市区加满"
+    },
+    {
+      "day_number": 5,
+      "date": "7.19",
+      "origin": "锡林浩特",
+      "destination": "锡林浩特（深度一日游）",
+      "distance_km": 100,
+      "duration_hours": 0,
+      "elevation_m": "1000-1380",
+      "route": "锡林浩特周边",
+      "highlights": ["贝子庙", "锡林九曲", "平顶山火山群"],
+      "accommodation": {
+        "location": "锡林浩特市区",
+        "type": "酒店（续住）",
+        "price_per_room": 350
+      },
+      "food": ["手把肉", "奶茶", "酸奶", "牛肉干"],
+      "tips": ["平顶山风大防晒", "不敲挖火山岩石"],
+      "gas_station": "市区就近补油",
+      "notes": "全程最高海拔1380m"
+    },
+    {
+      "day_number": 6,
+      "date": "7.20",
+      "origin": "锡林浩特",
+      "destination": "热水塘",
+      "distance_km": 260,
+      "duration_hours": 4,
+      "elevation_m": "1000-1200",
+      "route": "G16丹锡高速",
+      "highlights": ["贡格尔草原", "达里诺尔湖（顺路打卡）"],
+      "accommodation": {
+        "location": "热水塘镇",
+        "type": "温泉酒店",
+        "price_per_room": 320
+      },
+      "food": ["草原家常菜", "温泉小镇炖菜"],
+      "tips": ["达里湖景区消费理性", "温泉注意安全"],
+      "gas_station": "经棚镇加满"
+    },
+    {
+      "day_number": 7,
+      "date": "7.21",
+      "origin": "热水塘",
+      "destination": "赤峰",
+      "distance_km": 340,
+      "duration_hours": 5.5,
+      "elevation_m": "1200-600",
+      "route": "达达线→热阿线→丹锡高速",
+      "highlights": ["达达线（中国最美草原公路）", "黄岗梁", "云杉林"],
+      "accommodation": {
+        "location": "赤峰市区",
+        "type": "酒店",
+        "price_per_room": 300
+      },
+      "food": ["赤峰对夹", "羊杂", "东北菜"],
+      "tips": ["达达线停车注意安全", "不随意占道拍照"],
+      "gas_station": "赤峰市区加满"
+    },
+    {
+      "day_number": 8,
+      "date": "7.22",
+      "origin": "赤峰",
+      "destination": "大连",
+      "distance_km": 660,
+      "duration_hours": 7.5,
+      "elevation_m": "600-20",
+      "route": "丹锡高速→沈海高速",
+      "highlights": [],
+      "accommodation": null,
+      "food": ["高速服务区简餐"],
+      "tips": ["长途驾驶轮换休息", "备足饮用水"],
+      "gas_station": "赤峰出发满油，中途按需补给",
+      "notes": "全程返程，中途简单午餐"
+    }
+  ],
+
+  "budget": {
+    "transportation": {
+      "fuel_total_liters": 182,
+      "fuel_cost": 1456,
+      "toll_fees": 890,
+      "transportation_total": 2346,
+      "per_person": 469
+    },
+    "accommodation": {
+      "nights": 7,
+      "rooms": 2,
+      "total": 4500,
+      "per_person": 900
+    },
+    "food": {
+      "daily_budget_per_person": 200,
+      "days": 8,
+      "per_person": 1600,
+      "group_total": 8000
+    },
+    "tickets_and_misc": {
+      "items": "九曲湾50 + 布林泉30 + 达里湖120 + 停车应急等",
+      "per_person": 300,
+      "group_total": 1500
+    },
+    "grand_total": {
+      "per_person": 3269,
+      "group_total": 16345
+    }
+  },
+
+  "checklist": [
+    {
+      "category": "导航",
+      "items": ["提前下载通辽、锡林郭勒、赤峰离线地图"]
+    },
+    {
+      "category": "加油",
+      "items": ["城镇见油就补", "草原深处无加油站"]
+    },
+    {
+      "category": "衣物",
+      "items": ["7月草原早晚凉，备薄外套/冲锋衣"]
+    },
+    {
+      "category": "防晒",
+      "items": ["海拔高紫外线强，防晒霜、帽子、墨镜必备"]
+    },
+    {
+      "category": "防蚊",
+      "items": ["草原蚊虫多，驱蚊液、长袖必带"]
+    },
+    {
+      "category": "路况",
+      "items": ["全程铺装路，轿车完全可行，不闯野路"]
+    }
+  ]
+}

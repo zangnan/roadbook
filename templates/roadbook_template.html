@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>路书模板 - 路书</title>
+    <link rel="icon" href="{{ static_base }}static/assets/favicon-48.png" type="image/png">
+    <link rel="stylesheet" href="{{ static_base }}static/route.css">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-light: rgba(102, 126, 234, 0.15);
+            --success-color: #43a047;
+            --warning-color: #ff9800;
+            --warning-bg: rgba(255, 152, 0, 0.12);
+            --warning-text: #e65100;
+            --danger-color: #f44336;
+            --info-color: #2196f3;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f5f7fa;
+            --bg-panel: rgba(255, 255, 255, 0.95);
+            --bg-panel-solid: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.8);
+            --bg-glass-hover: rgba(255, 255, 255, 0.9);
+            --text-primary: #1a1a2e;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --border-subtle: rgba(0, 0, 0, 0.05);
+            --shadow-panel: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --scrollbar-track: rgba(0, 0, 0, 0.05);
+            --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+            --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+            /* Semantic colors for light theme */
+            --primary-light: rgba(102, 126, 234, 0.12);
+            --success-bg: rgba(67, 160, 71, 0.12);
+            --success-bg-icon: rgba(67, 160, 71, 0.2);
+            --success-color: #43a047;
+            --success-text: #2e7d32;
+            --warning-bg: rgba(255, 152, 0, 0.12);
+            --warning-text: #e65100;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f0f1a;
+            --bg-panel: rgba(20, 20, 40, 0.95);
+            --bg-panel-solid: #1a1a2e;
+            --bg-glass: rgba(255, 255, 255, 0.05);
+            --bg-glass-hover: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(255, 255, 255, 0.15);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --shadow-panel: 0 4px 20px rgba(0, 0, 0, 0.5);
+            --scrollbar-track: rgba(255, 255, 255, 0.05);
+            --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+            --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+            /* Semantic colors for dark theme */
+            --primary-light: rgba(102, 126, 234, 0.2);
+            --success-bg: rgba(76, 175, 80, 0.15);
+            --success-bg-icon: rgba(76, 175, 80, 0.25);
+            --success-color: #66bb6a;
+            --success-text: #81c784;
+            --warning-bg: rgba(255, 152, 0, 0.2);
+            --warning-text: #ffb74d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+        }
+
+        /* Firefox 滚动条 */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 15px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-icon-img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--bg-glass-hover);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            max-height: calc(100vh - 70px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: var(--bg-glass);
+            margin-bottom: 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-area.hidden {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* Content Sections */
+        .content-section {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-panel);
+            border: 1px solid var(--border-color);
+        }
+
+        .content-section.hidden {
+            display: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+        }
+
+        /* Basic Info Section */
+        .basic-info-hero {
+            background: var(--primary-gradient);
+            border-radius: 12px;
+            padding: 24px;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .basic-info-hero-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .basic-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .basic-info-card {
+            background: #f5f5f5cc;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        [data-theme="dark"] .basic-info-card {
+            background: var(--bg-glass);
+        }
+
+        .basic-info-card-icon {
+            background: #ffffff80;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        [data-theme="dark"] .basic-info-card-icon {
+            background: var(--bg-glass-hover);
+        }
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .basic-info-card-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .basic-info-card-content {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .basic-info-card-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .basic-info-card-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Basic Info Responsive */
+        @media (max-width: 768px) {
+            .basic-info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .basic-info-detail-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .basic-info-detail-value {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .basic-info-warning {
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .basic-info-warning svg {
+            width: 20px;
+            height: 20px;
+            color: #f44336;
+            flex-shrink: 0;
+        }
+
+        .basic-info-warning-text {
+            font-size: 13px;
+            color: #f44336;
+        }
+
+        /* Route Summary */
+        .route-summary-container {
+            background: var(--bg-glass);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .route-summary-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .route-flow {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .route-flow-point {
+            background: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .route-flow-point.start {
+            background: #43a047;
+        }
+
+        .route-flow-point.end {
+            background: #f44336;
+        }
+
+        .route-flow-arrow {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Daily Itinerary */
+        .day-card {
+            background: var(--bg-glass);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .day-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .day-header:hover {
+            background: var(--bg-glass-hover);
+        }
+
+        .day-header-left {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .day-route-inline {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .day-header-right {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        @media (max-width: 640px) {
+            .day-route-inline {
+                display: none;
+            }
+        }
+
+        .day-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .day-date {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .day-route {
+            font-size: 13px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .day-route-main {
+            font-size: 13px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .day-route-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg-glass);
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .day-route-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .day-route-value {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .day-food {
+            margin-top: 10px;
+        }
+
+        .day-food-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .day-food-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .food-tag {
+            background: var(--warning-bg);
+            color: var(--warning-text);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .day-gas {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .day-gas-icon {
+            font-size: 14px;
+        }
+
+        .day-gas-text {
+            font-size: 13px;
+            color: #4caf50;
+        }
+
+        .day-arrow {
+            color: var(--text-muted);
+        }
+
+        .day-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .day-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .day-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .day-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+
+        .day-card.expanded .day-toggle {
+            transform: rotate(180deg);
+        }
+
+        .day-content {
+            display: none;
+            padding: 0 16px 16px;
+        }
+
+        .day-card.expanded .day-content {
+            display: block;
+        }
+
+        .day-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .day-detail-item {
+            background: var(--bg-panel);
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .day-detail-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .day-detail-value {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .day-highlights {
+            margin-bottom: 12px;
+        }
+
+        .day-highlights-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .day-highlights-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .highlight-tag {
+            background: var(--primary-light);
+            color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .day-accommodation {
+            background: var(--bg-panel);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+        }
+
+        .day-accommodation-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .day-accommodation-info {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .day-tips {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 3px solid var(--warning-color);
+            padding: 10px 12px;
+            border-radius: 0 6px 6px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== Daily Itinerary - New Layout ===== */
+        .day-content-section {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .day-content-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .day-content-section-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .day-content-section-header svg {
+            width: 14px;
+            height: 14px;
+            color: var(--text-muted);
+        }
+
+        .day-content-section-title {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        /* 行程概览 */
+        .day-route-overview {
+            background: var(--bg-panel-solid);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .day-route-main-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .day-route-endpoints {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .day-route-start, .day-route-end {
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .day-route-arrow {
+            color: var(--text-muted);
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .day-route-stats-inline {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .day-route-stats-inline span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .day-route-stats-inline svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.7;
+        }
+
+        /* 路线详情 2列 */
+        .day-route-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .day-detail-card {
+            background: var(--bg-panel-solid);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .day-detail-card .label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        .day-detail-card .value {
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* 标签容器 */
+        .day-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        /* 住宿卡片 */
+        .day-accommodation-card {
+            background: var(--bg-panel-solid);
+            padding: 14px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .day-accommodation-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-accommodation-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light, rgba(102, 126, 234, 0.15));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .day-accommodation-icon svg {
+            width: 18px;
+            height: 18px;
+            color: var(--primary-color);
+        }
+
+        .day-accommodation-info {
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        .day-accommodation-type {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .day-accommodation-price {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+
+        /* 加油站 */
+        .day-gas-station {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--bg-panel-solid);
+            border-radius: 8px;
+            border: 1px solid var(--success-bg);
+        }
+
+        .day-gas-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--success-bg-icon);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .day-gas-icon svg {
+            width: 16px;
+            height: 16px;
+            color: var(--success-color);
+        }
+
+        .day-gas-text {
+            font-size: 13px;
+            color: var(--success-text);
+            font-weight: 500;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 640px) {
+            .day-route-main-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .day-route-endpoints {
+                width: 100%;
+            }
+
+            .day-route-details {
+                grid-template-columns: 1fr;
+            }
+
+            .day-accommodation-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .day-accommodation-price {
+                align-self: flex-start;
+                margin-top: 8px;
+            }
+        }
+
+        /* ===== Budget Section - New Design ===== */
+        .budget-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .budget-card {
+            background: var(--bg-panel-solid);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+        }
+
+        .budget-card-left {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .budget-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 0;
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .budget-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .budget-card-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .budget-card-right {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .budget-header-row {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 10px;
+        }
+
+        .budget-header-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .budget-header-item.left {
+            align-items: flex-start;
+        }
+
+        .budget-header-item.right {
+            align-items: flex-end;
+        }
+
+        .budget-header-item .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .budget-header-item .value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .budget-header-item.right .value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .budget-sub-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .budget-details-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .budget-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .budget-card-icon.transportation {
+            background: var(--primary-light);
+        }
+
+        .budget-card-icon.transportation svg {
+            color: var(--primary-color);
+        }
+
+        .budget-card-icon.accommodation {
+            background: rgba(156, 39, 176, 0.12);
+        }
+
+        .budget-card-icon.accommodation svg {
+            color: #9c27b0;
+        }
+
+        .budget-card-icon.food {
+            background: var(--warning-bg);
+        }
+
+        .budget-card-icon.food svg {
+            color: var(--warning-text);
+        }
+
+        .budget-card-icon.tickets {
+            background: rgba(233, 30, 99, 0.1);
+        }
+
+        .budget-card-icon.tickets svg {
+            color: #e91e63;
+        }
+
+        .budget-card-icon.grand {
+            background: var(--primary-gradient);
+        }
+
+        .budget-card-icon.grand svg {
+            color: white;
+        }
+
+        .budget-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .budget-card-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .budget-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .budget-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .budget-item-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .budget-item-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .budget-item-value.highlight {
+            color: var(--primary-color);
+        }
+
+        .budget-item.per-person .budget-item-value {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .budget-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .budget-total-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .budget-total-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* 人均+合计 同一行布局 */
+        .budget-inline-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .budget-inline-row:last-child {
+            border-bottom: none;
+        }
+
+        .budget-inline-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .budget-inline-left .label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .budget-inline-left .value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .budget-inline-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
+        .budget-inline-right .label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .budget-inline-right .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .budget-inline-right .value.highlight {
+            color: var(--primary-color);
+        }
+
+        .budget-grand-card {
+            background: var(--primary-gradient);
+            border: none;
+            padding: 20px;
+        }
+
+        .budget-grand-card .budget-card-header {
+            border-bottom-color: rgba(255,255,255,0.2);
+        }
+
+        .budget-grand-card .budget-card-title {
+            color: white;
+        }
+
+        .budget-grand-card .budget-card-subtitle {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .budget-grand-card .budget-inline-row {
+            border-bottom: none;
+        }
+
+        .budget-grand-card .budget-inline-left .label,
+        .budget-grand-card .budget-inline-left .value {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .budget-grand-card .budget-inline-right .label {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .budget-grand-card .budget-inline-right .value {
+            color: white;
+        }
+
+        /* Budget Tooltip */
+        .budget-tooltip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 4px;
+            cursor: help;
+            vertical-align: middle;
+        }
+
+        .budget-tooltip-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            color: var(--bg-primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+
+        .budget-tooltip:hover .budget-tooltip-icon {
+            opacity: 1;
+        }
+
+        .budget-tooltip-content {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-panel-solid);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 12px;
+            min-width: 160px;
+            max-width: 240px;
+            box-shadow: var(--shadow-panel);
+            z-index: 100;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .budget-tooltip-content::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--border-color);
+        }
+
+        .budget-tooltip-content::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: var(--bg-panel-solid);
+        }
+
+        .budget-tooltip:hover .budget-tooltip-content {
+            display: block;
+        }
+
+        .budget-tooltip-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .budget-tooltip-desc {
+            color: var(--text-secondary);
+            font-size: 11px;
+        }
+
+        /* ===== Checklist Section - New Design ===== */
+        .checklist-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checklist-card {
+            background: var(--bg-panel-solid);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .checklist-card-header {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 80px;
+            margin-bottom: 0;
+        }
+
+        .checklist-card-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checklist-card-icon svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .checklist-card-icon.documents {
+            background: rgba(33, 150, 243, 0.12);
+        }
+
+        .checklist-card-icon.documents svg {
+            color: #2196f3;
+        }
+
+        .checklist-card-icon.electronics {
+            background: rgba(156, 39, 176, 0.12);
+        }
+
+        .checklist-card-icon.electronics svg {
+            color: #9c27b0;
+        }
+
+        .checklist-card-icon.clothing {
+            background: rgba(255, 152, 0, 0.12);
+        }
+
+        .checklist-card-icon.clothing svg {
+            color: #ff9800;
+        }
+
+        .checklist-card-icon.medicine {
+            background: rgba(244, 67, 54, 0.12);
+        }
+
+        .checklist-card-icon.medicine svg {
+            color: #f44336;
+        }
+
+        .checklist-card-icon.default {
+            background: var(--primary-light);
+        }
+
+        .checklist-card-icon.default svg {
+            color: var(--primary-color);
+        }
+
+        .checklist-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .checklist-items {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-content: flex-start;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            background: var(--bg-glass);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+        }
+
+        .checklist-item:hover {
+            background: var(--bg-glass-hover);
+        }
+
+        .checklist-item-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.15s ease;
+        }
+
+        .checklist-item-checkbox svg {
+            width: 12px;
+            height: 12px;
+            color: var(--primary-color);
+            opacity: 0;
+        }
+
+        .checklist-item.checked .checklist-item-checkbox {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checklist-item.checked .checklist-item-checkbox svg {
+            opacity: 1;
+            color: white;
+        }
+
+        .checklist-item.checked .checklist-item-text {
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 640px) {
+            .budget-items-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .checklist-card {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-glass-hover);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--bg-glass);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-glass-hover);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .icon-sun { display: none; }
+        .icon-moon { display: block; }
+
+        [data-theme="light"] .icon-sun { display: block; }
+        [data-theme="light"] .icon-moon { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-brand">
+            <img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img">
+            <h1>路书模板 <span style="font-weight: 400; color: var(--text-muted)">RoadBook</span></h1>
+        </div>
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" title="切换主题">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+            <button class="header-btn" onclick="goToRoutePlanner()">
+                路径规划
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">点击或拖拽上传路书JSON文件</div>
+            <div class="upload-hint">支持 .json 格式文件</div>
+            <input type="file" id="fileInput" accept=".json">
+        </div>
+
+        <!-- Basic Info Section -->
+        <div class="content-section hidden" id="basicInfoSection">
+            <div class="section-title">基本信息</div>
+            <div id="basicInfoGrid"></div>
+        </div>
+
+        <!-- Route Summary Section -->
+        <div class="content-section hidden" id="routeSummarySection">
+            <div class="route-summary-container" id="routeSummaryContainer"></div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="startRoutePlanning()">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    开始路径规划
+                </button>
+                <button class="btn btn-secondary" onclick="resetRoadbook()">
+                    重置
+                </button>
+            </div>
+        </div>
+
+        <!-- Daily Itinerary Section -->
+        <div class="content-section hidden" id="dailyItinerarySection">
+            <div class="section-title">每日行程</div>
+            <div id="dailyItineraryList"></div>
+        </div>
+
+        <!-- Budget Section -->
+        <div class="content-section hidden" id="budgetSection">
+            <div class="section-title">费用预算</div>
+            <div class="budget-grid" id="budgetGrid"></div>
+        </div>
+
+        <!-- Checklist Section -->
+        <div class="content-section hidden" id="checklistSection">
+            <div class="section-title">出行清单</div>
+            <div id="checklistContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Current roadbook data
+        let currentRoadbook = null;
+        let routeLocations = [];
+
+        // Theme
+        const THEME_KEY = 'roadbook-template-theme';
+        let currentTheme = localStorage.getItem(THEME_KEY) || 'dark';
+
+        function initTheme() {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem(THEME_KEY, currentTheme);
+        }
+
+        // Upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) handleFileUpload(file);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleFileUpload(file);
+        });
+
+        function handleFileUpload(file) {
+            if (!file.name.endsWith('.json')) {
+                alert('请上传 JSON 格式文件');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    currentRoadbook = data;
+                    parseAndDisplayRoadbook(data);
+                } catch (err) {
+                    alert('JSON文件解析失败: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function parseAndDisplayRoadbook(data) {
+            // Hide upload area
+            uploadArea.classList.add('hidden');
+
+            // Display Basic Info
+            displayBasicInfo(data.basic_info, data.budget);
+
+            // Display Route Summary
+            displayRouteSummary(data.basic_info);
+
+            // Display Daily Itinerary
+            displayDailyItinerary(data.daily_itinerary);
+
+            // Display Budget
+            if (data.budget) {
+                displayBudget(data.budget);
+            }
+
+            // Display Checklist
+            if (data.checklist) {
+                displayChecklist(data.checklist);
+            }
+        }
+
+        function displayBasicInfo(info, budget) {
+            const section = document.getElementById('basicInfoSection');
+            const grid = document.getElementById('basicInfoGrid');
+
+            if (!info) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            const grandTotal = budget?.grand_total?.group_total;
+
+            let html = '';
+
+            if (info.title) {
+                html += `<div class="basic-info-hero-title">${info.title}</div>`;
+            }
+
+            // All stats in one grid
+            html += `<div class="basic-info-grid">`;
+
+            // Row 1: travel_date, days, distance, people
+            if (info.travel_date) {
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">${info.travel_date}</span>
+                            <span class="basic-info-card-label">出行时间</span>
+                        </div>
+                    </div>`;
+            }
+            if (info.days) {
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">${info.days}天</span>
+                            <span class="basic-info-card-label">总天数</span>
+                        </div>
+                    </div>`;
+            }
+            if (info.total_distance_km) {
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">${info.total_distance_km}km</span>
+                            <span class="basic-info-card-label">总里程</span>
+                        </div>
+                    </div>`;
+            }
+            if (info.people_count) {
+                const rooms = info.room_count ? ` / ${info.room_count}间房` : '';
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">${info.people_count}人${rooms}</span>
+                            <span class="basic-info-card-label">人数</span>
+                        </div>
+                    </div>`;
+            }
+
+            // Row 2: grandTotal, car_type, elevation, fuel
+            if (grandTotal) {
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
+                                <path d="M12 6v2m0 8v2"></path>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">¥${grandTotal.toLocaleString()}</span>
+                            <span class="basic-info-card-label">总费用</span>
+                        </div>
+                    </div>`;
+            }
+            if (info.car_type) {
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"></path>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">${info.car_type}</span>
+                            <span class="basic-info-card-label">车型</span>
+                        </div>
+                    </div>`;
+            }
+            if (info.elevation_range) {
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"></path>
+                                <path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"></path>
+                                <path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"></path>
+                                <path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"></path>
+                                <path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"></path>
+                                <path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"></path>
+                                <path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"></path>
+                                <path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"></path>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">${info.elevation_range}m</span>
+                            <span class="basic-info-card-label">海拔范围</span>
+                        </div>
+                    </div>`;
+            }
+            if (info.fuel_consumption) {
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 22V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2v16"></path>
+                                <path d="M3 12h12"></path>
+                                <path d="M17 8h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-2"></path>
+                                <path d="M17 12h.01"></path>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">${info.fuel_consumption}</span>
+                            <span class="basic-info-card-label">油耗</span>
+                        </div>
+                    </div>`;
+            }
+
+            html += `</div>`;
+
+            // High altitude warning
+            if (info.high_altitude_warning) {
+                html += `
+                    <div class="basic-info-warning">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <span class="basic-info-warning-text">注意：行程涉及高海拔地区，存在高反风险，请提前做好准备</span>
+                    </div>`;
+            }
+
+            grid.innerHTML = html;
+            section.classList.remove('hidden');
+        }
+
+        function displayRouteSummary(info) {
+            const section = document.getElementById('routeSummarySection');
+            const container = document.getElementById('routeSummaryContainer');
+
+            if (!info || !info.route_summary) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            // Parse route_summary to get locations
+            routeLocations = info.route_summary.split(/[→>]/).map(s => s.trim()).filter(s => s);
+
+            // Format as flow
+            const flowHtml = routeLocations.map((loc, idx) => {
+                let pointClass = '';
+                if (idx === 0) pointClass = 'start';
+                else if (idx === routeLocations.length - 1) pointClass = 'end';
+                return `<span class="route-flow-point ${pointClass}">${loc}</span>`;
+            }).join('<span class="route-flow-arrow">→</span>');
+
+            container.innerHTML = `
+                <div class="route-summary-title">路线概览</div>
+                <div class="route-flow">${flowHtml}</div>
+            `;
+            section.classList.remove('hidden');
+        }
+
+        function displayDailyItinerary(itinerary) {
+            const section = document.getElementById('dailyItinerarySection');
+            const list = document.getElementById('dailyItineraryList');
+
+            if (!itinerary || !Array.isArray(itinerary) || itinerary.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            list.innerHTML = itinerary.map(day => {
+                // 构建各区块内容
+                let sectionsHtml = '';
+
+                // 1. 路线详情（道路、海拔）
+                if (day.route || day.elevation_m) {
+                    sectionsHtml += `
+                        <div class="day-content-section">
+                            <div class="day-content-section-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"></path>
+                                    <path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"></path>
+                                    <path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"></path>
+                                    <path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"></path>
+                                    <path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"></path>
+                                </svg>
+                                <span class="day-content-section-title">路线信息</span>
+                            </div>
+                            <div class="day-route-details">
+                                ${day.route ? `
+                                <div class="day-detail-card">
+                                    <div class="label">途经道路</div>
+                                    <div class="value">${day.route}</div>
+                                </div>
+                                ` : ''}
+                                ${day.elevation_m ? `
+                                <div class="day-detail-card">
+                                    <div class="label">海拔范围</div>
+                                    <div class="value">${day.elevation_m}m</div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 3. 途经景点
+                if (day.highlights && day.highlights.length > 0) {
+                    sectionsHtml += `
+                        <div class="day-content-section">
+                            <div class="day-content-section-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                                <span class="day-content-section-title">途经景点</span>
+                            </div>
+                            <div class="day-tags-container">
+                                ${day.highlights.map(h => `<span class="highlight-tag">${h}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 4. 住宿推荐
+                if (day.accommodation) {
+                    const acc = day.accommodation;
+                    sectionsHtml += `
+                        <div class="day-content-section">
+                            <div class="day-content-section-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 22V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2v16"></path>
+                                    <path d="M3 12h12"></path>
+                                    <path d="M17 8h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-2"></path>
+                                </svg>
+                                <span class="day-content-section-title">住宿推荐</span>
+                            </div>
+                            <div class="day-accommodation-card">
+                                <div class="day-accommodation-main">
+                                    <div class="day-accommodation-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 22V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2v16"></path>
+                                            <path d="M3 12h12"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div class="day-accommodation-info">${acc.location || '待定'}</div>
+                                        ${acc.type ? `<div class="day-accommodation-type">${acc.type}</div>` : ''}
+                                    </div>
+                                </div>
+                                ${acc.price_per_room ? `<div class="day-accommodation-price">¥${acc.price_per_room}/间</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 5. 美食推荐
+                if (day.food && day.food.length > 0) {
+                    sectionsHtml += `
+                        <div class="day-content-section">
+                            <div class="day-content-section-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                                    <line x1="6" y1="1" x2="6" y2="4"></line>
+                                    <line x1="10" y1="1" x2="10" y2="4"></line>
+                                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                                </svg>
+                                <span class="day-content-section-title">美食推荐</span>
+                            </div>
+                            <div class="day-tags-container">
+                                ${day.food.map(f => `<span class="food-tag">${f}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 6. 加油站
+                if (day.gas_station) {
+                    sectionsHtml += `
+                        <div class="day-content-section">
+                            <div class="day-content-section-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 22V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2v16"></path>
+                                    <path d="M17 8h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-2"></path>
+                                </svg>
+                                <span class="day-content-section-title">加油站</span>
+                            </div>
+                            <div class="day-gas-station">
+                                <div class="day-gas-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 22V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2v16"></path>
+                                    </svg>
+                                </div>
+                                <span class="day-gas-text">${day.gas_station}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 7. 出行提示
+                if (day.tips && day.tips.length > 0) {
+                    sectionsHtml += `
+                        <div class="day-content-section">
+                            <div class="day-content-section-header">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                <span class="day-content-section-title">出行提示</span>
+                            </div>
+                            <div class="day-tips">
+                                ${day.tips.join('；')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="day-card" onclick="toggleDayCard(this)">
+                        <div class="day-header">
+                            <div class="day-header-left">
+                                <span class="day-badge">第${day.day_number}天</span>
+                                <span class="day-date">${day.date}</span>
+                            </div>
+                            <div class="day-route-inline">
+                                <span class="day-route-start">${day.origin || '起点'}</span>
+                                <span class="day-route-arrow">→</span>
+                                <span class="day-route-end">${day.destination || '终点'}</span>
+                            </div>
+                            <div class="day-header-right">
+                                <div class="day-stats">
+                                    <span class="day-stat">${day.distance_km || 0}km</span>
+                                    <span class="day-stat">${day.duration_hours || 0}h</span>
+                                </div>
+                                <span class="day-toggle">▼</span>
+                            </div>
+                        </div>
+                        <div class="day-content">
+                            ${sectionsHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            section.classList.remove('hidden');
+        }
+
+        function toggleDayCard(card) {
+            card.classList.toggle('expanded');
+        }
+
+        function displayBudget(budget) {
+            const section = document.getElementById('budgetSection');
+            const grid = document.getElementById('budgetGrid');
+
+            if (!budget) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            const peopleCount = currentRoadbook?.basic_info?.people_count || 1;
+            const totalDist = currentRoadbook?.basic_info?.total_distance_km || 0;
+            const fuelCons = currentRoadbook?.basic_info?.fuel_consumption || '0';
+            const dailyItinerary = currentRoadbook?.daily_itinerary || [];
+            let html = '';
+
+            // SVG icons
+            const icons = {
+                car: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                    <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                    <path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"></path>
+                </svg>`,
+                hotel: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 22V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2v16"></path>
+                    <path d="M3 12h12"></path>
+                    <path d="M17 8h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-2"></path>
+                </svg>`,
+                food: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                    <line x1="6" y1="1" x2="6" y2="4"></line>
+                    <line x1="10" y1="1" x2="10" y2="4"></line>
+                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>`,
+                ticket: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 5v2"></path>
+                    <path d="M15 11v2"></path>
+                    <path d="M15 17v2"></path>
+                    <path d="M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V10a2 2 0 0 1 2-2h2"></path>
+                </svg>`,
+                wallet: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                    <path d="M18 12a2 2 0 0 0 0 4h4v-4h-4z"></path>
+                </svg>`
+            };
+
+            // Tooltip help icon
+            const helpIcon = (title, content) => `
+                <span class="budget-tooltip">
+                    <span class="budget-tooltip-icon">
+                        <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </span>
+                    <div class="budget-tooltip-content">
+                        <div class="budget-tooltip-title">${title}</div>
+                        ${content ? `<div class="budget-tooltip-desc">${content}</div>` : ''}
+                    </div>
+                </span>
+            `;
+
+            // 交通费用
+            if (budget.transportation) {
+                const t = budget.transportation;
+                html += `
+                    <div class="budget-card">
+                        <div class="budget-card-left">
+                            <div class="budget-card-header">
+                                <div class="budget-card-icon transportation">${icons.car}</div>
+                                <div class="budget-card-title">交通费用</div>
+                            </div>
+                        </div>
+                        <div class="budget-card-right">
+                            <div class="budget-header-row">
+                                <div class="budget-header-item left">
+                                    <span class="label">人均 ${helpIcon('计算公式', `¥${t.transportation_total || 0} ÷ ${peopleCount}人 = ¥${t.per_person || 0}`)}</span>
+                                    <span class="value">¥${t.per_person || 0}</span>
+                                </div>
+                                <div class="budget-header-item right">
+                                    <span class="label">交通合计 ${helpIcon('计算公式', `¥${t.fuel_cost || 0} + ¥${t.toll_fees || 0} = ¥${t.transportation_total || 0}`)}</span>
+                                    <span class="value">¥${t.transportation_total || 0}</span>
+                                </div>
+                            </div>
+                            <div class="budget-details-row">
+                                <span class="budget-detail-item">总油耗 ${helpIcon('计算公式', `${totalDist}km × ${fuelCons} ÷ 100 = ${t.fuel_total_liters || 0}L`)} ${t.fuel_total_liters || 0}L</span>
+                                <span class="budget-detail-item">油费 ${helpIcon('计算公式', `${t.fuel_total_liters || 0}L × 8元/L = ¥${t.fuel_cost || 0}`)} ¥${t.fuel_cost || 0}</span>
+                                <span class="budget-detail-item">过路费 ${helpIcon('来源', '高速通行费用实际统计')} ¥${t.toll_fees || 0}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 住宿费用
+            if (budget.accommodation) {
+                const a = budget.accommodation;
+                const rooms = a.rooms || currentRoadbook?.basic_info?.room_count || 1;
+                const nights = a.nights || 0;
+                // 计算每日住宿明细
+                let dailyCalc = '';
+                dailyItinerary.forEach((day) => {
+                    if (day.accommodation && day.accommodation.price_per_room) {
+                        const price = day.accommodation.price_per_room;
+                        const loc = day.accommodation.location || `Day${day.day_number}`;
+                        if (dailyCalc) dailyCalc += ' + ';
+                        dailyCalc += `${price}×${rooms}(${loc})`;
+                    }
+                });
+                html += `
+                    <div class="budget-card">
+                        <div class="budget-card-left">
+                            <div class="budget-card-header">
+                                <div class="budget-card-icon accommodation">${icons.hotel}</div>
+                                <div class="budget-card-title">住宿费用</div>
+                            </div>
+                        </div>
+                        <div class="budget-card-right">
+                            <div class="budget-header-row">
+                                <div class="budget-header-item left">
+                                    <span class="label">人均 ${helpIcon('计算公式', `¥${a.total || 0} ÷ ${peopleCount}人`)}</span>
+                                    <span class="value">¥${a.per_person || 0}</span>
+                                    <span class="budget-sub-label">${nights}晚 · ${rooms}间房</span>
+                                </div>
+                                <div class="budget-header-item right">
+                                    <span class="label">住宿合计 ${helpIcon('计算公式', dailyCalc || `每晚均价 × ${rooms}间 × ${nights}晚`)}</span>
+                                    <span class="value">¥${a.total || 0}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 餐饮费用
+            if (budget.food) {
+                const f = budget.food;
+                html += `
+                    <div class="budget-card">
+                        <div class="budget-card-left">
+                            <div class="budget-card-header">
+                                <div class="budget-card-icon food">${icons.food}</div>
+                                <div class="budget-card-title">餐饮费用</div>
+                            </div>
+                        </div>
+                        <div class="budget-card-right">
+                            <div class="budget-header-row">
+                                <div class="budget-header-item left">
+                                    <span class="label">人均 ${helpIcon('计算公式', `¥${f.daily_budget_per_person || 0}/天 × ${f.days || 0}天`)}</span>
+                                    <span class="value">¥${f.per_person || 0}</span>
+                                    <span class="budget-sub-label">${f.days || 0}天 · 人均¥${f.daily_budget_per_person || 0}/天</span>
+                                </div>
+                                <div class="budget-header-item right">
+                                    <span class="label">团队总计 ${helpIcon('计算公式', `¥${f.per_person || 0} × ${peopleCount}人`)}</span>
+                                    <span class="value">¥${f.group_total || 0}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 门票杂费
+            if (budget.tickets_and_misc) {
+                const tm = budget.tickets_and_misc;
+                html += `
+                    <div class="budget-card">
+                        <div class="budget-card-left">
+                            <div class="budget-card-header">
+                                <div class="budget-card-icon tickets">${icons.ticket}</div>
+                                <div class="budget-card-title">门票及杂费</div>
+                            </div>
+                        </div>
+                        <div class="budget-card-right">
+                            <div class="budget-header-row">
+                                <div class="budget-header-item left">
+                                    <span class="label">人均 ${helpIcon('计算公式', `¥${tm.group_total || 0} ÷ ${peopleCount}人`)}</span>
+                                    <span class="value">¥${tm.per_person || 0}</span>
+                                </div>
+                                <div class="budget-header-item right">
+                                    <span class="label">团队总计 ${helpIcon('计算公式', `¥${tm.per_person || 0} × ${peopleCount}人`)}</span>
+                                    <span class="value">¥${tm.group_total || 0}</span>
+                                </div>
+                            </div>
+                            ${tm.items ? `<div class="budget-details-row">${tm.items}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 总费用
+            if (budget.grand_total) {
+                const g = budget.grand_total;
+                html = `
+                    <div class="budget-grand-card">
+                        <div class="budget-card-header">
+                            <div class="budget-card-icon grand">${icons.wallet}</div>
+                            <div>
+                                <div class="budget-card-title">总费用预算</div>
+                                <div class="budget-card-subtitle">${peopleCount}人 · ${currentRoadbook?.basic_info?.days || 0}天</div>
+                            </div>
+                        </div>
+                        <div class="budget-inline-row">
+                            <div class="budget-inline-left">
+                                <span class="label">人均 ${helpIcon('计算公式', '交通+住宿+餐饮+门票')}</span>
+                                <span class="value">¥${g.per_person || 0}</span>
+                            </div>
+                            <div class="budget-inline-right">
+                                <span class="label">团队总费用 ${helpIcon('计算公式', `¥${g.per_person || 0} × ${peopleCount}人`)}</span>
+                                <span class="value">¥${g.group_total || 0}</span>
+                            </div>
+                        </div>
+                    </div>
+                ` + html;
+            }
+
+            if (!html) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            grid.innerHTML = html;
+            section.classList.remove('hidden');
+        }
+
+        function displayChecklist(checklist) {
+            const section = document.getElementById('checklistSection');
+            const content = document.getElementById('checklistContent');
+
+            if (!checklist || !Array.isArray(checklist) || checklist.length === 0) {
+                section.classList.add('hidden');
+                return;
+            }
+
+            // Icon map for categories
+            const iconMap = {
+                '证件': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                    <circle cx="9" cy="10" r="2"></circle>
+                    <path d="M15 8h2"></path>
+                    <path d="M15 12h2"></path>
+                </svg>`,
+                '证件类': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                    <circle cx="9" cy="10" r="2"></circle>
+                    <path d="M15 8h2"></path>
+                    <path d="M15 12h2"></path>
+                </svg>`,
+                '电子产品': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                    <line x1="9" y1="9" x2="15" y2="9"></line>
+                    <line x1="9" y1="12" x2="15" y2="12"></line>
+                </svg>`,
+                '电子设备': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                    <line x1="9" y1="9" x2="15" y2="9"></line>
+                    <line x1="9" y1="12" x2="15" y2="12"></line>
+                </svg>`,
+                '衣物': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                </svg>`,
+                '服装': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                </svg>`,
+                '药品': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.5 20.5L3.5 13.5a4.95 4.95 0 0 1 7-7l7 7a4.95 4.95 0 0 1-7 7z"></path>
+                    <path d="M8.5 8.5l7 7"></path>
+                </svg>`,
+                '医药': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.5 20.5L3.5 13.5a4.95 4.95 0 0 1 7-7l7 7a4.95 4.95 0 0 1-7 7z"></path>
+                    <path d="M8.5 8.5l7 7"></path>
+                </svg>`
+            };
+
+            const defaultIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>`;
+
+            const getIconClass = (category) => {
+                const cat = category || '';
+                if (cat.includes('证件') || cat.includes('文件')) return 'documents';
+                if (cat.includes('电子') || cat.includes('设备')) return 'electronics';
+                if (cat.includes('衣') || cat.includes('服')) return 'clothing';
+                if (cat.includes('药') || cat.includes('医')) return 'medicine';
+                return 'default';
+            };
+
+            const getIcon = (category) => {
+                const cat = category || '';
+                for (const [key, icon] of Object.entries(iconMap)) {
+                    if (cat.includes(key)) return icon;
+                }
+                return defaultIcon;
+            };
+
+            content.innerHTML = `
+                <div class="checklist-grid">
+                    ${checklist.map(cat => `
+                        <div class="checklist-card">
+                            <div class="checklist-card-header">
+                                <div class="checklist-card-icon ${getIconClass(cat.category)}">
+                                    ${getIcon(cat.category)}
+                                </div>
+                                <div class="checklist-card-title">${cat.category || '其他'}</div>
+                            </div>
+                            <div class="checklist-items">
+                                ${(cat.items || []).map((item, idx) => `
+                                    <div class="checklist-item" onclick="this.classList.toggle('checked')">
+                                        <div class="checklist-item-checkbox">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                        </div>
+                                        <span class="checklist-item-text">${item}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            section.classList.remove('hidden');
+        }
+
+        function startRoutePlanning() {
+            if (routeLocations.length < 2) {
+                alert('路线地点不足，无法进行路径规划');
+                return;
+            }
+
+            // Store locations in localStorage for the route planner page
+            localStorage.setItem('roadbook_locations', JSON.stringify(routeLocations));
+
+            // Navigate to route planner with flag
+            window.location.href = '/route?from_roadbook=1';
+        }
+
+        function resetRoadbook() {
+            currentRoadbook = null;
+            routeLocations = [];
+
+            // Reset UI
+            uploadArea.classList.remove('hidden');
+            document.getElementById('basicInfoSection').classList.add('hidden');
+            document.getElementById('routeSummarySection').classList.add('hidden');
+            document.getElementById('dailyItinerarySection').classList.add('hidden');
+            document.getElementById('budgetSection').classList.add('hidden');
+            document.getElementById('checklistSection').classList.add('hidden');
+
+            // Reset file input
+            fileInput.value = '';
+        }
+
+        function goToRoutePlanner() {
+            window.location.href = '/route';
+        }
+
+        // Initialize
+        initTheme();
+    </script>
+</body>
+</html>

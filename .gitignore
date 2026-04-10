@@ -3,6 +3,7 @@
 /cache
 /dist
 /build
+/.claude
 /src/*.log
 **/__pycache__
 *.log

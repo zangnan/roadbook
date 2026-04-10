@@ -184,6 +184,20 @@ def run_photo_track(task_id, photo_dir, distance_threshold, time_threshold, html
                 logger.removeHandler(log_capture)
 
 
+@app.route('/route')
+def route_page():
+    """路径规划页面"""
+    return render_template('route_template.html',
+                           amap_ak=AMAP_WEB_AK)
+
+
+@app.route('/roadbook')
+def roadbook_page():
+    """路书模板页面"""
+    return render_template('roadbook_template.html',
+                           static_base='')
+
+
 @app.route('/')
 def index():
     """主页"""
@@ -208,6 +222,60 @@ def index():
                                'amap_web_ak': AMAP_WEB_AK[:10] + '...' if AMAP_WEB_AK else '',
                                'amap_server_ak': AMAP_SERVER_AK[:10] + '...' if AMAP_SERVER_AK else '',
                            })
+
+
+@app.route('/api/route/geocode', methods=['POST'])
+def api_route_geocode():
+    """地理编码：地址转坐标"""
+    data = request.json
+    address = data.get('address', '').strip()
+
+    if not address:
+        return jsonify({'status': 'error', 'error': '地址不能为空'}), 400
+
+    from route_planner import RoutePlanner
+    planner = RoutePlanner(AMAP_SERVER_AK)
+    result = planner.geocode(address)
+
+    return jsonify(result)
+
+
+@app.route('/api/route/inputtips', methods=['POST'])
+def api_route_inputtips():
+    """输入提示：高德 v3/place/text"""
+    data = request.json
+    keywords = data.get('keywords', '').strip()
+
+    if not keywords or len(keywords) < 2:
+        return jsonify({'status': '0', 'info': '关键字太短'}), 400
+
+    print(f"DEBUG: AMAP_SERVER_AK = {AMAP_SERVER_AK[:10]}...")
+
+    from route_planner import RoutePlanner
+    planner = RoutePlanner(AMAP_SERVER_AK)
+    result = planner.inputtips(keywords)
+    print(f"DEBUG: inputtips result = {result}")
+
+    return jsonify(result)
+
+
+@app.route('/api/route/plan', methods=['POST'])
+def api_route_plan():
+    """路径规划"""
+    data = request.json
+    segments = data.get('segments', [])
+
+    if not segments:
+        return jsonify({'status': 'error', 'error': '缺少路段信息'}), 400
+
+    if len(segments) > 16:
+        return jsonify({'status': 'error', 'error': '最多支持 16 个途经点'}), 400
+
+    from route_planner import RoutePlanner
+    planner = RoutePlanner(AMAP_SERVER_AK)
+    result = planner.plan_route(segments)
+
+    return jsonify(result)
 
 
 @app.route('/api/directories')

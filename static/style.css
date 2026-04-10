@@ -88,6 +88,53 @@ header {
     padding: 32px 0 28px;
     margin-bottom: 28px;
     border-bottom: 1px solid var(--border);
+    position: relative;
+}
+
+header .header-link {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all var(--transition);
+}
+
+header .header-links {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+header .header-links .header-link {
+    position: static;
+    transform: none;
+}
+
+header .header-links .header-link:hover {
+    transform: translateY(-1px);
+}
+
+header .header-link:hover {
+    background: var(--primary-hover);
+    box-shadow: var(--shadow-md);
+}
+
+header .header-link svg {
+    width: 16px;
+    height: 16px;
 }
 
 header h1 {
