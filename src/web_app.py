@@ -50,6 +50,9 @@ get_photo_base_dir = config.get_photo_base_dir
 get_output_base_dir = config.get_output_base_dir
 CONFIG_APP_DIR = config.APP_DIR
 WEB_PORT = config.WEB_PORT
+DEEPSEEK_API_KEY = config.DEEPSEEK_API_KEY
+DEEPSEEK_API_URL = config.DEEPSEEK_API_URL
+DEEPSEEK_MODEL = config.DEEPSEEK_MODEL
 
 # 确保运行时目录存在（photo、output、cache）
 for dir_name in ['photo', 'output', 'cache']:
@@ -282,6 +285,55 @@ def api_route_plan():
 def api_directories():
     """获取照片目录列表"""
     return jsonify(get_photo_dirs())
+
+
+@app.route('/api/ai/generate-roadbook', methods=['POST'])
+def api_ai_generate_roadbook():
+    """AI 生成路书"""
+    data = request.json
+
+    # 验证必填字段
+    required_fields = ['destination', 'travel_date_start', 'travel_date_end', 'people_count', 'car_type']
+    for field in required_fields:
+        if not data.get(field):
+            return jsonify({'status': 'error', 'error': f'缺少必填字段: {field}'}), 400
+
+    # 检查 API Key
+    if not DEEPSEEK_API_KEY:
+        return jsonify({'status': 'error', 'error': 'DeepSeek API Key 未配置'}), 500
+
+    try:
+        from ai_generator import generate_roadbook
+
+        result = generate_roadbook(
+            user_input=data,
+            api_key=DEEPSEEK_API_KEY,
+            api_url=DEEPSEEK_API_URL,
+            model=DEEPSEEK_MODEL
+        )
+
+        if result.get('status') == 'success':
+            return jsonify(result)
+        else:
+            return jsonify(result), 400
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'error': str(e)}), 500
+
+
+@app.route('/api/weather')
+def api_weather():
+    """获取天气预报（使用高德天气 API）"""
+    location = request.args.get('location', '').strip()
+    if not location:
+        return jsonify({'status': 'error', 'error': '缺少城市参数'})
+
+    if not AMAP_SERVER_AK:
+        return jsonify({'status': 'error', 'error': '天气 API 未配置（请设置 AMAP_SERVER_AK）'})
+
+    from weather import get_weather
+    result = get_weather(location, AMAP_SERVER_AK)
+    return jsonify(result)
 
 
 @app.route('/api/outputs')

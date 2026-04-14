@@ -13,7 +13,8 @@
 | 字段 | 类型 | 必填 | 说明 | 示例 |
 |------|------|------|------|------|
 | `title` | string | 否 | 路书标题 | "大连出发・8天草原环线自驾" |
-| `travel_date` | string | 是 | 出行时间（MM.DD-MM.DD） | "7.15-7.22" |
+| `travel_date_start` | string | 是 | 出行开始日期（yyyy-MM-dd） | "2026-07-15" |
+| `travel_date_end` | string | 是 | 出行结束日期（yyyy-MM-dd） | "2026-07-22" |
 | `days` | integer | 是 | 总天数 | 8 |
 | `car_type` | string | 是 | 车型 | "轿车" |
 | `people_count` | integer | 是 | 人数 | 5 |
@@ -31,7 +32,7 @@
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | `day_number` | integer | 是 | 第几天（从1开始） |
-| `date` | string | 是 | 日期（MM.DD格式） |
+| `date` | string | 是 | 日期（yyyy-MM-dd格式） |
 | `origin` | string | 是 | 出发地 |
 | `destination` | string | 是 | 目的地 |
 | `distance_km` | number | 是 | 当日里程（公里） |
@@ -39,29 +40,21 @@
 | `elevation_m` | string | 是 | 海拔（格式：min-max） |
 | `route` | string | 否 | 途经路线 |
 | `highlights` | array | 否 | 景点列表（字符串数组） |
-| `accommodation` | object | 否 | 住宿信息 |
+| `accommodation` | string | 否 | 住宿地点（住宿明细见 budget.accommodation） |
 | `food` | array | 否 | 推荐美食 |
 | `tips` | array | 否 | 避坑提示 |
 | `gas_station` | string | 否 | 加油地点 |
 | `notes` | string | 否 | 其他备注 |
-
-**accommodation 对象结构：**
-```json
-{
-  "location": "通辽市区",
-  "type": "连锁酒店",
-  "price_per_room": 280
-}
-```
 
 ### 3. budget - 费用明细
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | `transportation` | object | 交通费用 |
-| `accommodation` | object | 住宿费用 |
+| `accommodation` | array | 住宿费用明细数组 |
 | `food` | object | 餐饮费用 |
-| `tickets_and_misc` | object | 门票杂费 |
+| `tickets` | array | 景点门票明细数组 |
+| `misc` | array | 杂费明细数组 |
 | `grand_total` | object | 总计 |
 
 **transportation 子字段：**
@@ -75,15 +68,16 @@
 
 > 计算公式：油费 = 总油耗 × 单价；交通合计 = 油费 + 过路费
 
-**accommodation 子字段：**
+**accommodation 数组元素：**
 | 字段 | 类型 | 说明 | 示例 |
 |------|------|------|------|
-| `nights` | integer | 住宿晚数 | 7 |
-| `rooms` | integer | 房间数量 | 2 |
-| `total` | number | 住宿合计（元）= 每晚房价 × 房间数 × 晚数 | 4500 |
-| `per_person` | number | 人均住宿费（元）= 住宿合计 ÷ 人数 | 900 |
+| `location` | string | 住宿地点 | "通辽市区" |
+| `type` | string | 酒店类型 | "连锁酒店" |
+| `price_per_room` | number | 每间房价（元） | 280 |
+| `nights` | integer | 住宿晚数 | 1 |
+| `rooms` | number | 房间数 | 2 |
 
-> 计算公式：total = 每晚房价 × rooms × nights；per_person = total ÷ 人数
+> total = Σ(price_per_room × nights × rooms)，per_person = total ÷ 人数
 
 **food 子字段：**
 | 字段 | 类型 | 说明 | 示例 |
@@ -95,12 +89,18 @@
 
 > 计算公式：per_person = daily_budget_per_person × days；group_total = per_person × 人数
 
-**tickets_and_misc 子字段：**
+**tickets 数组元素：**
 | 字段 | 类型 | 说明 | 示例 |
 |------|------|------|------|
-| `items` | string | 费用明细说明 | "九曲湾50+布林泉30+..." |
-| `per_person` | number | 人均（元） | 300 |
-| `group_total` | number | 团队总计（元） | 1500 |
+| `item` | string | 景点名称 | "九曲湾景区" |
+| `total` | number | 合计金额（元） | 200 |
+| `remark` | string | 备注 | "2大1小" |
+
+**misc 数组元素：**
+| 字段 | 类型 | 说明 | 示例 |
+|------|------|------|------|
+| `item` | string | 杂费项目 | "停车费" |
+| `total` | number | 合计金额（元） | 200 |
 
 **grand_total 子字段：**
 | 字段 | 类型 | 说明 | 示例 |
@@ -108,7 +108,7 @@
 | `per_person` | number | 人均总费用（元） | 2819 |
 | `group_total` | number | 团队总费用（元） | 14096 |
 
-> 计算公式：per_person = 交通per_person + 住宿per_person + 餐饮per_person + 门票per_person
+> 计算公式：per_person = 交通per_person + 住宿per_person + 餐饮per_person + 门票per_person + 杂费per_person
 
 ### 4. checklist - 出行必备提醒
 
@@ -149,7 +149,7 @@
   "daily_itinerary": [
     {
       "day_number": 1,
-      "date": "7.15",
+      "date": "2026-07-15",
       "origin": "大连",
       "destination": "通辽",
       "distance_km": 580,

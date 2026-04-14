@@ -17,8 +17,7 @@
         },
         "date": {
           "type": "string",
-          "description": "日期（格式：MM.DD，如7.15）",
-          "pattern": "^\\d{1,2}\\.\\d{1,2}$"
+          "description": "日期（格式：yyyy-MM-dd）"
         },
         "origin": {
           "type": "string",
@@ -50,12 +49,8 @@
           "items": { "type": "string" }
         },
         "accommodation": {
-          "type": "object",
-          "properties": {
-            "location": { "type": "string" },
-            "type": { "type": "string" },
-            "price_per_room": { "type": "number", "description": "每间房价（元）" }
-          }
+          "type": "string",
+          "description": "住宿地点（住宿明细见 budget.accommodation）"
         },
         "food": {
           "type": "array",
@@ -93,15 +88,19 @@
   "properties": {
     "basic_info": {
       "type": "object",
-      "required": ["travel_date", "car_type", "people_count", "total_distance_km"],
+      "required": ["travel_date_start", "travel_date_end", "car_type", "people_count", "total_distance_km"],
       "properties": {
         "title": {
           "type": "string",
           "description": "路书标题"
         },
-        "travel_date": {
+        "travel_date_start": {
           "type": "string",
-          "description": "出行时间（格式：MM.DD-MM.DD）"
+          "description": "出行开始日期（格式：yyyy-MM-dd）"
+        },
+        "travel_date_end": {
+          "type": "string",
+          "description": "出行结束日期（格式：yyyy-MM-dd）"
         },
         "days": {
           "type": "integer",
@@ -126,6 +125,10 @@
         "fuel_consumption": {
           "type": "string",
           "description": "油耗（如6.5L/100km）"
+        },
+        "fuel_price": {
+          "type": "number",
+          "description": "油价（元/升）"
         },
         "elevation_range": {
           "type": "string",
@@ -164,13 +167,17 @@
           }
         },
         "accommodation": {
-          "type": "object",
-          "description": "住宿费用",
-          "properties": {
-            "nights": { "type": "integer", "description": "住宿晚数" },
-            "rooms": { "type": "integer", "description": "房间数量" },
-            "total": { "type": "number", "description": "住宿合计（元）= 每晚房价 × 房间数 × 晚数" },
-            "per_person": { "type": "number", "description": "人均住宿费 = 住宿合计 ÷ 人数" }
+          "type": "array",
+          "description": "住宿费用明细",
+          "items": {
+            "type": "object",
+            "properties": {
+              "location": { "type": "string", "description": "住宿地点" },
+              "type": { "type": "string", "description": "酒店类型" },
+              "price_per_room": { "type": "number", "description": "每间房价（元）" },
+              "nights": { "type": "integer", "description": "住宿晚数" },
+              "rooms": { "type": "integer", "description": "房间数量" }
+            }
           }
         },
         "food": {
@@ -183,20 +190,34 @@
             "group_total": { "type": "number", "description": "团队餐饮总计 = 人均 × 人数" }
           }
         },
-        "tickets_and_misc": {
-          "type": "object",
-          "description": "门票及杂费",
-          "properties": {
-            "items": { "type": "string", "description": "费用明细说明，如：'九曲湾50+布林泉30+达里湖120+停车应急等'" },
-            "per_person": { "type": "number", "description": "人均门票杂费" },
-            "group_total": { "type": "number", "description": "团队总计" }
+        "tickets": {
+          "type": "array",
+          "description": "景点门票明细",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item": { "type": "string", "description": "景点名称" },
+              "total": { "type": "number", "description": "合计金额（元）" },
+              "remark": { "type": "string", "description": "备注（如：2大1小）" }
+            }
+          }
+        },
+        "misc": {
+          "type": "array",
+          "description": "杂费明细",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item": { "type": "string", "description": "杂费项目" },
+              "total": { "type": "number", "description": "合计金额（元）" }
+            }
           }
         },
         "grand_total": {
           "type": "object",
           "description": "总费用",
           "properties": {
-            "per_person": { "type": "number", "description": "人均总费用 = 交通 + 住宿 + 餐饮 + 门票" },
+            "per_person": { "type": "number", "description": "人均总费用 = 人均交通 + 人均住宿 + 人均餐饮 + 人均门票 + 人均杂费" },
             "group_total": { "type": "number", "description": "团队总费用" }
           }
         }

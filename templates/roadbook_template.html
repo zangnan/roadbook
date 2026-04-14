@@ -209,6 +209,7 @@
         .upload-hint {
             font-size: 13px;
             color: var(--text-muted);
+            margin-bottom: 12px;
         }
 
         #fileInput {
@@ -239,6 +240,33 @@
             display: inline-block;
         }
 
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-header .section-title {
+            margin-bottom: 0;
+        }
+
+        .section-edit-btn {
+            padding: 4px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-glass);
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .section-edit-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
         /* Basic Info Section */
         .basic-info-hero {
             background: var(--primary-gradient);
@@ -257,7 +285,7 @@
 
         .basic-info-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
 
@@ -516,7 +544,6 @@
         }
 
         .day-food {
-            margin-top: 10px;
         }
 
         .day-food-title {
@@ -595,6 +622,68 @@
             transform: rotate(180deg);
         }
 
+        .day-edit-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 4px;
+            background: var(--bg-glass);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            opacity: 0.7;
+            transition: all 0.2s;
+        }
+
+        .day-edit-btn:hover {
+            background: var(--primary-light);
+            opacity: 1;
+        }
+
+        .day-move-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 4px;
+            background: var(--bg-glass);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            opacity: 0.6;
+            transition: all 0.2s;
+        }
+
+        .day-move-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary-color);
+            opacity: 1;
+        }
+
+        .add-day-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            margin-top: 12px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .add-day-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
         .day-content {
             display: none;
             padding: 0 16px 16px;
@@ -630,7 +719,6 @@
         }
 
         .day-highlights {
-            margin-bottom: 12px;
         }
 
         .day-highlights-title {
@@ -654,10 +742,6 @@
         }
 
         .day-accommodation {
-            background: var(--bg-panel);
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 12px;
         }
 
         .day-accommodation-title {
@@ -895,6 +979,59 @@
             font-weight: 500;
         }
 
+        /* 天气预报 */
+        .day-weather {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-panel-solid);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .day-weather-icon {
+            font-size: 28px;
+        }
+
+        .day-weather-info {
+            flex: 1;
+        }
+
+        .day-weather-temp {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .day-weather-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .day-weather-detail {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .day-weather-location {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .day-weather-loading {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .day-weather-error {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
         /* 移动端适配 */
         @media (max-width: 640px) {
             .day-route-main-info {
@@ -1031,6 +1168,46 @@
             display: flex;
             align-items: center;
             gap: 4px;
+        }
+
+        .budget-item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .budget-item-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 12px;
+            align-items: center;
+            font-size: 13px;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .budget-item-row:last-child {
+            border-bottom: none;
+        }
+
+        .budget-item-name {
+            color: var(--text-primary);
+        }
+
+        .budget-item-price {
+            color: var(--text-secondary);
+            font-weight: 500;
+            white-space: nowrap;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .budget-item-remark {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-align: right;
+            max-width: 200px;
         }
 
         .budget-card-icon.transportation {
@@ -1538,6 +1715,549 @@
 
         [data-theme="light"] .icon-sun { display: block; }
         [data-theme="light"] .icon-moon { display: none; }
+
+        /* Header Button Primary */
+        .header-btn.primary {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+        }
+
+        .header-btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-panel-solid);
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.2s;
+            box-shadow: var(--shadow-panel);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--bg-glass);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-glass-hover);
+            color: var(--text-primary);
+        }
+
+        /* Editor Modal */
+        .editor-modal-content {
+            width: 90%;
+            max-width: 600px;
+            max-height: 85vh;
+        }
+
+        /* Budget Editor Styles */
+        .budget-editor-section {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .budget-editor-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .budget-editor-section h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .budget-edit-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .budget-edit-table th {
+            text-align: left;
+            padding: 8px 6px;
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .budget-edit-table td {
+            padding: 6px;
+            vertical-align: middle;
+        }
+
+        .budget-edit-table input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .budget-edit-table input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .budget-edit-table .col-location { min-width: 120px; }
+        .budget-edit-table .col-type { min-width: 80px; }
+        .budget-edit-table .col-price { width: 80px; }
+        .budget-edit-table .col-nights { width: 60px; }
+        .budget-edit-table .col-rooms { width: 60px; }
+        .budget-edit-table .col-subtotal { width: 80px; text-align: right; color: var(--text-secondary); }
+        .budget-edit-table .col-action { width: 50px; text-align: center; }
+        .budget-edit-table .col-name { min-width: 120px; }
+        .budget-edit-table .col-remark { min-width: 100px; }
+
+        .btn-delete-row {
+            color: var(--danger-color);
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 16px;
+            background: none;
+            border: none;
+        }
+
+        .btn-delete-row:hover {
+            color: #ff4444;
+        }
+
+        .btn-add-row {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px dashed var(--border-color);
+            color: var(--text-muted);
+            cursor: pointer;
+            width: 100%;
+            font-size: 13px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-row:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Checklist Editor Styles */
+        .checklist-editor-section {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .checklist-editor-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cl-category-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .cl-category-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .checklist-editor-items {
+            padding-left: 8px;
+        }
+
+        .checklist-editor-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .checklist-editor-item .cl-item-input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .checklist-editor-item .cl-item-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .checklist-editor-item-add {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .checklist-editor-item-add .cl-item-input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px dashed var(--border-color);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .checklist-editor-item-add .cl-item-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            border-style: solid;
+        }
+
+        .btn-add-item {
+            padding: 4px 10px;
+            background: var(--primary-light);
+            border: none;
+            border-radius: 4px;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-add-item:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .checklist-editor-add-category {
+            margin-top: 16px;
+        }
+
+        /* Daily Itinerary Editor Styles */
+        .daily-editor-day {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .daily-editor-day-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .daily-editor-day-title {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--primary-color);
+            min-width: 50px;
+        }
+
+        .daily-editor-day-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .compact-input {
+            padding: 4px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 12px;
+        }
+
+        .compact-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .compact-number {
+            width: 55px;
+            text-align: center;
+        }
+
+        .day-date {
+            width: 120px;
+        }
+
+        .day-origin {
+            width: 80px;
+        }
+
+        .day-destination {
+            width: 80px;
+        }
+
+        .arrow {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .unit {
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-left: 2px;
+        }
+
+        .daily-editor-day-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .daily-editor-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 28px;
+        }
+
+        .daily-editor-row label {
+            min-width: 60px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 28px;
+        }
+
+        .daily-editor-row input {
+            flex: 1;
+            height: 24px;
+            padding: 2px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 12px;
+            line-height: 18px;
+        }
+
+        .daily-editor-row input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .daily-editor-row-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .daily-editor-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .daily-editor-cell label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .daily-editor-cell input {
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+
+        .daily-editor-cell input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .budget-edit-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn.loading .btn-text {
+            display: none;
+        }
+
+        .btn.loading .btn-loading {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn.loading .btn-loading::before {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-loading {
+            display: none;
+        }
+
+        .error-message {
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            border-radius: 6px;
+            color: #f44336;
+            font-size: 13px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -1567,6 +2287,9 @@
             <button class="header-btn" onclick="goToRoutePlanner()">
                 路径规划
             </button>
+            <button class="header-btn primary" onclick="openAIGenerator()">
+                🤖 AI 生成
+            </button>
         </div>
     </div>
 
@@ -1582,7 +2305,10 @@
 
         <!-- Basic Info Section -->
         <div class="content-section hidden" id="basicInfoSection">
-            <div class="section-title">基本信息</div>
+            <div class="section-header">
+                <div class="section-title">基本信息</div>
+                <button class="section-edit-btn" onclick="openBasicInfoEditor()">✏️ 编辑</button>
+            </div>
             <div id="basicInfoGrid"></div>
         </div>
 
@@ -1597,6 +2323,9 @@
                     </svg>
                     开始路径规划
                 </button>
+                <button class="btn btn-secondary" onclick="saveRoadbookToFile()">
+                    💾 保存
+                </button>
                 <button class="btn btn-secondary" onclick="resetRoadbook()">
                     重置
                 </button>
@@ -1605,19 +2334,28 @@
 
         <!-- Daily Itinerary Section -->
         <div class="content-section hidden" id="dailyItinerarySection">
-            <div class="section-title">每日行程</div>
+            <div class="section-header">
+                <div class="section-title">每日行程</div>
+                <button class="section-edit-btn" onclick="openDailyItineraryEditor()">✏️ 编辑</button>
+            </div>
             <div id="dailyItineraryList"></div>
         </div>
 
         <!-- Budget Section -->
         <div class="content-section hidden" id="budgetSection">
-            <div class="section-title">费用预算</div>
+            <div class="section-header">
+                <div class="section-title">费用预算</div>
+                <button class="section-edit-btn" onclick="openBudgetEditor()">✏️ 编辑</button>
+            </div>
             <div class="budget-grid" id="budgetGrid"></div>
         </div>
 
         <!-- Checklist Section -->
         <div class="content-section hidden" id="checklistSection">
-            <div class="section-title">出行清单</div>
+            <div class="section-header">
+                <div class="section-title">出行清单</div>
+                <button class="section-edit-btn" onclick="openChecklistEditor()">✏️ 编辑</button>
+            </div>
             <div id="checklistContent"></div>
         </div>
     </div>
@@ -1688,9 +2426,60 @@
             reader.readAsText(file);
         }
 
+        function normalizeDayDate(dateStr, year) {
+            // Convert "04.15" or "4.5" to "yyyy-MM-dd"
+            if (!dateStr) return '';
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr; // already yyyy-MM-dd
+            const match = dateStr.match(/^(\d{1,2})\.(\d{1,2})$/);
+            if (match) {
+                const m = match[1].padStart(2, '0');
+                const d = match[2].padStart(2, '0');
+                return `${year}-${m}-${d}`;
+            }
+            return dateStr;
+        }
+
+        function normalizeDate(dateStr, year) {
+            // Convert "MM.DD" or "M.D" to "yyyy-MM-dd"
+            if (!dateStr) return '';
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+            const match = dateStr.match(/^(\d{1,2})\.(\d{1,2})$/);
+            if (match) {
+                const m = match[1].padStart(2, '0');
+                const d = match[2].padStart(2, '0');
+                return `${year}-${m}-${d}`;
+            }
+            return dateStr;
+        }
+
         function parseAndDisplayRoadbook(data) {
+            // Normalize dates to yyyy-MM-dd format
+            const travelYear = (data.basic_info?.travel_date_start || data.basic_info?.travel_date || new Date().getFullYear().toString()).substring(0, 4);
+            if (data.daily_itinerary) {
+                data.daily_itinerary.forEach(day => {
+                    if (day.date) {
+                        day.date = normalizeDayDate(day.date, travelYear);
+                    }
+                });
+            }
+            // Normalize basic_info travel_date
+            if (data.basic_info) {
+                if (data.basic_info.travel_date_start) {
+                    data.basic_info.travel_date_start = normalizeDate(data.basic_info.travel_date_start, travelYear);
+                }
+                if (data.basic_info.travel_date_end) {
+                    data.basic_info.travel_date_end = normalizeDate(data.basic_info.travel_date_end, travelYear);
+                }
+            }
+
             // Hide upload area
             uploadArea.classList.add('hidden');
+
+            // Calculate total distance from daily itinerary
+            if (data.daily_itinerary) {
+                const totalDist = data.daily_itinerary.reduce((sum, day) => sum + (parseFloat(day.distance_km) || 0), 0);
+                data.basic_info.total_distance_km = Math.round(totalDist * 10) / 10;
+            }
 
             // Display Basic Info
             displayBasicInfo(data.basic_info, data.budget);
@@ -1700,6 +2489,15 @@
 
             // Display Daily Itinerary
             displayDailyItinerary(data.daily_itinerary);
+
+            // Fetch weather for each day's destination
+            if (data.daily_itinerary) {
+                data.daily_itinerary.forEach(day => {
+                    if (day.destination) {
+                        fetchDayWeather(day.day_number, day.destination);
+                    }
+                });
+            }
 
             // Display Budget
             if (data.budget) {
@@ -1733,7 +2531,10 @@
             html += `<div class="basic-info-grid">`;
 
             // Row 1: travel_date, days, distance, people
-            if (info.travel_date) {
+            const travelDateDisplay = (info.travel_date_start && info.travel_date_end)
+                ? `${info.travel_date_start} ~ ${info.travel_date_end}`
+                : (info.travel_date || '');
+            if (travelDateDisplay) {
                 html += `
                     <div class="basic-info-card">
                         <div class="basic-info-card-icon">
@@ -1745,7 +2546,7 @@
                             </svg>
                         </div>
                         <div class="basic-info-card-content">
-                            <span class="basic-info-card-value">${info.travel_date}</span>
+                            <span class="basic-info-card-value">${travelDateDisplay}</span>
                             <span class="basic-info-card-label">出行时间</span>
                         </div>
                     </div>`;
@@ -1870,6 +2671,23 @@
                         </div>
                     </div>`;
             }
+            if (info.fuel_price) {
+                html += `
+                    <div class="basic-info-card">
+                        <div class="basic-info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 22V6c0-1.1.9-2 2-2h8c1.1 0 2 .9 2 2v16"></path>
+                                <path d="M3 12h12"></path>
+                                <path d="M17 8h2c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-2"></path>
+                                <path d="M17 12h.01"></path>
+                            </svg>
+                        </div>
+                        <div class="basic-info-card-content">
+                            <span class="basic-info-card-value">${info.fuel_price}元/L</span>
+                            <span class="basic-info-card-label">油价</span>
+                        </div>
+                    </div>`;
+            }
 
             html += `</div>`;
 
@@ -1981,7 +2799,6 @@
 
                 // 4. 住宿推荐
                 if (day.accommodation) {
-                    const acc = day.accommodation;
                     sectionsHtml += `
                         <div class="day-content-section">
                             <div class="day-content-section-header">
@@ -2001,11 +2818,9 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="day-accommodation-info">${acc.location || '待定'}</div>
-                                        ${acc.type ? `<div class="day-accommodation-type">${acc.type}</div>` : ''}
+                                        <div class="day-accommodation-info">${day.accommodation || '待定'}</div>
                                     </div>
                                 </div>
-                                ${acc.price_per_room ? `<div class="day-accommodation-price">¥${acc.price_per_room}/间</div>` : ''}
                             </div>
                         </div>
                     `;
@@ -2075,8 +2890,8 @@
                 }
 
                 return `
-                    <div class="day-card" onclick="toggleDayCard(this)">
-                        <div class="day-header">
+                    <div class="day-card">
+                        <div class="day-header" onclick="toggleDayCard(this.parentElement)">
                             <div class="day-header-left">
                                 <span class="day-badge">第${day.day_number}天</span>
                                 <span class="day-date">${day.date}</span>
@@ -2096,6 +2911,9 @@
                         </div>
                         <div class="day-content">
                             ${sectionsHtml}
+                            <div class="day-weather-slot" id="weather-${day.day_number}">
+                                <div class="day-weather-loading">正在获取天气预报...</div>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -2104,8 +2922,187 @@
             section.classList.remove('hidden');
         }
 
+        function addNewDay() {
+            if (!currentRoadbook) return;
+            const newDayNumber = (currentRoadbook.daily_itinerary?.length || 0) + 1;
+            const newDay = {
+                day_number: newDayNumber,
+                date: '',
+                origin: '',
+                destination: '',
+                distance_km: 0,
+                duration_hours: 0,
+                elevation_m: '',
+                route: '',
+                highlights: [],
+                accommodation: { location: '', type: '', price_per_room: 0 },
+                food: [],
+                tips: []
+            };
+            currentRoadbook.daily_itinerary.push(newDay);
+            displayDailyItinerary(currentRoadbook.daily_itinerary);
+            openDailyEditor(currentRoadbook.daily_itinerary.length - 1);
+        }
+
+        function moveDay(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= currentRoadbook.daily_itinerary.length) return;
+            const list = currentRoadbook.daily_itinerary;
+            [list[index], list[newIndex]] = [list[newIndex], list[index]];
+            list.forEach((day, i) => { day.day_number = i + 1; });
+            displayDailyItinerary(list);
+            list.forEach(day => {
+                if (day.destination) fetchDayWeather(day.day_number, day.destination);
+            });
+        }
+
         function toggleDayCard(card) {
             card.classList.toggle('expanded');
+        }
+
+        async function fetchDayWeather(dayNumber, location) {
+            const weatherSlot = document.getElementById(`weather-${dayNumber}`);
+            if (!weatherSlot) return;
+
+            try {
+                const response = await fetch(`/api/weather?location=${encodeURIComponent(location)}`);
+                const result = await response.json();
+
+                if (result.status === 'success' && result.weather) {
+                    const w = result.weather;
+                    const locationName = result.location_name || '';
+                    weatherSlot.innerHTML = `
+                        <div class="day-weather">
+                            <span class="day-weather-icon">${w.icon}</span>
+                            <div class="day-weather-info">
+                                <div class="day-weather-temp">${w.temp}°C</div>
+                                <div class="day-weather-text">${w.text} · ${w.windDir}</div>
+                                <div class="day-weather-detail">湿度 ${w.humidity}% · 体感 ${w.feelsLike}°C</div>
+                            </div>
+                            <div class="day-weather-location">${locationName}</div>
+                        </div>
+                    `;
+                } else {
+                    weatherSlot.innerHTML = `<div class="day-weather-error">${result.error || '天气获取失败'}</div>`;
+                }
+            } catch (e) {
+                weatherSlot.innerHTML = `<div class="day-weather-error">网络错误</div>`;
+            }
+        }
+
+        function recalculateBudget() {
+            if (!currentRoadbook || !currentRoadbook.budget) return;
+
+            const info = currentRoadbook.basic_info;
+            const days = info.days || 1;
+            const people = info.people_count || 1;
+            const rooms = info.room_count || 1;
+            const totalDist = info.total_distance_km || 0;
+            const fuelCons = parseFloat(info.fuel_consumption) || 8;  // 默认油耗 8L/100km
+            const fuelPrice = parseFloat(info.fuel_price) || 8;  // 油价（元/升），从 basic_info 读取
+
+            // 根据里程和油耗重新计算交通费用
+            // 如果交通费用已存在（用户或AI填写的），保留原值；否则根据basic_info估算
+            const existingTransport = currentRoadbook.budget?.transportation;
+            const hasExistingTransport = existingTransport && (existingTransport.transportation_total > 0);
+
+            let fuelTotalLiters, fuelCost, tollFees, transportationTotal, transportationPerPerson;
+
+            if (hasExistingTransport) {
+                // 保留原始交通数据，只更新per_person
+                fuelTotalLiters = existingTransport.fuel_total_liters || 0;
+                fuelCost = existingTransport.fuel_cost || 0;
+                tollFees = existingTransport.toll_fees || 0;
+                transportationTotal = existingTransport.transportation_total || (fuelCost + tollFees);
+                transportationPerPerson = Math.round(transportationTotal / people);
+            } else {
+                // 首次计算或数据不完整时，根据basic_info估算
+                fuelTotalLiters = totalDist * fuelCons / 100;
+                fuelCost = Math.round(fuelTotalLiters * fuelPrice);
+                tollFees = Math.round(totalDist * 0.5);
+                transportationTotal = fuelCost + tollFees;
+                transportationPerPerson = Math.round(transportationTotal / people);
+            }
+
+            // 住宿费用（从 budget.accommodation 数组汇总）
+            // 数组结构: [{ location, type, price_per_room, nights, rooms }]
+            const budgetAcc = currentRoadbook.budget?.accommodation;
+            const accommodationEntries = Array.isArray(budgetAcc) ? budgetAcc : [];
+            let accommodationTotal = 0;
+            let totalNights = 0;
+            accommodationEntries.forEach(acc => {
+                const r = acc.rooms || 1;
+                const n = acc.nights || 1;
+                accommodationTotal += (acc.price_per_room || 0) * n * r;
+                totalNights += n;
+            });
+            // 若无数组数据，尝试从旧对象结构迁移（向后兼容）
+            if (accommodationEntries.length === 0 && budgetAcc?.total) {
+                const oldAcc = budgetAcc;
+                const oldNights = oldAcc.nights || Math.max(1, days - 1);
+                const oldRooms = oldAcc.rooms || rooms;
+                const avgPerNightPerRoom = oldAcc.total / (oldRooms * oldNights) || 0;
+                accommodationTotal = avgPerNightPerRoom * rooms * oldNights;
+                totalNights = oldNights;
+            }
+            const accommodationPerPerson = people > 0 ? Math.round(accommodationTotal / people) : 0;
+
+            // 餐饮费用
+            const dailyFoodBudget = currentRoadbook.budget?.food?.daily_budget_per_person || 200;
+            const foodGroupTotal = dailyFoodBudget * days * people;
+            const foodPerPerson = dailyFoodBudget * days;
+
+            // 门票费用（从 budget.tickets 数组汇总）
+            const budgetTk = currentRoadbook.budget?.tickets;
+            const ticketsEntries = Array.isArray(budgetTk) ? budgetTk : [];
+            let ticketsTotal = 0;
+            ticketsEntries.forEach(t => { ticketsTotal += t.total || 0; });
+            const ticketsPerPerson = people > 0 ? Math.round(ticketsTotal / people) : 0;
+
+            // 杂费（从 budget.misc 数组汇总）
+            const budgetMisc = currentRoadbook.budget?.misc;
+            const miscEntries = Array.isArray(budgetMisc) ? budgetMisc : [];
+            let miscTotal = 0;
+            miscEntries.forEach(m => { miscTotal += m.total || 0; });
+            const miscPerPerson = people > 0 ? Math.round(miscTotal / people) : 0;
+
+            // 迁移旧 tickets_and_misc（向后兼容）
+            if (ticketsTotal === 0 && miscTotal === 0 && currentRoadbook.budget?.tickets_and_misc) {
+                const old = currentRoadbook.budget.tickets_and_misc;
+                const oldPerPerson = old.per_person || 0;
+                const oldGroupTotal = old.group_total || 0;
+                // 按 2:1 比例拆分到 tickets 和 misc
+                ticketsTotal = Math.round(oldGroupTotal * 2 / 3);
+                miscTotal = oldGroupTotal - ticketsTotal;
+            }
+
+            // 计算总费用
+            const perPersonTotal = transportationPerPerson + accommodationPerPerson + foodPerPerson + ticketsPerPerson + miscPerPerson;
+            const groupTotal = perPersonTotal * people;
+
+            // 更新预算数据
+            currentRoadbook.budget = {
+                transportation: {
+                    fuel_total_liters: Math.round(fuelTotalLiters * 10) / 10,
+                    fuel_cost: fuelCost,
+                    toll_fees: tollFees,
+                    transportation_total: transportationTotal,
+                    per_person: transportationPerPerson
+                },
+                accommodation: accommodationEntries.length > 0 ? accommodationEntries : (Array.isArray(budgetAcc) ? budgetAcc : (budgetAcc || undefined)),
+                food: {
+                    daily_budget_per_person: dailyFoodBudget,
+                    days: days,
+                    per_person: foodPerPerson,
+                    group_total: foodGroupTotal
+                },
+                tickets: ticketsEntries.length > 0 ? ticketsEntries : (Array.isArray(budgetTk) ? budgetTk : []),
+                misc: miscEntries.length > 0 ? miscEntries : (Array.isArray(budgetMisc) ? budgetMisc : []),
+                grand_total: {
+                    per_person: perPersonTotal,
+                    group_total: groupTotal
+                }
+            };
         }
 
         function displayBudget(budget) {
@@ -2119,7 +3116,11 @@
 
             const peopleCount = currentRoadbook?.basic_info?.people_count || 1;
             const totalDist = currentRoadbook?.basic_info?.total_distance_km || 0;
-            const fuelCons = currentRoadbook?.basic_info?.fuel_consumption || '0';
+            // 从 fuel_consumption 中提取数字（如 "7.5L/100km" -> 7.5）
+            const fuelConsRaw = currentRoadbook?.basic_info?.fuel_consumption || '0';
+            const fuelConsNum = parseFloat(fuelConsRaw) || 8;
+            // 油价从 basic_info.fuel_price 读取
+            const fuelPrice = currentRoadbook?.basic_info?.fuel_price || 8;
             const dailyItinerary = currentRoadbook?.daily_itinerary || [];
             let html = '';
 
@@ -2180,7 +3181,7 @@
                         <div class="budget-card-left">
                             <div class="budget-card-header">
                                 <div class="budget-card-icon transportation">${icons.car}</div>
-                                <div class="budget-card-title">交通费用</div>
+                                <div class="budget-card-title">交通</div>
                             </div>
                         </div>
                         <div class="budget-card-right">
@@ -2194,51 +3195,97 @@
                                     <span class="value">¥${t.transportation_total || 0}</span>
                                 </div>
                             </div>
-                            <div class="budget-details-row">
-                                <span class="budget-detail-item">总油耗 ${helpIcon('计算公式', `${totalDist}km × ${fuelCons} ÷ 100 = ${t.fuel_total_liters || 0}L`)} ${t.fuel_total_liters || 0}L</span>
-                                <span class="budget-detail-item">油费 ${helpIcon('计算公式', `${t.fuel_total_liters || 0}L × 8元/L = ¥${t.fuel_cost || 0}`)} ¥${t.fuel_cost || 0}</span>
-                                <span class="budget-detail-item">过路费 ${helpIcon('来源', '高速通行费用实际统计')} ¥${t.toll_fees || 0}</span>
+                            <div class="budget-item-list">
+                                <div class="budget-item-row">
+                                    <span class="budget-item-name">总油耗 ${t.fuel_total_liters?.toFixed(1) || 0}L ${helpIcon('计算公式', `${totalDist}km × ${fuelConsNum} ÷ 100 = ${t.fuel_total_liters?.toFixed(1) || 0}L`)}</span>
+                                    <span class="budget-item-remark">油费</span>
+                                    <span class="budget-item-price">¥${t.fuel_cost || 0}</span>
+                                </div>
+                                <div class="budget-item-row">
+                                    <span class="budget-item-name"></span>
+                                    <span class="budget-item-remark">过路费</span>
+                                    <span class="budget-item-price">¥${t.toll_fees || 0}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 `;
             }
 
-            // 住宿费用
-            if (budget.accommodation) {
-                const a = budget.accommodation;
-                const rooms = a.rooms || currentRoadbook?.basic_info?.room_count || 1;
-                const nights = a.nights || 0;
-                // 计算每日住宿明细
-                let dailyCalc = '';
-                dailyItinerary.forEach((day) => {
-                    if (day.accommodation && day.accommodation.price_per_room) {
-                        const price = day.accommodation.price_per_room;
-                        const loc = day.accommodation.location || `Day${day.day_number}`;
-                        if (dailyCalc) dailyCalc += ' + ';
-                        dailyCalc += `${price}×${rooms}(${loc})`;
-                    }
-                });
+            // 住宿
+            // 支持新数组结构 [{ location, type, price_per_room, nights, rooms }]
+            // 和旧对象结构 { nights, rooms, total, per_person }（向后兼容）
+            const accEntries = Array.isArray(budget.accommodation) ? budget.accommodation : [];
+            const hasAccArray = accEntries.length > 0;
+            const hasAccOld = budget.accommodation && !hasAccArray;
+            const rooms = currentRoadbook?.basic_info?.room_count || 1;
+
+            if (hasAccArray || hasAccOld) {
+                let accTotal = 0;
+                let accPerPerson = 0;
+                let accNights = 0;
+                let accRooms = rooms;
+                let accTooltip = '';
+
+                if (hasAccArray) {
+                    // 新数组结构
+                    accNights = accEntries.reduce((s, a) => s + (a.nights || 1), 0);
+                    accRooms = accEntries[0]?.rooms || rooms;
+                    accEntries.forEach((acc, idx) => {
+                        const price = acc.price_per_room || 0;
+                        const n = acc.nights || 1;
+                        const r = acc.rooms || 1;
+                        const loc = acc.location || `地点${idx + 1}`;
+                        const subtotal = price * n * r;
+                        accTotal += subtotal;
+                        if (idx > 0) accTooltip += ' + ';
+                        accTooltip += `${price}×${n}晚×${r}间(${loc})`;
+                    });
+                    accPerPerson = peopleCount > 0 ? Math.round(accTotal / peopleCount) : 0;
+                } else {
+                    // 旧对象结构（向后兼容）
+                    const oldA = budget.accommodation;
+                    accNights = oldA.nights || 0;
+                    accTotal = oldA.total || 0;
+                    accPerPerson = oldA.per_person || 0;
+                    accTooltip = `每晚均价 × ${rooms}间 × ${accNights}晚`;
+                }
+
+                const accRows = hasAccArray ? accEntries.map(acc => {
+                    const price = acc.price_per_room || 0;
+                    const n = acc.nights || 1;
+                    const r = acc.rooms || 1;
+                    const loc = acc.location || '';
+                    const subtotal = price * n * r;
+                    return `
+                        <div class="budget-item-row">
+                            <span class="budget-item-name">${loc}</span>
+                            <span class="budget-item-remark">${r}间${n}晚</span>
+                            <span class="budget-item-price">¥${subtotal}</span>
+                        </div>
+                    `;
+                }).join('') : '';
+
                 html += `
                     <div class="budget-card">
                         <div class="budget-card-left">
                             <div class="budget-card-header">
                                 <div class="budget-card-icon accommodation">${icons.hotel}</div>
-                                <div class="budget-card-title">住宿费用</div>
+                                <div class="budget-card-title">住宿</div>
                             </div>
                         </div>
                         <div class="budget-card-right">
                             <div class="budget-header-row">
                                 <div class="budget-header-item left">
-                                    <span class="label">人均 ${helpIcon('计算公式', `¥${a.total || 0} ÷ ${peopleCount}人`)}</span>
-                                    <span class="value">¥${a.per_person || 0}</span>
-                                    <span class="budget-sub-label">${nights}晚 · ${rooms}间房</span>
+                                    <span class="label">人均 ${helpIcon('计算公式', `¥${accTotal} ÷ ${peopleCount}人`)}</span>
+                                    <span class="value">¥${accPerPerson}</span>
                                 </div>
                                 <div class="budget-header-item right">
-                                    <span class="label">住宿合计 ${helpIcon('计算公式', dailyCalc || `每晚均价 × ${rooms}间 × ${nights}晚`)}</span>
-                                    <span class="value">¥${a.total || 0}</span>
+                                    <span class="label">住宿合计 ${helpIcon('计算公式', accTooltip)}</span>
+                                    <span class="value">¥${accTotal}</span>
                                 </div>
                             </div>
+                            ${accRows ? `<div class="budget-item-list">${accRows}</div>` : ''}
                         </div>
                     </div>
                 `;
@@ -2252,7 +3299,7 @@
                         <div class="budget-card-left">
                             <div class="budget-card-header">
                                 <div class="budget-card-icon food">${icons.food}</div>
-                                <div class="budget-card-title">餐饮费用</div>
+                                <div class="budget-card-title">餐饮</div>
                             </div>
                         </div>
                         <div class="budget-card-right">
@@ -2260,41 +3307,115 @@
                                 <div class="budget-header-item left">
                                     <span class="label">人均 ${helpIcon('计算公式', `¥${f.daily_budget_per_person || 0}/天 × ${f.days || 0}天`)}</span>
                                     <span class="value">¥${f.per_person || 0}</span>
-                                    <span class="budget-sub-label">${f.days || 0}天 · 人均¥${f.daily_budget_per_person || 0}/天</span>
                                 </div>
                                 <div class="budget-header-item right">
                                     <span class="label">团队总计 ${helpIcon('计算公式', `¥${f.per_person || 0} × ${peopleCount}人`)}</span>
                                     <span class="value">¥${f.group_total || 0}</span>
                                 </div>
                             </div>
+                            <div class="budget-details-row">
+                                <span class="budget-detail-item">${f.days || 0}天 · 人均¥${f.daily_budget_per_person || 0}/天</span>
+                            </div>
                         </div>
                     </div>
                 `;
             }
 
-            // 门票杂费
-            if (budget.tickets_and_misc) {
-                const tm = budget.tickets_and_misc;
+            // 门票费用（独立板块）
+            const ticketsEntries = Array.isArray(budget.tickets) ? budget.tickets : [];
+            if (ticketsEntries.length > 0) {
+                let tkTotal = 0;
+                ticketsEntries.forEach(t => { tkTotal += t.total || 0; });
+                const tkPerPerson = peopleCount > 0 ? Math.round(tkTotal / peopleCount) : 0;
+
+                const ticketRows = ticketsEntries.map(t => `
+                    <div class="budget-item-row">
+                        <span class="budget-item-name">${t.item || '景点'}</span>
+                        <span class="budget-item-remark">${t.remark || ''}</span>
+                        <span class="budget-item-price">¥${t.total || 0}</span>
+                    </div>
+                `).join('');
+
                 html += `
                     <div class="budget-card">
                         <div class="budget-card-left">
                             <div class="budget-card-header">
                                 <div class="budget-card-icon tickets">${icons.ticket}</div>
-                                <div class="budget-card-title">门票及杂费</div>
+                                <div class="budget-card-title">门票</div>
                             </div>
                         </div>
                         <div class="budget-card-right">
                             <div class="budget-header-row">
                                 <div class="budget-header-item left">
-                                    <span class="label">人均 ${helpIcon('计算公式', `¥${tm.group_total || 0} ÷ ${peopleCount}人`)}</span>
-                                    <span class="value">¥${tm.per_person || 0}</span>
+                                    <span class="label">人均</span>
+                                    <span class="value">¥${tkPerPerson}</span>
                                 </div>
                                 <div class="budget-header-item right">
-                                    <span class="label">团队总计 ${helpIcon('计算公式', `¥${tm.per_person || 0} × ${peopleCount}人`)}</span>
-                                    <span class="value">¥${tm.group_total || 0}</span>
+                                    <span class="label">门票合计</span>
+                                    <span class="value">¥${tkTotal}</span>
                                 </div>
                             </div>
-                            ${tm.items ? `<div class="budget-details-row">${tm.items}</div>` : ''}
+                            <div class="budget-item-list">
+                                ${ticketRows}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 杂费（独立板块）
+            const miscEntries = Array.isArray(budget.misc) ? budget.misc : [];
+            // 旧 tickets_and_misc 中的杂费部分（向后兼容）
+            const oldTicketsMisc = budget.tickets_and_misc;
+
+            if (miscEntries.length > 0 || oldTicketsMisc) {
+                let miscTotal = 0;
+                let miscItemized = '';
+
+                if (miscEntries.length > 0) {
+                    miscEntries.forEach((m, idx) => {
+                        miscTotal += m.total || 0;
+                        if (idx > 0) miscItemized += ' + ';
+                        miscItemized += `${m.item || '杂费'}(¥${m.total || 0})`;
+                    });
+                } else if (oldTicketsMisc) {
+                    // 从旧结构拆分
+                    miscTotal = Math.round((oldTicketsMisc.group_total || 0) / 3);
+                    miscItemized = oldTicketsMisc.items || '';
+                }
+
+                const miscPerPerson = peopleCount > 0 ? Math.round(miscTotal / peopleCount) : 0;
+
+                const miscRows = miscEntries.map(m => `
+                    <div class="budget-item-row">
+                        <span class="budget-item-name">${m.item || '杂费'}</span>
+                        <span class="budget-item-remark">${m.remark || ''}</span>
+                        <span class="budget-item-price">¥${m.total || 0}</span>
+                    </div>
+                `).join('');
+
+                html += `
+                    <div class="budget-card">
+                        <div class="budget-card-left">
+                            <div class="budget-card-header">
+                                <div class="budget-card-icon tickets">${icons.ticket}</div>
+                                <div class="budget-card-title">杂费</div>
+                            </div>
+                        </div>
+                        <div class="budget-card-right">
+                            <div class="budget-header-row">
+                                <div class="budget-header-item left">
+                                    <span class="label">人均</span>
+                                    <span class="value">¥${miscPerPerson}</span>
+                                </div>
+                                <div class="budget-header-item right">
+                                    <span class="label">杂费合计</span>
+                                    <span class="value">¥${miscTotal}</span>
+                                </div>
+                            </div>
+                            <div class="budget-item-list">
+                                ${miscRows || `<div class="budget-item-row"><span class="budget-item-name">杂费</span><span class="budget-item-price">¥${miscTotal}</span><span class="budget-item-remark"></span></div>`}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -2314,7 +3435,7 @@
                         </div>
                         <div class="budget-inline-row">
                             <div class="budget-inline-left">
-                                <span class="label">人均 ${helpIcon('计算公式', '交通+住宿+餐饮+门票')}</span>
+                                <span class="label">人均 ${helpIcon('计算公式', '交通+住宿+餐饮+门票+杂费')}</span>
                                 <span class="value">¥${g.per_person || 0}</span>
                             </div>
                             <div class="budget-inline-right">
@@ -2467,12 +3588,1061 @@
             fileInput.value = '';
         }
 
+        function saveRoadbookToFile() {
+            if (!currentRoadbook) {
+                alert('请先生成或加载路书');
+                return;
+            }
+
+            const title = currentRoadbook.basic_info?.title || '未命名';
+            const filename = `路书_${title}_${Date.now()}.json`;
+
+            const blob = new Blob([JSON.stringify(currentRoadbook, null, 2)], {
+                type: 'application/json'
+            });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
         function goToRoutePlanner() {
             window.location.href = '/route';
         }
 
+        // AI Generator Modal
+        function calcReturnDate() {
+            const startInput = document.querySelector('input[name="travel_date_start"]');
+            const daysInput = document.getElementById('autoDays');
+            const endInput = document.querySelector('input[name="travel_date_end"]');
+            const start = startInput.value;
+            const days = parseInt(daysInput.value);
+            if (start && days && days > 0) {
+                const d1 = new Date(start);
+                d1.setDate(d1.getDate() + days - 1);
+                const year = d1.getFullYear();
+                const month = String(d1.getMonth() + 1).padStart(2, '0');
+                const day = String(d1.getDate()).padStart(2, '0');
+                endInput.value = `${year}-${month}-${day}`;
+            }
+        }
+
+        function openAIGenerator() {
+            document.getElementById('aiGeneratorModal').classList.add('active');
+        }
+
+        function closeAIGenerator() {
+            document.getElementById('aiGeneratorModal').classList.remove('active');
+            document.getElementById('aiError').classList.remove('visible');
+        }
+
+        async function submitAIForm(e) {
+            e.preventDefault();
+            const form = e.target;
+            const submitBtn = document.getElementById('submitBtn');
+
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            document.getElementById('aiError').classList.remove('visible');
+
+            const formData = {
+                destination: form.destination.value,
+                travel_date_start: form.travel_date_start.value,
+                travel_date_end: form.travel_date_end.value,
+                days: parseInt(form.days.value),
+                people_count: parseInt(form.people_count.value),
+                room_count: parseInt(form.room_count.value || 1),
+                car_type: form.car_type.value,
+                budget_preference: form.budget_preference.value,
+                special_requirements: form.special_requirements.value
+            };
+
+            try {
+                const response = await fetch('/api/ai/generate-roadbook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    currentRoadbook = result.data;
+                    closeAIGenerator();
+                    parseAndDisplayRoadbook(result.data);
+                } else {
+                    showAIError(result.error || '生成失败，请重试');
+                }
+            } catch (err) {
+                showAIError('网络错误，请检查网络连接后重试');
+            } finally {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        }
+
+        function showAIError(msg) {
+            const errDiv = document.getElementById('aiError');
+            errDiv.textContent = msg;
+            errDiv.classList.add('visible');
+        }
+
+        // Editor State
+        let editState = {
+            active: false,
+            type: null,
+            index: null
+        };
+
+        function openBasicInfoEditor() {
+            if (!currentRoadbook || !currentRoadbook.basic_info) {
+                alert('请先生成或加载路书');
+                return;
+            }
+
+            const info = currentRoadbook.basic_info;
+            document.getElementById('editorTitle').textContent = '编辑基本信息';
+
+            document.getElementById('editorBody').innerHTML = `
+                <div class="form-group">
+                    <label>标题</label>
+                    <input type="text" id="edit-title" value="${info.title || ''}">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>出行日期起</label>
+                        <input type="date" id="edit-travel_date_start" value="${info.travel_date_start || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>出行日期止</label>
+                        <input type="date" id="edit-travel_date_end" value="${info.travel_date_end || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>天数</label>
+                        <input type="number" id="edit-days" value="${info.days || 1}" min="1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>人数</label>
+                        <input type="number" id="edit-people_count" value="${info.people_count || 1}" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>房数</label>
+                        <input type="number" id="edit-room_count" value="${info.room_count || 1}" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>车型</label>
+                        <select id="edit-car_type">
+                            <option value="轿车" ${info.car_type === '轿车' ? 'selected' : ''}>轿车</option>
+                            <option value="SUV" ${info.car_type === 'SUV' ? 'selected' : ''}>SUV</option>
+                            <option value="越野车" ${info.car_type === '越野车' ? 'selected' : ''}>越野车</option>
+                            <option value="MVP" ${info.car_type === 'MVP' ? 'selected' : ''}>MVP</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>总里程 (km)</label>
+                    <div class="form-group">
+                    <label>海拔范围 (m)</label>
+                    <input type="text" id="edit-elevation_range" value="${info.elevation_range || ''}">
+                </div>
+                <div class="form-group">
+                    <label>油耗</label>
+                    <input type="text" id="edit-fuel_consumption" value="${info.fuel_consumption || ''}">
+                </div>
+                <div class="form-group">
+                    <label>油价 (元/升)</label>
+                    <input type="number" id="edit-fuel_price" value="${info.fuel_price || 8}" step="0.1">
+                </div>
+            `;
+
+            editState = { active: true, type: 'basic', index: null };
+            document.getElementById('editorModal').classList.add('active');
+        }
+
+        function openDailyEditor(dayIndex) {
+            const day = currentRoadbook.daily_itinerary[dayIndex];
+            if (!day) return;
+
+            document.getElementById('editorTitle').textContent = `编辑第${day.day_number}天行程`;
+
+            const highlights = (day.highlights || []).join('，');
+            const food = (day.food || []).join('，');
+            const tips = (day.tips || []).join('；');
+            // 新结构: accommodation 是字符串；旧结构: accommodation 是 { location, type, price_per_room }
+            const accVal = day.accommodation || '';
+            const accommodationLoc = typeof accVal === 'string' ? accVal : (accVal.location || '');
+
+            document.getElementById('editorBody').innerHTML = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>日期</label>
+                        <input type="date" id="edit-date" value="${day.date || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>出发地</label>
+                        <input type="text" id="edit-origin" value="${day.origin || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label>目的地</label>
+                        <input type="text" id="edit-destination" value="${day.destination || ''}">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>里程 (km)</label>
+                        <input type="number" id="edit-distance_km" value="${day.distance_km || 0}" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>车程 (h)</label>
+                        <input type="number" id="edit-duration_hours" value="${day.duration_hours || 0}" step="0.5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>途经道路</label>
+                    <input type="text" id="edit-route" value="${day.route || ''}">
+                </div>
+                <div class="form-group">
+                    <label>途经景点（逗号分隔）</label>
+                    <input type="text" id="edit-highlights" value="${highlights}">
+                </div>
+                <div class="form-group">
+                    <label>住宿地点</label>
+                    <input type="text" id="edit-accommodation_location" value="${accommodationLoc}">
+                    <small style="color:#888">详细住宿价格请在"预算"页面编辑</small>
+                </div>
+                <div class="form-group">
+                    <label>美食推荐（逗号分隔）</label>
+                    <input type="text" id="edit-food" value="${food}">
+                </div>
+                <div class="form-group">
+                    <label>出行提示（分号分隔）</label>
+                    <input type="text" id="edit-tips" value="${tips}">
+                </div>
+            `;
+
+            editState = { active: true, type: 'daily', index: dayIndex };
+            document.getElementById('editorModal').classList.add('active');
+        }
+
+        function saveEditor() {
+            if (!editState.active) return;
+
+            if (editState.type === 'basic') {
+                currentRoadbook.basic_info = {
+                    ...currentRoadbook.basic_info,
+                    title: document.getElementById('edit-title').value,
+                    travel_date_start: document.getElementById('edit-travel_date_start').value,
+                    travel_date_end: document.getElementById('edit-travel_date_end').value,
+                    travel_date: document.getElementById('edit-travel_date_start').value + ' ~ ' + document.getElementById('edit-travel_date_end').value,
+                    days: parseInt(document.getElementById('edit-days').value) || 1,
+                    people_count: parseInt(document.getElementById('edit-people_count').value) || 1,
+                    room_count: parseInt(document.getElementById('edit-room_count').value) || 1,
+                    car_type: document.getElementById('edit-car_type').value,
+                    elevation_range: document.getElementById('edit-elevation_range').value,
+                    fuel_consumption: document.getElementById('edit-fuel_consumption').value,
+                    fuel_price: parseFloat(document.getElementById('edit-fuel_price').value) || 8
+                };
+                // 从每日行程重新计算总里程
+                const totalDist = (currentRoadbook.daily_itinerary || []).reduce((sum, day) => sum + (parseFloat(day.distance_km) || 0), 0);
+                currentRoadbook.basic_info.total_distance_km = Math.round(totalDist * 10) / 10;
+
+                // 重新计算预算
+                recalculateBudget();
+
+                displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
+                displayRouteSummary(currentRoadbook.basic_info);
+                displayBudget(currentRoadbook.budget);
+
+            } else if (editState.type === 'daily') {
+                const dayIndex = editState.index;
+                const day = currentRoadbook.daily_itinerary[dayIndex];
+
+                day.date = document.getElementById('edit-date').value;
+                day.origin = document.getElementById('edit-origin').value;
+                day.destination = document.getElementById('edit-destination').value;
+                day.distance_km = parseFloat(document.getElementById('edit-distance_km').value) || 0;
+                day.duration_hours = parseFloat(document.getElementById('edit-duration_hours').value) || 0;
+                day.route = document.getElementById('edit-route').value;
+
+                day.highlights = document.getElementById('edit-highlights').value
+                    .split(/[,，]/)
+                    .map(s => s.trim())
+                    .filter(s => s);
+
+                // 新结构: accommodation 为字符串（地点名），详细价格在 budget.accommodation 数组中
+                day.accommodation = document.getElementById('edit-accommodation_location').value;
+
+                day.food = document.getElementById('edit-food').value
+                    .split(/[,，]/)
+                    .map(s => s.trim())
+                    .filter(s => s);
+
+                day.tips = document.getElementById('edit-tips').value
+                    .split(/[;；]/)
+                    .map(s => s.trim())
+                    .filter(s => s);
+
+                displayDailyItinerary(currentRoadbook.daily_itinerary);
+
+                // 重新计算总里程（从每日行程汇总）
+                const totalDist = (currentRoadbook.daily_itinerary || []).reduce((sum, day) => sum + (parseFloat(day.distance_km) || 0), 0);
+                currentRoadbook.basic_info.total_distance_km = Math.round(totalDist * 10) / 10;
+
+                // 重新计算预算（住宿费用可能已更改）
+                recalculateBudget();
+                displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
+                displayBudget(currentRoadbook.budget);
+
+                if (day.destination) {
+                    fetchDayWeather(day.day_number, day.destination);
+                }
+            }
+
+            closeEditor();
+        }
+
+        function closeEditor() {
+            editState = { active: false, type: null, index: null };
+            document.getElementById('editorModal').classList.remove('active');
+        }
+
+        // ========== Budget Editor ==========
+
+        function openBudgetEditor() {
+            if (!currentRoadbook || !currentRoadbook.budget) {
+                alert('请先加载路书');
+                return;
+            }
+
+            const budget = currentRoadbook.budget;
+            const peopleCount = currentRoadbook?.basic_info?.people_count || 1;
+
+            // 住宿明细
+            const accEntries = Array.isArray(budget.accommodation) ? budget.accommodation : [];
+            let accHtml = '';
+            accEntries.forEach((acc, idx) => {
+                const subtotal = (acc.price_per_room || 0) * (acc.nights || 1) * (acc.rooms || 1);
+                accHtml += `
+                    <tr data-idx="${idx}">
+                        <td><input type="text" class="acc-location" value="${acc.location || ''}" placeholder="地点"></td>
+                        <td><input type="text" class="acc-type" value="${acc.type || ''}" placeholder="类型"></td>
+                        <td><input type="number" class="acc-price" value="${acc.price_per_room || 0}" placeholder="单价"></td>
+                        <td><input type="number" class="acc-nights" value="${acc.nights || 1}" placeholder="晚"></td>
+                        <td><input type="number" class="acc-rooms" value="${acc.rooms || 1}" placeholder="间"></td>
+                        <td class="col-subtotal">¥${subtotal}</td>
+                        <td class="col-action"><button type="button" class="btn-delete-row" onclick="deleteBudgetRow('acc', ${idx})">×</button></td>
+                    </tr>
+                `;
+            });
+
+            // 门票明细
+            const tkEntries = Array.isArray(budget.tickets) ? budget.tickets : [];
+            let tkHtml = '';
+            tkEntries.forEach((t, idx) => {
+                tkHtml += `
+                    <tr data-idx="${idx}">
+                        <td><input type="text" class="tk-item" value="${t.item || ''}" placeholder="景点/项目"></td>
+                        <td><input type="number" class="tk-total" value="${t.total || 0}" placeholder="费用"></td>
+                        <td><input type="text" class="tk-remark" value="${t.remark || ''}" placeholder="备注"></td>
+                        <td class="col-action"><button type="button" class="btn-delete-row" onclick="deleteBudgetRow('tk', ${idx})">×</button></td>
+                    </tr>
+                `;
+            });
+
+            // 杂费明细
+            const miscEntries = Array.isArray(budget.misc) ? budget.misc : [];
+            let miscHtml = '';
+            miscEntries.forEach((m, idx) => {
+                miscHtml += `
+                    <tr data-idx="${idx}">
+                        <td><input type="text" class="misc-item" value="${m.item || ''}" placeholder="项目"></td>
+                        <td><input type="number" class="misc-total" value="${m.total || 0}" placeholder="费用"></td>
+                        <td><input type="text" class="misc-remark" value="${m.remark || ''}" placeholder="备注"></td>
+                        <td class="col-action"><button type="button" class="btn-delete-row" onclick="deleteBudgetRow('misc', ${idx})">×</button></td>
+                    </tr>
+                `;
+            });
+
+            // 餐饮预算
+            const dailyFoodBudget = budget.food?.daily_budget_per_person || 200;
+
+            const html = `
+                <div class="budget-editor-section">
+                    <h4>住宿明细</h4>
+                    <table class="budget-edit-table">
+                        <thead>
+                            <tr>
+                                <th class="col-location">地点</th>
+                                <th class="col-type">类型</th>
+                                <th class="col-price">单价/间</th>
+                                <th class="col-nights">晚数</th>
+                                <th class="col-rooms">房间数</th>
+                                <th class="col-subtotal">小计</th>
+                                <th class="col-action"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="accEditBody">${accHtml}</tbody>
+                    </table>
+                    <button type="button" class="btn-add-row" onclick="addBudgetRow('acc')">+ 添加住宿</button>
+                </div>
+
+                <div class="budget-editor-section">
+                    <h4>门票明细</h4>
+                    <table class="budget-edit-table">
+                        <thead>
+                            <tr>
+                                <th class="col-name">景点/项目</th>
+                                <th class="col-price">费用</th>
+                                <th class="col-remark">备注</th>
+                                <th class="col-action"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tkEditBody">${tkHtml}</tbody>
+                    </table>
+                    <button type="button" class="btn-add-row" onclick="addBudgetRow('tk')">+ 添加门票</button>
+                </div>
+
+                <div class="budget-editor-section">
+                    <h4>杂费明细</h4>
+                    <table class="budget-edit-table">
+                        <thead>
+                            <tr>
+                                <th class="col-name">项目</th>
+                                <th class="col-price">费用</th>
+                                <th class="col-remark">备注</th>
+                                <th class="col-action"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="miscEditBody">${miscHtml}</tbody>
+                    </table>
+                    <button type="button" class="btn-add-row" onclick="addBudgetRow('misc')">+ 添加杂费</button>
+                </div>
+
+                <div class="budget-editor-section">
+                    <h4>餐饮预算</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>人均每日餐饮 (元/天)</label>
+                            <input type="number" id="edit-daily-food-budget" value="${dailyFoodBudget}">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('budgetEditorBody').innerHTML = html;
+            document.getElementById('budgetEditorModal').classList.add('active');
+
+            // 绑定输入变化事件，实时更新小计
+            document.querySelectorAll('.acc-price, .acc-nights, .acc-rooms').forEach(input => {
+                input.addEventListener('input', updateAccSubtotals);
+            });
+        }
+
+        function updateAccSubtotals() {
+            document.querySelectorAll('#accEditBody tr').forEach(row => {
+                const price = parseFloat(row.querySelector('.acc-price').value) || 0;
+                const nights = parseInt(row.querySelector('.acc-nights').value) || 1;
+                const rooms = parseInt(row.querySelector('.acc-rooms').value) || 1;
+                const subtotal = price * nights * rooms;
+                row.querySelector('.col-subtotal').textContent = '¥' + subtotal;
+            });
+        }
+
+        function addBudgetRow(type) {
+            if (type === 'acc') {
+                const tbody = document.getElementById('accEditBody');
+                const idx = tbody.children.length;
+                const tr = document.createElement('tr');
+                tr.dataset.idx = idx;
+                tr.innerHTML = `
+                    <td><input type="text" class="acc-location" placeholder="地点"></td>
+                    <td><input type="text" class="acc-type" placeholder="类型"></td>
+                    <td><input type="number" class="acc-price" value="0" placeholder="单价"></td>
+                    <td><input type="number" class="acc-nights" value="1" placeholder="晚"></td>
+                    <td><input type="number" class="acc-rooms" value="1" placeholder="间"></td>
+                    <td class="col-subtotal">¥0</td>
+                    <td class="col-action"><button type="button" class="btn-delete-row" onclick="deleteBudgetRow('acc', ${idx})">×</button></td>
+                `;
+                tbody.appendChild(tr);
+                tr.querySelector('.acc-price, .acc-nights, .acc-rooms').addEventListener('input', updateAccSubtotals);
+            } else if (type === 'tk') {
+                const tbody = document.getElementById('tkEditBody');
+                const idx = tbody.children.length;
+                const tr = document.createElement('tr');
+                tr.dataset.idx = idx;
+                tr.innerHTML = `
+                    <td><input type="text" class="tk-item" placeholder="景点/项目"></td>
+                    <td><input type="number" class="tk-total" value="0" placeholder="费用"></td>
+                    <td><input type="text" class="tk-remark" placeholder="备注"></td>
+                    <td class="col-action"><button type="button" class="btn-delete-row" onclick="deleteBudgetRow('tk', ${idx})">×</button></td>
+                `;
+                tbody.appendChild(tr);
+            } else if (type === 'misc') {
+                const tbody = document.getElementById('miscEditBody');
+                const idx = tbody.children.length;
+                const tr = document.createElement('tr');
+                tr.dataset.idx = idx;
+                tr.innerHTML = `
+                    <td><input type="text" class="misc-item" placeholder="项目"></td>
+                    <td><input type="number" class="misc-total" value="0" placeholder="费用"></td>
+                    <td><input type="text" class="misc-remark" placeholder="备注"></td>
+                    <td class="col-action"><button type="button" class="btn-delete-row" onclick="deleteBudgetRow('misc', ${idx})">×</button></td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        function deleteBudgetRow(type, idx) {
+            if (type === 'acc') {
+                const tbody = document.getElementById('accEditBody');
+                tbody.children[idx]?.remove();
+                // 重新编号
+                Array.from(tbody.children).forEach((tr, i) => {
+                    tr.dataset.idx = i;
+                    tr.querySelector('.btn-delete-row').setAttribute('onclick', `deleteBudgetRow('acc', ${i})`);
+                });
+            } else if (type === 'tk') {
+                const tbody = document.getElementById('tkEditBody');
+                tbody.children[idx]?.remove();
+                Array.from(tbody.children).forEach((tr, i) => {
+                    tr.dataset.idx = i;
+                    tr.querySelector('.btn-delete-row').setAttribute('onclick', `deleteBudgetRow('tk', ${i})`);
+                });
+            } else if (type === 'misc') {
+                const tbody = document.getElementById('miscEditBody');
+                tbody.children[idx]?.remove();
+                Array.from(tbody.children).forEach((tr, i) => {
+                    tr.dataset.idx = i;
+                    tr.querySelector('.btn-delete-row').setAttribute('onclick', `deleteBudgetRow('misc', ${i})`);
+                });
+            }
+        }
+
+        function saveBudgetEditor() {
+            if (!currentRoadbook || !currentRoadbook.budget) return;
+
+            // 收集住宿数据
+            const accEntries = [];
+            document.querySelectorAll('#accEditBody tr').forEach(row => {
+                const location = row.querySelector('.acc-location').value.trim();
+                const type = row.querySelector('.acc-type').value.trim();
+                const price_per_room = parseInt(row.querySelector('.acc-price').value) || 0;
+                const nights = parseInt(row.querySelector('.acc-nights').value) || 1;
+                const rooms = parseInt(row.querySelector('.acc-rooms').value) || 1;
+                if (location || price_per_room > 0) {
+                    accEntries.push({ location, type, price_per_room, nights, rooms });
+                }
+            });
+
+            // 收集门票数据
+            const ticketsEntries = [];
+            document.querySelectorAll('#tkEditBody tr').forEach(row => {
+                const item = row.querySelector('.tk-item').value.trim();
+                const total = parseInt(row.querySelector('.tk-total').value) || 0;
+                const remark = row.querySelector('.tk-remark').value.trim();
+                if (item || total > 0) {
+                    ticketsEntries.push({ item, total, remark });
+                }
+            });
+
+            // 收集杂费数据
+            const miscEntries = [];
+            document.querySelectorAll('#miscEditBody tr').forEach(row => {
+                const item = row.querySelector('.misc-item').value.trim();
+                const total = parseInt(row.querySelector('.misc-total').value) || 0;
+                const remark = row.querySelector('.misc-remark').value.trim();
+                if (item || total > 0) {
+                    miscEntries.push({ item, total, remark });
+                }
+            });
+
+            // 收集餐饮预算
+            const dailyFoodBudget = parseInt(document.getElementById('edit-daily-food-budget').value) || 200;
+
+            // 确保 budget 对象存在
+            if (!currentRoadbook.budget) {
+                currentRoadbook.budget = {};
+            }
+
+            // 更新 budget 数据
+            currentRoadbook.budget.accommodation = accEntries;
+            currentRoadbook.budget.tickets = ticketsEntries;
+            currentRoadbook.budget.misc = miscEntries;
+            currentRoadbook.budget.food = {
+                ...(currentRoadbook.budget.food || {}),
+                daily_budget_per_person: dailyFoodBudget
+            };
+
+            // 重新计算费用
+            recalculateBudget();
+
+            // 重新显示
+            displayBudget(currentRoadbook.budget);
+            displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
+
+            closeBudgetEditor();
+        }
+
+        function closeBudgetEditor() {
+            document.getElementById('budgetEditorModal').classList.remove('active');
+        }
+
+        // ========== Checklist Editor ==========
+
+        function openChecklistEditor() {
+            if (!currentRoadbook) {
+                alert('请先加载路书');
+                return;
+            }
+
+            const checklist = currentRoadbook.checklist || [];
+            let html = '';
+
+            checklist.forEach((cat, catIdx) => {
+                const items = cat.items || [];
+                let itemsHtml = '';
+                items.forEach((item, itemIdx) => {
+                    itemsHtml += `
+                        <div class="checklist-editor-item" data-cat="${catIdx}" data-item="${itemIdx}">
+                            <input type="text" class="cl-item-input" value="${item}" placeholder="物品名称">
+                            <button type="button" class="btn-delete-row" onclick="deleteChecklistItem(${catIdx}, ${itemIdx})">×</button>
+                        </div>
+                    `;
+                });
+                // 添加新物品的输入框
+                itemsHtml += `
+                    <div class="checklist-editor-item-add" data-cat="${catIdx}">
+                        <input type="text" class="cl-item-input" placeholder="添加物品..." onkeypress="if(event.key==='Enter'){event.preventDefault(); addChecklistItem(${catIdx});}">
+                        <button type="button" class="btn-add-item" onclick="addChecklistItem(${catIdx})">+</button>
+                    </div>
+                `;
+
+                html += `
+                    <div class="checklist-editor-section" data-cat="${catIdx}">
+                        <div class="checklist-editor-section-header">
+                            <input type="text" class="cl-category-input" value="${cat.category || ''}" placeholder="分类名称">
+                            <button type="button" class="btn-delete-row" onclick="deleteChecklistCategory(${catIdx})">删除分类</button>
+                        </div>
+                        <div class="checklist-editor-items">
+                            ${itemsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 添加新分类按钮
+            html += `
+                <div class="checklist-editor-add-category">
+                    <button type="button" class="btn-add-row" onclick="addChecklistCategory()">+ 添加新分类</button>
+                </div>
+            `;
+
+            document.getElementById('checklistEditorBody').innerHTML = html;
+            document.getElementById('checklistEditorModal').classList.add('active');
+        }
+
+        function addChecklistCategory() {
+            const body = document.getElementById('checklistEditorBody');
+            const catCount = document.querySelectorAll('.checklist-editor-section').length;
+            const newSection = document.createElement('div');
+            newSection.className = 'checklist-editor-section';
+            newSection.dataset.cat = catCount;
+            newSection.innerHTML = `
+                <div class="checklist-editor-section-header">
+                    <input type="text" class="cl-category-input" value="" placeholder="新分类名称">
+                    <button type="button" class="btn-delete-row" onclick="deleteChecklistCategory(${catCount})">删除分类</button>
+                </div>
+                <div class="checklist-editor-items">
+                    <div class="checklist-editor-item-add" data-cat="${catCount}">
+                        <input type="text" class="cl-item-input" placeholder="添加物品..." onkeypress="if(event.key==='Enter'){event.preventDefault(); addChecklistItem(${catCount});}">
+                        <button type="button" class="btn-add-item" onclick="addChecklistItem(${catCount})">+</button>
+                    </div>
+                </div>
+            `;
+            // 插入到添加按钮之前
+            const addBtn = body.querySelector('.checklist-editor-add-category');
+            body.insertBefore(newSection, addBtn);
+        }
+
+        function deleteChecklistCategory(catIdx) {
+            if (!confirm('确定删除该分类吗？')) return;
+            const section = document.querySelector(`.checklist-editor-section[data-cat="${catIdx}"]`);
+            if (section) {
+                section.remove();
+                // 重新编号
+                document.querySelectorAll('.checklist-editor-section').forEach((sec, i) => {
+                    sec.dataset.cat = i;
+                });
+            }
+        }
+
+        function addChecklistItem(catIdx) {
+            const addDiv = document.querySelector(`.checklist-editor-item-add[data-cat="${catIdx}"]`);
+            if (!addDiv) return;
+
+            const input = addDiv.querySelector('.cl-item-input');
+            const itemText = input.value.trim();
+            if (!itemText) {
+                input.focus();
+                return;
+            }
+
+            // 创建新物品项
+            const itemCount = document.querySelectorAll(`.checklist-editor-section[data-cat="${catIdx}"] .checklist-editor-item`).length;
+            const newItem = document.createElement('div');
+            newItem.className = 'checklist-editor-item';
+            newItem.dataset.cat = catIdx;
+            newItem.dataset.item = itemCount;
+            newItem.innerHTML = `
+                <input type="text" class="cl-item-input" value="${itemText}" placeholder="物品名称">
+                <button type="button" class="btn-delete-row" onclick="deleteChecklistItem(${catIdx}, ${itemCount})">×</button>
+            `;
+
+            // 插入到添加按钮之前
+            addDiv.parentNode.insertBefore(newItem, addDiv);
+
+            // 清空输入框
+            input.value = '';
+            input.focus();
+        }
+
+        function deleteChecklistItem(catIdx, itemIdx) {
+            const item = document.querySelector(`.checklist-editor-item[data-cat="${catIdx}"][data-item="${itemIdx}"]`);
+            if (item) {
+                item.remove();
+                // 重新编号
+                document.querySelectorAll(`.checklist-editor-section[data-cat="${catIdx}"] .checklist-editor-item`).forEach((it, i) => {
+                    it.dataset.item = i;
+                    const btn = it.querySelector('.btn-delete-row');
+                    btn.setAttribute('onclick', `deleteChecklistItem(${catIdx}, ${i})`);
+                });
+            }
+        }
+
+        function saveChecklistEditor() {
+            if (!currentRoadbook) return;
+
+            const checklist = [];
+            document.querySelectorAll('.checklist-editor-section').forEach((section) => {
+                const category = section.querySelector('.cl-category-input').value.trim() || '未分类';
+                const items = [];
+                section.querySelectorAll('.checklist-editor-item .cl-item-input').forEach(input => {
+                    const itemText = input.value.trim();
+                    if (itemText) {
+                        items.push(itemText);
+                    }
+                });
+                if (category || items.length > 0) {
+                    checklist.push({ category, items });
+                }
+            });
+
+            currentRoadbook.checklist = checklist;
+            displayChecklist(currentRoadbook.checklist);
+            closeChecklistEditor();
+        }
+
+        function closeChecklistEditor() {
+            document.getElementById('checklistEditorModal').classList.remove('active');
+        }
+
+        // ========== Daily Itinerary Editor ==========
+
+        function openDailyItineraryEditor() {
+            if (!currentRoadbook || !currentRoadbook.daily_itinerary) {
+                alert('请先加载路书');
+                return;
+            }
+
+            const itinerary = currentRoadbook.daily_itinerary;
+            let html = '';
+
+            itinerary.forEach((day, idx) => {
+                const highlights = (day.highlights || []).join('，');
+                const food = (day.food || []).join('，');
+                const tips = (day.tips || []).join('；');
+
+                html += `
+                    <div class="daily-editor-day" data-idx="${idx}">
+                        <div class="daily-editor-day-header">
+                            <span class="daily-editor-day-title">第${day.day_number}天</span>
+                            <div class="daily-editor-day-row">
+                                <input type="date" class="day-date compact-input" value="${day.date || ''}" title="日期">
+                                <span class="arrow">→</span>
+                                <input type="text" class="day-origin compact-input" value="${day.origin || ''}" placeholder="出发地">
+                                <input type="text" class="day-destination compact-input" value="${day.destination || ''}" placeholder="目的地">
+                                <input type="number" class="day-distance_km compact-input compact-number" value="${day.distance_km || 0}" step="0.1" title="里程(km)">
+                                <span class="unit">km</span>
+                                <input type="number" class="day-duration_hours compact-input compact-number" value="${day.duration_hours || 0}" step="0.5" title="车程(h)">
+                                <span class="unit">h</span>
+                            </div>
+                        </div>
+                        <div class="daily-editor-day-content">
+                            <div class="daily-editor-row">
+                                <label>途经道路</label>
+                                <input type="text" class="day-route" value="${day.route || ''}" placeholder="如：沈海高速、京哈高速">
+                            </div>
+                            <div class="daily-editor-row">
+                                <label>途经景点</label>
+                                <input type="text" class="day-highlights" value="${highlights}" placeholder="逗号分隔，如：星海广场,金石滩">
+                            </div>
+                            <div class="daily-editor-row">
+                                <label>住宿</label>
+                                <input type="text" class="day-accommodation" value="${day.accommodation || ''}" placeholder="住宿地点">
+                            </div>
+                            <div class="daily-editor-row">
+                                <label>美食</label>
+                                <input type="text" class="day-food" value="${food}" placeholder="逗号分隔">
+                            </div>
+                            <div class="daily-editor-row">
+                                <label>加油站</label>
+                                <input type="text" class="day-gas_station" value="${day.gas_station || ''}" placeholder="服务区名称">
+                            </div>
+                            <div class="daily-editor-row">
+                                <label>出行提示</label>
+                                <input type="text" class="day-tips" value="${tips}" placeholder="分号分隔，如：注意保暖；提前预约门票">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('dailyEditorBody').innerHTML = html;
+            document.getElementById('dailyEditorModal').classList.add('active');
+        }
+
+        function saveDailyItineraryEditor() {
+            if (!currentRoadbook || !currentRoadbook.daily_itinerary) return;
+
+            const itinerary = currentRoadbook.daily_itinerary;
+
+            document.querySelectorAll('.daily-editor-day').forEach((dayDiv, idx) => {
+                const day = itinerary[idx];
+                if (!day) return;
+
+                day.date = dayDiv.querySelector('.day-date').value;
+                day.origin = dayDiv.querySelector('.day-origin').value;
+                day.destination = dayDiv.querySelector('.day-destination').value;
+                day.distance_km = parseFloat(dayDiv.querySelector('.day-distance_km').value) || 0;
+                day.duration_hours = parseFloat(dayDiv.querySelector('.day-duration_hours').value) || 0;
+                day.route = dayDiv.querySelector('.day-route').value;
+                day.accommodation = dayDiv.querySelector('.day-accommodation').value;
+
+                day.highlights = dayDiv.querySelector('.day-highlights').value
+                    .split(/[,，]/)
+                    .map(s => s.trim())
+                    .filter(s => s);
+
+                day.food = dayDiv.querySelector('.day-food').value
+                    .split(/[,，]/)
+                    .map(s => s.trim())
+                    .filter(s => s);
+
+                day.tips = dayDiv.querySelector('.day-tips').value
+                    .split(/[;；]/)
+                    .map(s => s.trim())
+                    .filter(s => s);
+
+                day.gas_station = dayDiv.querySelector('.day-gas_station').value;
+            });
+
+            // 重新计算总里程
+            const totalDist = (currentRoadbook.daily_itinerary || []).reduce((sum, day) => sum + (parseFloat(day.distance_km) || 0), 0);
+            currentRoadbook.basic_info.total_distance_km = Math.round(totalDist * 10) / 10;
+
+            // 重新计算预算
+            recalculateBudget();
+
+            // 重新显示
+            displayDailyItinerary(currentRoadbook.daily_itinerary);
+            displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
+            displayBudget(currentRoadbook.budget);
+
+            closeDailyItineraryEditor();
+        }
+
+        function closeDailyItineraryEditor() {
+            document.getElementById('dailyEditorModal').classList.remove('active');
+        }
+
         // Initialize
         initTheme();
+    </script>
+
+    <!-- AI Generator Modal -->
+    <div class="modal-overlay" id="aiGeneratorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🤖 AI 生成路书</h2>
+                <button class="modal-close" onclick="closeAIGenerator()">×</button>
+            </div>
+            <form id="aiForm" onsubmit="submitAIForm(event)">
+                <div class="form-group">
+                    <label>行程标题 *</label>
+                    <input type="text" name="destination" required placeholder="如：云南大理7日自驾之旅">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>天数</label>
+                        <input type="number" name="days" id="autoDays" min="1" value="7" onchange="calcReturnDate()">
+                    </div>
+                    <div class="form-group">
+                        <label>人数 *</label>
+                        <input type="number" name="people_count" required min="1" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label>房数</label>
+                        <input type="number" name="room_count" min="1" value="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>出发日期 *</label>
+                    <input type="date" name="travel_date_start" required onchange="calcReturnDate()">
+                </div>
+                <div class="form-group">
+                    <label>返回日期 *</label>
+                    <input type="date" name="travel_date_end" required disabled>
+                </div>
+                <div class="form-group">
+                    <label>车型 *</label>
+                    <select name="car_type" required>
+                        <option value="轿车">轿车</option>
+                        <option value="SUV" selected>SUV</option>
+                        <option value="越野车">越野车</option>
+                        <option value="MVP">MVP</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>预算偏好</label>
+                    <select name="budget_preference">
+                        <option value="经济">经济型</option>
+                        <option value="舒适" selected>舒适型</option>
+                        <option value="豪华">豪华型</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>特殊需求</label>
+                    <textarea name="special_requirements" rows="3" placeholder="如：高海拔地区、需带无人机拍摄等"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAIGenerator()">取消</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span class="btn-text">生成路书</span>
+                        <span class="btn-loading">生成中...</span>
+                    </button>
+                </div>
+                <div class="error-message" id="aiError"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Editor Modal -->
+    <div class="modal-overlay" id="editorModal">
+        <div class="modal-content editor-modal-content">
+            <div class="modal-header">
+                <h2 id="editorTitle">编辑</h2>
+                <button class="modal-close" onclick="closeEditor()">×</button>
+            </div>
+            <div class="modal-body" id="editorBody">
+                <!-- 动态内容 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeEditor()">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveEditor()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Budget Editor Modal -->
+    <div class="modal-overlay" id="budgetEditorModal">
+        <div class="modal-content" style="max-width: 750px; max-height: 85vh;">
+            <div class="modal-header">
+                <h2>编辑预算</h2>
+                <button class="modal-close" onclick="closeBudgetEditor()">×</button>
+            </div>
+            <div class="modal-body" id="budgetEditorBody" style="overflow-y: auto;">
+                <!-- 动态内容 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeBudgetEditor()">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveBudgetEditor()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checklist Editor Modal -->
+    <div class="modal-overlay" id="checklistEditorModal">
+        <div class="modal-content" style="max-width: 700px; max-height: 85vh;">
+            <div class="modal-header">
+                <h2>编辑出行清单</h2>
+                <button class="modal-close" onclick="closeChecklistEditor()">×</button>
+            </div>
+            <div class="modal-body" id="checklistEditorBody" style="overflow-y: auto;">
+                <!-- 动态内容 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeChecklistEditor()">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveChecklistEditor()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Itinerary Editor Modal -->
+    <div class="modal-overlay" id="dailyEditorModal">
+        <div class="modal-content" style="max-width: 900px; max-height: 85vh;">
+            <div class="modal-header">
+                <h2>编辑每日行程</h2>
+                <button class="modal-close" onclick="closeDailyItineraryEditor()">×</button>
+            </div>
+            <div class="modal-body" id="dailyEditorBody" style="overflow-y: auto;">
+                <!-- 动态内容 -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeDailyItineraryEditor()">取消</button>
+                <button type="button" class="btn btn-primary" onclick="saveDailyItineraryEditor()">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('aiGeneratorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAIGenerator();
+            }
+        });
+
+        document.getElementById('editorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditor();
+            }
+        });
+
+        document.getElementById('budgetEditorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBudgetEditor();
+            }
+        });
+
+        document.getElementById('checklistEditorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeChecklistEditor();
+            }
+        });
+
+        document.getElementById('dailyEditorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDailyItineraryEditor();
+            }
+        });
     </script>
 </body>
 </html>

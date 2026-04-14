@@ -130,3 +130,8 @@ AMAP_DRIVING_STRATEGY_PARAMS = {
 # 路线去重阈值
 ROUTE_DEDUP_DISTANCE_THRESHOLD = 0.05  # 距离差异<5%认为重复
 ROUTE_DEDUP_TIME_THRESHOLD = 0.10      # 时间差异<10%认为重复
+
+# DeepSeek AI API 配置
+DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', 'sk-03254d88e9154cc084896ee2c9bb7813')
+DEEPSEEK_API_URL = os.getenv('DEEPSEEK_API_URL', 'https://api.deepseek.com/v1')
+DEEPSEEK_MODEL = os.getenv('DEEPSEEK_MODEL', 'deepseek-chat')
