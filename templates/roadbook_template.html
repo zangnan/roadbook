@@ -1728,6 +1728,141 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
+        /* Collection Dropdown */
+        .collection-dropdown {
+            position: relative;
+        }
+
+        .dropdown-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 280px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .dropdown-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .collection-header {
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .collection-empty {
+            padding: 24px 16px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .collection-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .collection-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.15s;
+        }
+
+        .collection-item:last-child {
+            border-bottom: none;
+        }
+
+        .collection-item:hover {
+            background: var(--bg-glass-hover);
+        }
+
+        .collection-item.active {
+            background: rgba(102, 126, 234, 0.15);
+        }
+
+        .collection-item-main {
+            flex: 1;
+            cursor: pointer;
+            min-width: 0;
+        }
+
+        .collection-item-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .collection-item-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .collection-item-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .collection-item:hover .collection-item-actions {
+            opacity: 1;
+        }
+
+        .collection-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .icon-btn {
+            padding: 4px 6px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 12px;
+            transition: background 0.15s;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-glass-hover);
+        }
+
+        .icon-btn.delete:hover {
+            background: rgba(255, 87, 87, 0.2);
+        }
+
+        /* Save confirm animation */
+        .header-btn.save-confirm {
+            animation: pulse 0.3s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -2236,6 +2371,78 @@
             animation: spin 0.8s linear infinite;
         }
 
+        /* AI Preview */
+        .ai-form-container {
+            transition: opacity 0.3s ease;
+        }
+
+        .ai-form-container.hidden {
+            display: none;
+        }
+
+        .ai-preview {
+            display: none;
+            flex-direction: column;
+            min-height: 300px;
+            max-height: 55vh;
+        }
+
+        .ai-preview.active {
+            display: flex;
+        }
+
+        .ai-preview-status {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 14px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .ai-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .ai-preview-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.6;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .ai-preview-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .ai-preview-content::-webkit-scrollbar-track {
+            background: #2d2d2d;
+        }
+
+        .ai-preview-content::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 4px;
+        }
+
+        .ai-preview-content::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -2287,6 +2494,12 @@
             <button class="header-btn" onclick="goToRoutePlanner()">
                 路径规划
             </button>
+            <div class="collection-dropdown">
+                <button class="header-btn" onclick="toggleCollectionPanel()">
+                    🌟 收藏
+                </button>
+                <div class="dropdown-panel" id="collectionPanel"></div>
+            </div>
             <button class="header-btn primary" onclick="openAIGenerator()">
                 🤖 AI 生成
             </button>
@@ -2365,6 +2578,9 @@
         let currentRoadbook = null;
         let routeLocations = [];
 
+        // Weather config (from server)
+        const SHOW_WEATHER = {{ 'true' if show_weather else 'false' }};
+
         // Theme
         const THEME_KEY = 'roadbook-template-theme';
         let currentTheme = localStorage.getItem(THEME_KEY) || 'dark';
@@ -2380,6 +2596,278 @@
             localStorage.setItem(THEME_KEY, currentTheme);
         }
 
+        // ============================================
+        // Collection Management (localStorage)
+        // ============================================
+        const COLLECTION_KEY = 'roadbook_collections';
+        const CURRENT_ID_KEY = 'roadbook_current_id';
+        let currentCollectionId = localStorage.getItem(CURRENT_ID_KEY) || null;
+        let hasUnsavedChanges = false;  // Track if current roadbook has unsaved modifications
+
+        function getCollections() {
+            try {
+                const data = localStorage.getItem(COLLECTION_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error('Failed to parse collections:', e);
+                return [];
+            }
+        }
+
+        function saveCollections(collections) {
+            localStorage.setItem(COLLECTION_KEY, JSON.stringify(collections));
+        }
+
+        function getCurrentCollectionId() {
+            return currentCollectionId;
+        }
+
+        function updateCurrentCollectionId(id) {
+            currentCollectionId = id;
+            if (id) {
+                localStorage.setItem(CURRENT_ID_KEY, id);
+            } else {
+                localStorage.removeItem(CURRENT_ID_KEY);
+            }
+        }
+
+        function generateId() {
+            return 'rb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function getCollectionTitle(data) {
+            return data?.basic_info?.title || data?.basic_info?.destination || '未命名路书';
+        }
+
+        function getCollectionSummary(data) {
+            const dest = data?.basic_info?.destination || '';
+            const start = data?.basic_info?.travel_date_start || '';
+            return { dest, start };
+        }
+
+        function saveRoadbookToCollection() {
+            if (!currentRoadbook) {
+                alert('请先生成或加载路书');
+                return;
+            }
+
+            let title = getCollectionTitle(currentRoadbook);
+
+            // If no title, prompt user to enter one
+            if (!title || title === '未命名路书') {
+                title = prompt('请输入路书名称：', '');
+                if (!title || !title.trim()) {
+                    return;  // User cancelled
+                }
+                title = title.trim();
+                // Update the title in memory
+                if (currentRoadbook.basic_info) {
+                    currentRoadbook.basic_info.title = title;
+                    displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
+                }
+            }
+
+            const collections = getCollections();
+            const existingIndex = currentCollectionId
+                ? collections.findIndex(c => c.id === currentCollectionId)
+                : -1;
+
+            const { dest, start } = getCollectionSummary(currentRoadbook);
+
+            const entry = {
+                id: currentCollectionId || generateId(),
+                title: title,
+                destination: dest,
+                travel_date_start: start,
+                savedAt: new Date().toISOString(),
+                data: JSON.parse(JSON.stringify(currentRoadbook))  // Deep clone
+            };
+
+            if (existingIndex >= 0) {
+                collections[existingIndex] = entry;
+            } else {
+                collections.unshift(entry);  // Add to beginning
+            }
+
+            saveCollections(collections);
+            updateCurrentCollectionId(entry.id);
+            hasUnsavedChanges = false;
+
+            // Refresh the panel if open
+            refreshCollectionPanel();
+
+            // Show confirmation
+            const btn = document.querySelector('[onclick="toggleCollectionPanel()"]');
+            if (btn) {
+                btn.classList.add('save-confirm');
+                setTimeout(() => btn.classList.remove('save-confirm'), 1000);
+            }
+        }
+
+        function loadRoadbookFromCollection(id) {
+            const collections = getCollections();
+            const collection = collections.find(c => c.id === id);
+
+            if (!collection) {
+                alert('路书不存在或已被删除');
+                return;
+            }
+
+            // Check for unsaved changes first
+            if (hasUnsavedChanges && currentCollectionId !== id) {
+                if (!confirm('当前路书有未保存的修改，切换后将丢失。确定要切换吗？')) {
+                    return;
+                }
+            }
+
+            currentRoadbook = JSON.parse(JSON.stringify(collection.data));
+            updateCurrentCollectionId(id);
+            hasUnsavedChanges = false;
+
+            // Reset file input before parsing
+            fileInput.value = '';
+
+            parseAndDisplayRoadbook(currentRoadbook);
+            closeCollectionPanel();
+        }
+
+        function deleteRoadbookFromCollection(id) {
+            const collections = getCollections();
+            const collection = collections.find(c => c.id === id);
+
+            if (!collection) {
+                return;
+            }
+
+            if (!confirm(`确定要删除"${collection.title}"吗？此操作不可恢复。`)) {
+                return;
+            }
+
+            const filtered = collections.filter(c => c.id !== id);
+            saveCollections(filtered);
+
+            if (currentCollectionId === id) {
+                updateCurrentCollectionId(null);
+                currentRoadbook = null;
+                // Reset to upload area
+                resetRoadbook();
+            } else {
+                refreshCollectionPanel();
+            }
+        }
+
+        function renameRoadbookInCollection(id) {
+            const collections = getCollections();
+            const collection = collections.find(c => c.id === id);
+
+            if (!collection) {
+                return;
+            }
+
+            const newTitle = prompt('请输入新的路书名称：', collection.title);
+            if (!newTitle || !newTitle.trim() || newTitle === collection.title) {
+                return;
+            }
+
+            collection.title = newTitle.trim();
+            if (currentCollectionId === id && currentRoadbook?.basic_info) {
+                currentRoadbook.basic_info.title = newTitle.trim();
+                displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
+            }
+
+            saveCollections(collections);
+            refreshCollectionPanel();
+        }
+
+        function toggleCollectionPanel() {
+            const panel = document.getElementById('collectionPanel');
+            if (!panel) return;
+
+            const isActive = panel.classList.contains('active');
+
+            // Close all other dropdowns first
+            document.querySelectorAll('.dropdown-panel.active').forEach(p => {
+                if (p !== panel) p.classList.remove('active');
+            });
+
+            if (isActive) {
+                panel.classList.remove('active');
+            } else {
+                refreshCollectionPanel();
+                panel.classList.add('active');
+            }
+        }
+
+        function closeCollectionPanel() {
+            const panel = document.getElementById('collectionPanel');
+            if (panel) {
+                panel.classList.remove('active');
+            }
+        }
+
+        function refreshCollectionPanel() {
+            const panel = document.getElementById('collectionPanel');
+            if (!panel) return;
+
+            const collections = getCollections();
+
+            if (collections.length === 0) {
+                panel.innerHTML = `
+                    <div class="collection-header">🌟 我的收藏</div>
+                    <div class="collection-empty">暂无收藏的路书</div>
+                    <div class="collection-footer">
+                        <button class="btn btn-primary btn-small" onclick="saveRoadbookToCollection()" style="width:100%">
+                            + 保存当前路书
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const currentId = getCurrentCollectionId();
+
+            let html = `<div class="collection-header">🌟 我的收藏</div>`;
+            html += `<div class="collection-list">`;
+
+            collections.forEach(c => {
+                const isCurrent = c.id === currentId;
+                const date = c.travel_date_start || '';
+                const shortDate = date ? date.substring(5) : '';  // MM-DD
+
+                html += `
+                    <div class="collection-item ${isCurrent ? 'active' : ''}" data-id="${c.id}">
+                        <div class="collection-item-main" onclick="loadRoadbookFromCollection('${c.id}')">
+                            <div class="collection-item-title">${c.title}</div>
+                            <div class="collection-item-meta">${shortDate}</div>
+                        </div>
+                        <div class="collection-item-actions">
+                            <button class="icon-btn" onclick="renameRoadbookInCollection('${c.id}')" title="重命名">✏️</button>
+                            <button class="icon-btn delete" onclick="deleteRoadbookFromCollection('${c.id}')" title="删除">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+            html += `
+                <div class="collection-footer">
+                    <button class="btn btn-primary btn-small" onclick="saveRoadbookToCollection()" style="width:100%">
+                        + 保存当前路书
+                    </button>
+                </div>
+            `;
+
+            panel.innerHTML = html;
+        }
+
+        // Close panel when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.collection-dropdown')) {
+                closeCollectionPanel();
+            }
+        });
+
+        // ============================================
         // Upload handling
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
@@ -2418,6 +2906,8 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     currentRoadbook = data;
+                    updateCurrentCollectionId(null);  // Reset collection ID for newly uploaded file
+                    hasUnsavedChanges = false;
                     parseAndDisplayRoadbook(data);
                 } catch (err) {
                     alert('JSON文件解析失败: ' + err.message);
@@ -2491,7 +2981,7 @@
             displayDailyItinerary(data.daily_itinerary);
 
             // Fetch weather for each day's destination
-            if (data.daily_itinerary) {
+            if (SHOW_WEATHER && data.daily_itinerary) {
                 data.daily_itinerary.forEach(day => {
                     if (day.destination) {
                         fetchDayWeather(day.day_number, day.destination);
@@ -2911,9 +3401,9 @@
                         </div>
                         <div class="day-content">
                             ${sectionsHtml}
-                            <div class="day-weather-slot" id="weather-${day.day_number}">
+                            ${SHOW_WEATHER ? `<div class="day-weather-slot" id="weather-${day.day_number}">
                                 <div class="day-weather-loading">正在获取天气预报...</div>
-                            </div>
+                            </div>` : ''}
                         </div>
                     </div>
                 `;
@@ -2951,9 +3441,11 @@
             [list[index], list[newIndex]] = [list[newIndex], list[index]];
             list.forEach((day, i) => { day.day_number = i + 1; });
             displayDailyItinerary(list);
-            list.forEach(day => {
-                if (day.destination) fetchDayWeather(day.day_number, day.destination);
-            });
+            if (SHOW_WEATHER) {
+                list.forEach(day => {
+                    if (day.destination) fetchDayWeather(day.day_number, day.destination);
+                });
+            }
         }
 
         function toggleDayCard(card) {
@@ -3575,6 +4067,8 @@
         function resetRoadbook() {
             currentRoadbook = null;
             routeLocations = [];
+            updateCurrentCollectionId(null);  // Clear collection state
+            hasUnsavedChanges = false;
 
             // Reset UI
             uploadArea.classList.remove('hidden');
@@ -3639,12 +4133,24 @@
         function closeAIGenerator() {
             document.getElementById('aiGeneratorModal').classList.remove('active');
             document.getElementById('aiError').classList.remove('visible');
+            document.getElementById('aiFormContainer').classList.remove('hidden');
+            document.getElementById('aiPreview').classList.remove('active');
         }
 
         async function submitAIForm(e) {
             e.preventDefault();
             const form = e.target;
             const submitBtn = document.getElementById('submitBtn');
+            const formContainer = document.getElementById('aiFormContainer');
+            const preview = document.getElementById('aiPreview');
+            const previewContent = document.getElementById('aiPreviewContent');
+            const previewStatusText = document.getElementById('aiPreviewStatusText');
+
+            // 隐藏表单，显示预览区
+            formContainer.classList.add('hidden');
+            preview.classList.add('active');
+            previewContent.textContent = '';
+            previewStatusText.textContent = '正在连接 AI...';
 
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
@@ -3663,27 +4169,159 @@
             };
 
             try {
-                const response = await fetch('/api/ai/generate-roadbook', {
+                const response = await fetch('/api/ai/generate-roadbook/stream', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
 
-                const result = await response.json();
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullContent = '';
+                let lastUpdateTime = 0;
 
-                if (result.status === 'success') {
-                    currentRoadbook = result.data;
-                    closeAIGenerator();
-                    parseAndDisplayRoadbook(result.data);
-                } else {
-                    showAIError(result.error || '生成失败，请重试');
+                previewStatusText.textContent = 'AI 正在生成路书...';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: !done });
+                    const lines = chunk.split('\n');
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+
+                                if (data.type === 'chunk') {
+                                    fullContent = data.full;
+                                    // 节流更新 UI，每 100ms 更新一次
+                                    const now = Date.now();
+                                    if (now - lastUpdateTime > 100) {
+                                        previewContent.textContent = fullContent;
+                                        previewContent.scrollTop = previewContent.scrollHeight;
+                                        lastUpdateTime = now;
+                                    }
+                                } else if (data.type === 'error') {
+                                    showAIError(data.error);
+                                    preview.classList.remove('active');
+                                    formContainer.classList.remove('hidden');
+                                    return;
+                                } else if (data.type === 'done') {
+                                    fullContent = data.full;
+                                }
+                            } catch (e) {
+                                // 忽略解析错误，继续接收数据
+                            }
+                        }
+                    }
                 }
+
+                // 流结束，更新最终内容
+                previewContent.textContent = fullContent;
+                previewContent.scrollTop = previewContent.scrollHeight;
+                previewStatusText.textContent = '正在解析路书数据...';
+
+                // 提取并解析 JSON
+                const jsonStr = extractJsonFromMarkdown(fullContent);
+                try {
+                    const roadbookData = JSON.parse(jsonStr);
+
+                    // 重新计算 grand_total
+                    recalculateGrandTotal(roadbookData);
+
+                    currentRoadbook = roadbookData;
+                    updateCurrentCollectionId(null);
+                    hasUnsavedChanges = false;
+                    closeAIGenerator();
+                    parseAndDisplayRoadbook(roadbookData);
+                } catch (parseErr) {
+                    showAIError('解析路书数据失败，请重试');
+                    preview.classList.remove('active');
+                    formContainer.classList.remove('hidden');
+                }
+
             } catch (err) {
                 showAIError('网络错误，请检查网络连接后重试');
+                preview.classList.remove('active');
+                formContainer.classList.remove('hidden');
             } finally {
                 submitBtn.classList.remove('loading');
                 submitBtn.disabled = false;
             }
+        }
+
+        function extractJsonFromMarkdown(content) {
+            // 去除 markdown 代码块
+            content = content.trim();
+            if (content.startsWith('```')) {
+                const lines = content.split('\n');
+                let jsonStart = -1, jsonEnd = -1;
+                for (let i = 0; i < lines.length; i++) {
+                    if (lines[i].trim().startsWith('```') && jsonStart === -1) {
+                        jsonStart = i + 1;
+                    } else if (lines[i].trim() === '```' && jsonStart !== -1) {
+                        jsonEnd = i;
+                        break;
+                    }
+                }
+                if (jsonStart > 0 && jsonEnd > jsonStart) {
+                    content = lines.slice(jsonStart, jsonEnd).join('\n');
+                } else if (jsonStart > 0) {
+                    content = lines.slice(jsonStart).join('\n');
+                }
+            }
+            // 尝试查找 JSON 对象
+            const match = content.match(/\{[\s\S]*\}/);
+            if (match) {
+                return match[0];
+            }
+            throw new Error('无法提取 JSON');
+        }
+
+        function recalculateGrandTotal(data) {
+            const budget = data.budget || {};
+            const people = data.basic_info?.people_count || 1;
+
+            // 交通费用
+            const transport = budget.transportation || {};
+            const transportationTotal = transport.transportation_total || 0;
+
+            // 住宿费用
+            const accommodation = budget.accommodation || [];
+            let accommodationTotal = 0;
+            if (Array.isArray(accommodation)) {
+                accommodation.forEach(acc => {
+                    accommodationTotal += (acc.price_per_room || 0) * (acc.nights || 1) * (acc.rooms || 1);
+                });
+            }
+
+            // 餐饮费用
+            const food = budget.food || {};
+            const foodGroupTotal = food.group_total || 0;
+
+            // 门票费用
+            const tickets = budget.tickets || [];
+            let ticketsTotal = 0;
+            if (Array.isArray(tickets)) {
+                tickets.forEach(t => ticketsTotal += t.total || 0);
+            }
+
+            // 杂费
+            const misc = budget.misc || [];
+            let miscTotal = 0;
+            if (Array.isArray(misc)) {
+                misc.forEach(m => miscTotal += m.total || 0);
+            }
+
+            // 计算总计
+            const groupTotal = transportationTotal + accommodationTotal + foodGroupTotal + ticketsTotal + miscTotal;
+
+            budget.grand_total = {
+                per_person: Math.round(groupTotal / people),
+                group_total: groupTotal
+            };
         }
 
         function showAIError(msg) {
@@ -3902,11 +4540,12 @@
                 displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
                 displayBudget(currentRoadbook.budget);
 
-                if (day.destination) {
+                if (SHOW_WEATHER && day.destination) {
                     fetchDayWeather(day.day_number, day.destination);
                 }
             }
 
+            hasUnsavedChanges = true;
             closeEditor();
         }
 
@@ -4189,6 +4828,7 @@
             displayBudget(currentRoadbook.budget);
             displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
 
+            hasUnsavedChanges = true;
             closeBudgetEditor();
         }
 
@@ -4348,6 +4988,7 @@
 
             currentRoadbook.checklist = checklist;
             displayChecklist(currentRoadbook.checklist);
+            hasUnsavedChanges = true;
             closeChecklistEditor();
         }
 
@@ -4467,6 +5108,7 @@
             displayBasicInfo(currentRoadbook.basic_info, currentRoadbook.budget);
             displayBudget(currentRoadbook.budget);
 
+            hasUnsavedChanges = true;
             closeDailyItineraryEditor();
         }
 
@@ -4480,68 +5122,79 @@
 
     <!-- AI Generator Modal -->
     <div class="modal-overlay" id="aiGeneratorModal">
-        <div class="modal-content">
+        <div class="modal-content ai-modal-content">
             <div class="modal-header">
                 <h2>🤖 AI 生成路书</h2>
                 <button class="modal-close" onclick="closeAIGenerator()">×</button>
             </div>
-            <form id="aiForm" onsubmit="submitAIForm(event)">
-                <div class="form-group">
-                    <label>行程标题 *</label>
-                    <input type="text" name="destination" required placeholder="如：云南大理7日自驾之旅">
-                </div>
-                <div class="form-row">
+            <!-- 表单区域 -->
+            <div class="ai-form-container" id="aiFormContainer">
+                <form id="aiForm" onsubmit="submitAIForm(event)">
                     <div class="form-group">
-                        <label>天数</label>
-                        <input type="number" name="days" id="autoDays" min="1" value="7" onchange="calcReturnDate()">
+                        <label>行程标题 *</label>
+                        <input type="text" name="destination" required placeholder="如：云南大理7日自驾之旅">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>天数</label>
+                            <input type="number" name="days" id="autoDays" min="1" value="7" onchange="calcReturnDate()">
+                        </div>
+                        <div class="form-group">
+                            <label>人数 *</label>
+                            <input type="number" name="people_count" required min="1" value="2">
+                        </div>
+                        <div class="form-group">
+                            <label>房数</label>
+                            <input type="number" name="room_count" min="1" value="1">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>人数 *</label>
-                        <input type="number" name="people_count" required min="1" value="2">
+                        <label>出发日期 *</label>
+                        <input type="date" name="travel_date_start" required onchange="calcReturnDate()">
                     </div>
                     <div class="form-group">
-                        <label>房数</label>
-                        <input type="number" name="room_count" min="1" value="1">
+                        <label>返回日期 *</label>
+                        <input type="date" name="travel_date_end" required disabled>
                     </div>
+                    <div class="form-group">
+                        <label>车型 *</label>
+                        <select name="car_type" required>
+                            <option value="轿车">轿车</option>
+                            <option value="SUV" selected>SUV</option>
+                            <option value="越野车">越野车</option>
+                            <option value="MVP">MVP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>预算偏好</label>
+                        <select name="budget_preference">
+                            <option value="经济">经济型</option>
+                            <option value="舒适" selected>舒适型</option>
+                            <option value="豪华">豪华型</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>特殊需求</label>
+                        <textarea name="special_requirements" rows="3" placeholder="如：高海拔地区、需带无人机拍摄等"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeAIGenerator()">取消</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            <span class="btn-text">生成路书</span>
+                            <span class="btn-loading">生成中...</span>
+                        </button>
+                    </div>
+                    <div class="error-message" id="aiError"></div>
+                </form>
+            </div>
+            <!-- AI 输出预览区域 -->
+            <div class="ai-preview" id="aiPreview">
+                <div class="ai-preview-status" id="aiPreviewStatus">
+                    <span class="ai-spinner"></span>
+                    <span id="aiPreviewStatusText">正在连接 AI...</span>
                 </div>
-                <div class="form-group">
-                    <label>出发日期 *</label>
-                    <input type="date" name="travel_date_start" required onchange="calcReturnDate()">
-                </div>
-                <div class="form-group">
-                    <label>返回日期 *</label>
-                    <input type="date" name="travel_date_end" required disabled>
-                </div>
-                <div class="form-group">
-                    <label>车型 *</label>
-                    <select name="car_type" required>
-                        <option value="轿车">轿车</option>
-                        <option value="SUV" selected>SUV</option>
-                        <option value="越野车">越野车</option>
-                        <option value="MVP">MVP</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>预算偏好</label>
-                    <select name="budget_preference">
-                        <option value="经济">经济型</option>
-                        <option value="舒适" selected>舒适型</option>
-                        <option value="豪华">豪华型</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>特殊需求</label>
-                    <textarea name="special_requirements" rows="3" placeholder="如：高海拔地区、需带无人机拍摄等"></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeAIGenerator()">取消</button>
-                    <button type="submit" class="btn btn-primary" id="submitBtn">
-                        <span class="btn-text">生成路书</span>
-                        <span class="btn-loading">生成中...</span>
-                    </button>
-                </div>
-                <div class="error-message" id="aiError"></div>
-            </form>
+                <pre class="ai-preview-content" id="aiPreviewContent"></pre>
+            </div>
         </div>
     </div>
 

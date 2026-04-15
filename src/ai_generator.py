@@ -350,6 +350,89 @@ class RoadbookGenerator:
             "group_total": group_total
         }
 
+    def generate_stream(self, user_input: dict):
+        """流式生成路书 - yield AI 输出的每个 chunk
+
+        Args:
+            user_input: 同 generate() 的 user_input
+
+        Yields:
+            str: SSE 格式的数据块 "data: {json}\n\n"
+        """
+        # 验证必填字段
+        required = ["destination", "travel_date_start", "travel_date_end", "people_count", "car_type"]
+        for field in required:
+            if not user_input.get(field):
+                yield f"data: {json.dumps({'type': 'error', 'error': f'缺少必填字段: {field}'})}\n\n"
+                return
+
+        # 转换日期格式
+        formatted_date_start = user_input["travel_date_start"]
+        formatted_date_end = user_input["travel_date_end"]
+
+        # 计算天数
+        days = user_input.get("days")
+        if not days:
+            try:
+                d1 = datetime.strptime(formatted_date_start, "%Y-%m-%d")
+                d2 = datetime.strptime(formatted_date_end, "%Y-%m-%d")
+                days = (d2 - d1).days + 1
+            except:
+                days = 7
+        days = max(1, days)
+
+        # 构建 Prompt
+        user_prompt = USER_PROMPT_TEMPLATE.format(
+            destination=user_input["destination"],
+            travel_date_start=formatted_date_start,
+            travel_date_end=formatted_date_end,
+            days=days,
+            people_count=user_input["people_count"],
+            room_count=user_input.get("room_count", 1),
+            car_type=user_input["car_type"],
+            budget_preference=user_input.get("budget_preference", "舒适"),
+            special_requirements=user_input.get("special_requirements", "无"),
+            schema_template=ROUTE_SCHEMA_TEMPLATE
+        )
+
+        try:
+            import openai
+
+            client = openai.OpenAI(
+                api_key=self.api_key,
+                base_url=self.api_url
+            )
+
+            # 发送开始信号
+            yield json.dumps({'type': 'start'}) + "\n\n"
+
+            response = client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": user_prompt}
+                ],
+                temperature=0.7,
+                max_tokens=4096,
+                stream=True
+            )
+
+            full_content = ""
+            for chunk in response:
+                content = chunk.choices[0].delta.content
+                if content:
+                    full_content += content
+                    yield f"data: {json.dumps({'type': 'chunk', 'content': content, 'full': full_content})}\n\n"
+
+            # 流结束，发送完成信号带上完整内容供验证
+            yield f"data: {json.dumps({'type': 'done', 'full': full_content})}\n\n"
+
+        except ImportError:
+            yield f"data: {json.dumps({'type': 'error', 'error': '请安装 openai 库: pip install openai'})}\n\n"
+        except Exception as e:
+            logger.error(f"AI流式生成失败: {e}")
+            yield f"data: {json.dumps({'type': 'error', 'error': str(e)})}\n\n"
+
 
 def generate_roadbook(user_input: dict, api_key: str, api_url: str = None, model: str = None) -> dict:
     """便捷函数：生成路书

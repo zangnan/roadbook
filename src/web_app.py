@@ -5,7 +5,7 @@ import json
 import uuid
 import threading
 from datetime import datetime
-from flask import Flask, render_template, jsonify, request, send_file, abort
+from flask import Flask, render_template, jsonify, request, send_file, abort, Response
 
 # 打包后运行：sys._MEIPASS 是 PyInstaller 解压临时资源的目录
 if getattr(sys, 'frozen', False):
@@ -53,6 +53,7 @@ WEB_PORT = config.WEB_PORT
 DEEPSEEK_API_KEY = config.DEEPSEEK_API_KEY
 DEEPSEEK_API_URL = config.DEEPSEEK_API_URL
 DEEPSEEK_MODEL = config.DEEPSEEK_MODEL
+SHOW_WEATHER_INFO = config.SHOW_WEATHER_INFO
 
 # 确保运行时目录存在（photo、output、cache）
 for dir_name in ['photo', 'output', 'cache']:
@@ -198,7 +199,8 @@ def route_page():
 def roadbook_page():
     """路书模板页面"""
     return render_template('roadbook_template.html',
-                           static_base='')
+                           static_base='',
+                           show_weather=SHOW_WEATHER_INFO)
 
 
 @app.route('/')
@@ -321,9 +323,49 @@ def api_ai_generate_roadbook():
         return jsonify({'status': 'error', 'error': str(e)}), 500
 
 
+@app.route('/api/ai/generate-roadbook/stream', methods=['POST'])
+def api_ai_generate_roadbook_stream():
+    """流式 AI 生成路书"""
+    data = request.json
+
+    # 验证必填字段
+    required_fields = ['destination', 'travel_date_start', 'travel_date_end', 'people_count', 'car_type']
+    for field in required_fields:
+        if not data.get(field):
+            return jsonify({'status': 'error', 'error': f'缺少必填字段: {field}'}), 400
+
+    # 检查 API Key
+    if not DEEPSEEK_API_KEY:
+        return jsonify({'status': 'error', 'error': 'DeepSeek API Key 未配置'}), 500
+
+    from ai_generator import RoadbookGenerator
+
+    generator = RoadbookGenerator(
+        api_key=DEEPSEEK_API_KEY,
+        api_url=DEEPSEEK_API_URL,
+        model=DEEPSEEK_MODEL
+    )
+
+    def generate():
+        for chunk in generator.generate_stream(data):
+            yield chunk
+
+    return Response(
+        generate(),
+        mimetype='text/event-stream',
+        headers={
+            'Cache-Control': 'no-cache',
+            'X-Accel-Buffering': 'no'
+        }
+    )
+
+
 @app.route('/api/weather')
 def api_weather():
     """获取天气预报（使用高德天气 API）"""
+    if not SHOW_WEATHER_INFO:
+        return jsonify({'status': 'error', 'error': '天气功能已禁用'})
+
     location = request.args.get('location', '').strip()
     if not location:
         return jsonify({'status': 'error', 'error': '缺少城市参数'})
