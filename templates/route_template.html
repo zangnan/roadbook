@@ -12,6 +12,7 @@
         <div class="header-brand">
             <img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img">
             <h1>路径规划 <span class="title-en">Route Planner</span></h1>
+            <span id="importInfo" class="import-info" style="display:none;">从路书【概要】导入</span>
         </div>
         <div class="header-right">
             <button class="theme-toggle" id="themeToggle" title="切换主题">
@@ -172,11 +173,21 @@
             if (fromRoadbook !== '1') return;
 
             const roadbookLocations = localStorage.getItem('roadbook_locations');
+            const routeMode = localStorage.getItem('roadbook_route_mode') || 'summary';
             if (!roadbookLocations) return;
 
             try {
                 const parsedLocations = JSON.parse(roadbookLocations);
                 if (!parsedLocations || parsedLocations.length < 2) return;
+
+                // 显示导入来源
+                const importInfo = document.getElementById('importInfo');
+                if (importInfo) {
+                    importInfo.textContent = routeMode === 'detailed'
+                        ? '从路书【详情】导入'
+                        : '从路书【概要】导入';
+                    importInfo.style.display = 'inline-block';
+                }
 
                 // 清空现有地点
                 locations.length = 0;
@@ -601,7 +612,16 @@
                     label = String(idx);
                 }
 
-                marker = createMarker(loc.lng, loc.lat, label, color);
+                // 检测起点终点重叠，给终点添加额外偏移
+                let extraOffset = null;
+                if (loc.type === 'end') {
+                    const startLoc = locations.find(l => l.type === 'start');
+                    if (startLoc && startLoc.lng === loc.lng && startLoc.lat === loc.lat) {
+                        extraOffset = { x: 25, y: -25 };
+                    }
+                }
+
+                marker = createMarker(loc.lng, loc.lat, label, color, extraOffset);
                 locationMarkers.push(marker);
                 map.add(marker);
             });
@@ -612,7 +632,7 @@
         }
 
         // 创建标记
-        function createMarker(lng, lat, label, color) {
+        function createMarker(lng, lat, label, color, extraOffset) {
             const content = document.createElement('div');
             content.className = 'custom-marker';
             content.style.cssText = `
@@ -627,10 +647,13 @@
             `;
             content.textContent = label;
 
+            const offsetX = -20 + (extraOffset ? extraOffset.x : 0);
+            const offsetY = -15 + (extraOffset ? extraOffset.y : 0);
+
             const marker = new AMap.Marker({
                 position: [lng, lat],
                 content: content,
-                offset: new AMap.Pixel(-20, -15)
+                offset: new AMap.Pixel(offsetX, offsetY)
             });
 
             return marker;

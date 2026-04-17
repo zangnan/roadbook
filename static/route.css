@@ -84,6 +84,15 @@ body {
     gap: 8px;
 }
 
+.import-info {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
 .header-icon-img {
     width: 28px;
     height: 28px;

@@ -131,10 +131,17 @@ AMAP_DRIVING_STRATEGY_PARAMS = {
 ROUTE_DEDUP_DISTANCE_THRESHOLD = 0.05  # 距离差异<5%认为重复
 ROUTE_DEDUP_TIME_THRESHOLD = 0.10      # 时间差异<10%认为重复
 
-# DeepSeek AI API 配置
+# DeepSeek AI API 配置 https://api.deepseek.com/v1
+# DEEPSEEK_MODEL: deepseek-chat、deepseek-reasoner
+# DEEPSEEK_API_URL: https://api.deepseek.com、https://api.deepseek.com/v1
 DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', '')
-DEEPSEEK_API_URL = os.getenv('DEEPSEEK_API_URL', 'https://api.deepseek.com/v1')
-DEEPSEEK_MODEL = os.getenv('DEEPSEEK_MODEL', 'deepseek-chat')
+DEEPSEEK_API_URL = os.getenv('DEEPSEEK_API_URL', 'https://api.deepseek.com')
+DEEPSEEK_MODEL = os.getenv('DEEPSEEK_MODEL', 'deepseek-reasoner')
 
 # 天气信息配置（默认显示天气）
 SHOW_WEATHER_INFO = os.getenv('SHOW_WEATHER_INFO', 'true').lower() == 'true'
+
+# 详情路径规划包含的 route_stops 类型
+# 可选类型: start, gas, transit, scenic, food, accommodation, end
+# 默认包含 start, end, scenic, accommodation（排除 gas/transit/food 减少节点数）
+ROUTE_DETAIL_STOP_TYPES = os.getenv('ROUTE_DETAIL_STOP_TYPES', 'start,end,scenic,accommodation').split(',')

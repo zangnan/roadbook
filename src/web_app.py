@@ -200,7 +200,8 @@ def roadbook_page():
     """路书模板页面"""
     return render_template('roadbook_template.html',
                            static_base='',
-                           show_weather=SHOW_WEATHER_INFO)
+                           show_weather=SHOW_WEATHER_INFO,
+                           route_detail_stop_types=config.ROUTE_DETAIL_STOP_TYPES)
 
 
 @app.route('/')
@@ -382,6 +383,52 @@ def api_weather():
 def api_outputs():
     """获取输出目录列表"""
     return jsonify(get_output_dirs())
+
+
+@app.route('/api/export/excel', methods=['POST'])
+def api_export_excel():
+    """导出路书为 Excel 文件"""
+    data = request.json
+    roadbook_data = data.get('roadbook_data')
+
+    if not roadbook_data:
+        return jsonify({'status': 'error', 'error': '缺少路书数据'}), 400
+
+    try:
+        from excel_exporter import export_roadbook_to_excel, get_excel_filename
+
+        # 生成临时文件路径
+        excel_dir = os.path.join(CONFIG_APP_DIR, 'output', 'excel')
+        if not os.path.exists(excel_dir):
+            os.makedirs(excel_dir)
+
+        filename = get_excel_filename(roadbook_data)
+        excel_path = os.path.join(excel_dir, filename)
+
+        # 导出 Excel
+        export_roadbook_to_excel(roadbook_data, excel_path)
+
+        return jsonify({
+            'status': 'success',
+            'filename': filename,
+            'path': f'/output/excel/{filename}'
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({'status': 'error', 'error': str(e), 'trace': traceback.format_exc()}), 500
+
+
+@app.route('/output/excel/<filename>')
+def serve_excel(filename):
+    """下载 Excel 文件"""
+    excel_dir = os.path.join(CONFIG_APP_DIR, 'output', 'excel')
+    safe_path = os.path.join(excel_dir, filename)
+
+    if not os.path.exists(safe_path):
+        abort(404)
+
+    return send_file(safe_path, as_attachment=True, download_name=filename)
 
 
 @app.route('/api/run', methods=['POST'])
