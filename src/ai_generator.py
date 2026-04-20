@@ -61,11 +61,11 @@ ROUTE_SCHEMA_TEMPLATE = """{
   ],
   "budget": {
     "transportation": {
-      "fuel_total_liters": 总油耗升,
-      "fuel_cost": 油费,
-      "toll_fees": 过路费,
-      "transportation_total": 交通合计,
-      "per_person": 人均交通费
+      "fuel_total_liters": 0,
+      "fuel_cost": 0,
+      "toll_fees": 过路费估算值（用户后续可编辑）,
+      "transportation_total": 0,
+      "per_person": 0
     },
     "accommodation": [
       { "location": "住宿地点", "type": "酒店类型", "price_per_room": 每间房价, "nights": 晚数, "rooms": 房间数 }
@@ -73,8 +73,8 @@ ROUTE_SCHEMA_TEMPLATE = """{
     "food": {
       "daily_budget_per_person": 人均日餐饮预算,
       "days": 天数,
-      "per_person": 人均餐饮,
-      "group_total": 团队餐饮合计
+      "per_person": 0,
+      "group_total": 0
     },
     "tickets": [
       { "item": "景点名", "total": 金额, "remark": "备注" }
@@ -83,8 +83,8 @@ ROUTE_SCHEMA_TEMPLATE = """{
       { "item": "杂费项", "total": 金额 }
     ],
     "grand_total": {
-      "per_person": 人均总费用,
-      "group_total": 团队总费用
+      "per_person": 0,
+      "group_total": 0
     }
   },
   "checklist": [

@@ -3528,9 +3528,16 @@
                 });
             }
 
-            // Display Budget
+            // Display Budget（先重算所有费用，确保使用程序计算值而非 AI 原始值）
             if (data.budget) {
-                displayBudget(data.budget);
+                currentRoadbook.budget = data.budget; // 确保 currentRoadbook.budget 已设置
+                // DEBUG
+                console.log('[DEBUG parseAndDisplayRoadbook] totalDist=', currentRoadbook.basic_info.total_distance_km, 'fuelCons=', parseFloat(currentRoadbook.basic_info.fuel_consumption));
+                console.log('[DEBUG] budget.transportation before recalc:', JSON.stringify(currentRoadbook.budget.transportation));
+                recalculateBudget();
+                console.log('[DEBUG] budget.transportation after recalc:', JSON.stringify(currentRoadbook.budget.transportation));
+                console.log('[DEBUG] grand_total after recalc:', JSON.stringify(currentRoadbook.budget.grand_total));
+                displayBudget(currentRoadbook.budget);
             }
 
             // Display Checklist
@@ -4105,14 +4112,18 @@
             const perPersonTotal = transportationPerPerson + accommodationPerPerson + foodPerPerson + ticketsPerPerson + miscPerPerson;
             const groupTotal = perPersonTotal * people;
 
-            // 更新预算数据
+            // 保留用户的 toll_fees 编辑值，不重置
+            const finalTollFees = (currentRoadbook.budget?.transportation?.toll_fees > 0)
+                ? currentRoadbook.budget.transportation.toll_fees
+                : tollFees;
             currentRoadbook.budget = {
                 transportation: {
                     fuel_total_liters: Math.round(fuelTotalLiters * 10) / 10,
                     fuel_cost: fuelCost,
-                    toll_fees: tollFees,
-                    transportation_total: transportationTotal,
-                    per_person: transportationPerPerson
+                    toll_fees: finalTollFees,
+                    transportation_total: fuelCost + finalTollFees,
+                    per_person: Math.round((fuelCost + finalTollFees) / people),
+                    car_type: currentRoadbook.budget?.transportation?.car_type || info.car_type || ''
                 },
                 accommodation: accommodationEntries.length > 0 ? accommodationEntries : (Array.isArray(budgetAcc) ? budgetAcc : (budgetAcc || undefined)),
                 food: {
