@@ -40,6 +40,15 @@
         </div>
     </div>
 
+    <!-- 每日路径切换面板 -->
+    <div id="daily-route-panel" class="daily-panel" style="display:none;">
+        <div class="daily-panel-header" onclick="toggleDailyPanel()">
+            <span id="current-day-title">选择日期</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div id="daily-route-list" class="daily-panel-list"></div>
+    </div>
+
     <div class="main-container">
         <!-- 中间地图 -->
         <div class="map-container">
@@ -183,10 +192,15 @@
                 // 显示导入来源
                 const importInfo = document.getElementById('importInfo');
                 if (importInfo) {
-                    importInfo.textContent = routeMode === 'detailed'
-                        ? '从路书【详情】导入'
-                        : '从路书【概要】导入';
+                    const modeText = routeMode === 'detailed' ? '详情'
+                        : routeMode === 'daily' ? '每日' : '概要';
+                    importInfo.textContent = `从路书【${modeText}】导入`;
                     importInfo.style.display = 'inline-block';
+                }
+
+                // 每日模式：初始化每日面板
+                if (routeMode === 'daily') {
+                    initDailyRoutePanel();
                 }
 
                 // 清空现有地点
@@ -230,8 +244,31 @@
             }
         }
 
-        // 搜索并设置地点坐标
+        // 搜索并设置地点坐标（带 localStorage 缓存）
         async function searchAndSetLocation(id, name) {
+            const cacheKey = `rb_loc_cache_${name}`;
+
+            // 1. 先查 localStorage 缓存
+            const cachedLoc = localStorage.getItem(cacheKey);
+            if (cachedLoc) {
+                try {
+                    const { name: cachedName, lng, lat } = JSON.parse(cachedLoc);
+                    const loc = locations.find(l => l.id == id);
+                    if (loc) {
+                        loc.name = cachedName;
+                        loc.lng = parseFloat(lng);
+                        loc.lat = parseFloat(lat);
+                        renderLocationList();
+                        updateMapMarkers();
+                    }
+                    return;
+                } catch (e) {
+                    // 缓存数据损坏，清除
+                    localStorage.removeItem(cacheKey);
+                }
+            }
+
+            // 2. 缓存未命中，调 API
             try {
                 const response = await fetch('/api/route/inputtips', {
                     method: 'POST',
@@ -252,6 +289,17 @@
                         loc.lat = parseFloat(lat);
                         renderLocationList();
                         updateMapMarkers();
+
+                        // 3. 写入 localStorage 缓存（30天）
+                        try {
+                            localStorage.setItem(cacheKey, JSON.stringify({
+                                name: tip.name,
+                                lng: tip.location.split(',')[0],
+                                lat: tip.location.split(',')[1]
+                            }));
+                        } catch (e) {
+                            // localStorage 满时忽略
+                        }
                     }
                 }
             } catch (err) {
@@ -282,6 +330,154 @@
             document.documentElement.setAttribute('data-theme', theme);
             if (map) {
                 map.setMapStyle(MAP_STYLES[theme]);
+            }
+        }
+
+        // ============================================
+        // 每日路径切换功能
+        // ============================================
+
+        // 初始化每日面板
+        function initDailyRoutePanel() {
+            const routeMode = localStorage.getItem('roadbook_route_mode');
+            if (routeMode !== 'daily') return;
+
+            const dailyData = localStorage.getItem('roadbook_daily_data');
+            if (!dailyData) return;
+
+            const panel = document.getElementById('daily-route-panel');
+            const itinerary = JSON.parse(dailyData);
+
+            // 渲染日期列表
+            renderDailyRouteList(itinerary);
+
+            // 显示面板
+            panel.style.display = 'block';
+
+            // 默认选中当前天
+            const dayIndex = parseInt(localStorage.getItem('roadbook_day_index') || '0');
+            highlightDailyItem(dayIndex);
+
+            // 更新标题
+            const dayTitle = localStorage.getItem('roadbook_day_title');
+            if (dayTitle) {
+                document.getElementById('current-day-title').textContent = dayTitle;
+            }
+        }
+
+        // 渲染日期列表
+        function renderDailyRouteList(itinerary) {
+            const list = document.getElementById('daily-route-list');
+            if (!list) return;
+
+            list.innerHTML = itinerary.map((day, idx) => {
+                const weekDay = getWeekDay(day.date);
+                return `<div class="daily-panel-item" data-index="${idx}" onclick="switchDayRoute(${idx})">
+                    <span>第${day.day_number}天 ${day.date} ${weekDay}</span>
+                    <span>${day.distance_km || 0}km</span>
+                </div>`;
+            }).join('');
+        }
+
+        // 切换当天路径
+        async function switchDayRoute(dayIndex) {
+            const dailyData = localStorage.getItem('roadbook_daily_data');
+            if (!dailyData) return;
+
+            const itinerary = JSON.parse(dailyData);
+            const day = itinerary[dayIndex];
+            if (!day) return;
+
+            // 获取当天路径
+            const newLocations = getDayRouteLocations(day);
+            if (newLocations.length < 2) {
+                alert('该天路径地点不足');
+                return;
+            }
+
+            // 保存新的当天数据
+            localStorage.setItem('roadbook_day_index', dayIndex);
+            localStorage.setItem('roadbook_day_title', `第${day.day_number}天 ${day.date} ${day.origin}→${day.destination}`);
+            localStorage.setItem('roadbook_locations', JSON.stringify(newLocations));
+
+            // 更新标题
+            document.getElementById('current-day-title').textContent = `第${day.day_number}天 ${day.date}`;
+
+            // 高亮选中项
+            highlightDailyItem(dayIndex);
+
+            // 清空全局 locations 并重新填充
+            locations.length = 0;
+            day.route_stops.forEach((stop, idx) => {
+                if (stop.location) {
+                    let type = 'waypoint';
+                    if (idx === 0) type = 'start';
+                    else if (idx === day.route_stops.length - 1) type = 'end';
+                    locations.push({
+                        id: Date.now() + idx,
+                        name: stop.location,
+                        lng: null,
+                        lat: null,
+                        type: type
+                    });
+                }
+            });
+
+            // 重新搜索并规划
+            renderLocationList();
+            clearLocationMarkers();
+            clearMap();
+
+            for (let i = 0; i < locations.length; i++) {
+                const loc = locations[i];
+                if (loc.name) {
+                    await searchAndSetLocation(loc.id, loc.name);
+                }
+            }
+
+            setTimeout(() => {
+                const validLocations = locations.filter(l => l.lng && l.lat);
+                if (validLocations.length >= 2) {
+                    planRoute();
+                }
+            }, 500);
+        }
+
+        // 获取当天路径（不去重，只做基础过滤）
+        function getDayRouteLocations(day) {
+            if (!day.route_stops) return [];
+            const locations = [];
+            const added = new Set();
+            day.route_stops.forEach(stop => {
+                if (stop.location && !added.has(stop.location)) {
+                    locations.push(stop.location);
+                    added.add(stop.location);
+                }
+            });
+            return locations;
+        }
+
+        // 展开/收缩面板
+        function toggleDailyPanel() {
+            const panel = document.getElementById('daily-route-panel');
+            panel.classList.toggle('expanded');
+        }
+
+        // 高亮选中项
+        function highlightDailyItem(index) {
+            document.querySelectorAll('.daily-panel-item').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+        }
+
+        // 获取星期几
+        function getWeekDay(dateStr) {
+            const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+            try {
+                const d = new Date(dateStr);
+                return days[d.getDay()];
+            } catch {
+                return '';
             }
         }
 
@@ -589,16 +785,17 @@
 
         // 更新地图标记
         function updateMapMarkers() {
-            if (locationMarkers.length > 0) {
-                map.remove(locationMarkers);
-                locationMarkers = [];
-            }
-
             const validLocations = locations.filter(l => l.lng && l.lat);
             if (validLocations.length === 0) return;
 
+            // 只为尚未标注的地点添加标记
+            const existingIds = new Set(locationMarkers.map(m => m.getExtData()?.id));
+            let newMarkers = [];
+
             validLocations.forEach((loc, idx) => {
-                let marker;
+                // 跳过已标注的地点
+                if (existingIds.has(loc.id)) return;
+
                 let color, label;
 
                 if (loc.type === 'start') {
@@ -609,10 +806,10 @@
                     label = '终';
                 } else {
                     color = '#0084ff';
-                    label = String(idx);
+                    label = String(idx + 1);
                 }
 
-                // 检测起点终点重叠，给终点添加额外偏移
+                // 检测起点终点重叠
                 let extraOffset = null;
                 if (loc.type === 'end') {
                     const startLoc = locations.find(l => l.type === 'start');
@@ -621,12 +818,15 @@
                     }
                 }
 
-                marker = createMarker(loc.lng, loc.lat, label, color, extraOffset);
+                const marker = createMarker(loc.lng, loc.lat, label, color, extraOffset);
+                marker.setExtData({ id: loc.id });
                 locationMarkers.push(marker);
                 map.add(marker);
+                newMarkers.push(marker);
             });
 
-            if (validLocations.length > 0) {
+            // 如果有新标记则调整视野
+            if (newMarkers.length > 0 && locationMarkers.length > 0) {
                 map.setFitView(locationMarkers, false, [60, 60, 280, 60]);
             }
         }
@@ -665,9 +865,18 @@
                 map.remove(routePolylines);
                 routePolylines = [];
             }
+            // locationMarkers 由 clearLocationMarkers() 清除，这里不处理
             document.getElementById('resultContent').innerHTML = '<div class="result-empty">输入地点后点击"开始规划"</div>';
             currentRouteInfo = null;
             selectedRouteOption = 0;
+        }
+
+        // 清除地点标记
+        function clearLocationMarkers() {
+            if (locationMarkers.length > 0) {
+                map.remove(locationMarkers);
+                locationMarkers = [];
+            }
         }
 
         // 规划路线
@@ -715,6 +924,7 @@
                     currentRouteInfo = result;
                     selectedRouteOption = 0;  // 重置选中方案
                     renderRouteResult(result);
+                    updateMapMarkers();  // 重新绘制地点标记
                 } else {
                     alert('规划失败: ' + result.error);
                 }

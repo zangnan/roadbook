@@ -1,9 +1,16 @@
 """路径规划模块 - 高德路径规划 API 调用"""
-import requests
+import hashlib
+import json
 import logging
+import os
+import sqlite3
+import time
+import requests
 from typing import Dict, List, Optional
 
 from config import (
+    APP_DIR,
+    CACHE_TYPE,
     DRIVING_STRATEGY_PLANS,
     AMAP_DRIVING_STRATEGY_PARAMS,
     ROUTE_DEDUP_DISTANCE_THRESHOLD,
@@ -16,6 +23,124 @@ logger = logging.getLogger(__name__)
 AMAP_DIRECTION_URL = "https://restapi.amap.com/v3/direction"
 AMAP_GEOCODE_URL = "https://restapi.amap.com/v3/geocode"
 AMAP_PLACE_URL = "https://restapi.amap.com/v3/place"
+
+
+class RouteCache:
+    """路径规划结果缓存（inputtips + 路径规划）"""
+
+    CACHE_DIR = os.path.join(APP_DIR, 'cache')
+    CACHE_DB = os.path.join(CACHE_DIR, 'route_cache.db')
+
+    # 缓存有效期（秒）
+    INPUTTIPS_TTL = 30 * 24 * 3600  # 30天
+    ROUTE_TTL = 7 * 24 * 3600       # 7天
+
+    def __init__(self):
+        os.makedirs(self.CACHE_DIR, exist_ok=True)
+        self._use_sqlite = CACHE_TYPE == 'sqlite'
+        self._init_db()
+
+    def _init_db(self):
+        """初始化缓存数据库"""
+        with sqlite3.connect(self.CACHE_DB) as conn:
+            conn.execute('''
+                CREATE TABLE IF NOT EXISTS route_cache (
+                    cache_key TEXT PRIMARY KEY,
+                    cache_type TEXT NOT NULL,
+                    cache_value TEXT NOT NULL,
+                    created_at REAL NOT NULL,
+                    expires_at REAL NOT NULL
+                )
+            ''')
+            conn.execute('''
+                CREATE INDEX IF NOT EXISTS idx_expires ON route_cache(expires_at)
+            ''')
+
+    def _is_expired(self, expires_at: float) -> bool:
+        """检查缓存是否过期"""
+        return time.time() > expires_at
+
+    def _make_inputtips_key(self, keywords: str) -> str:
+        """生成 inputtips 缓存键"""
+        return f"inputtips:{keywords}"
+
+    def _make_route_key(self, from_lng: float, from_lat: float,
+                        to_lng: float, to_lat: float, strategy: str,
+                        strategy_param: str = None) -> str:
+        """生成路径规划缓存键"""
+        # 坐标精度到小数点后5位（约1.1米）
+        key = f"route:{round(from_lng, 5)},{round(from_lat, 5)}_{round(to_lng, 5)},{round(to_lat, 5)}_{strategy}"
+        if strategy_param:
+            key += f"_{strategy_param}"
+        return key
+
+    def get_inputtips(self, keywords: str) -> Optional[Dict]:
+        """获取 inputtips 缓存"""
+        key = self._make_inputtips_key(keywords)
+        try:
+            with sqlite3.connect(self.CACHE_DB) as conn:
+                cursor = conn.execute(
+                    'SELECT cache_value, expires_at FROM route_cache WHERE cache_key = ?',
+                    (key,)
+                )
+                row = cursor.fetchone()
+                if row:
+                    if self._is_expired(row[1]):
+                        conn.execute('DELETE FROM route_cache WHERE cache_key = ?', (key,))
+                        return None
+                    return json.loads(row[0])
+        except Exception as e:
+            logger.warning(f"读取 inputtips 缓存失败: {e}")
+        return None
+
+    def set_inputtips(self, keywords: str, value: Dict):
+        """设置 inputtips 缓存"""
+        key = self._make_inputtips_key(keywords)
+        now = time.time()
+        try:
+            with sqlite3.connect(self.CACHE_DB) as conn:
+                conn.execute('''
+                    INSERT OR REPLACE INTO route_cache (cache_key, cache_type, cache_value, created_at, expires_at)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (key, 'inputtips', json.dumps(value, ensure_ascii=False), now, now + self.INPUTTIPS_TTL))
+        except Exception as e:
+            logger.warning(f"写入 inputtips 缓存失败: {e}")
+
+    def get_route(self, from_lng: float, from_lat: float,
+                  to_lng: float, to_lat: float, strategy: str,
+                  strategy_param: str = None) -> Optional[Dict]:
+        """获取路径规划缓存"""
+        key = self._make_route_key(from_lng, from_lat, to_lng, to_lat, strategy, strategy_param)
+        try:
+            with sqlite3.connect(self.CACHE_DB) as conn:
+                cursor = conn.execute(
+                    'SELECT cache_value, expires_at FROM route_cache WHERE cache_key = ?',
+                    (key,)
+                )
+                row = cursor.fetchone()
+                if row:
+                    if self._is_expired(row[1]):
+                        conn.execute('DELETE FROM route_cache WHERE cache_key = ?', (key,))
+                        return None
+                    return json.loads(row[0])
+        except Exception as e:
+            logger.warning(f"读取 route 缓存失败: {e}")
+        return None
+
+    def set_route(self, from_lng: float, from_lat: float,
+                  to_lng: float, to_lat: float, strategy: str,
+                  value: Dict, strategy_param: str = None):
+        """设置路径规划缓存"""
+        key = self._make_route_key(from_lng, from_lat, to_lng, to_lat, strategy, strategy_param)
+        now = time.time()
+        try:
+            with sqlite3.connect(self.CACHE_DB) as conn:
+                conn.execute('''
+                    INSERT OR REPLACE INTO route_cache (cache_key, cache_type, cache_value, created_at, expires_at)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (key, 'route', json.dumps(value, ensure_ascii=False), now, now + self.ROUTE_TTL))
+        except Exception as e:
+            logger.warning(f"写入 route 缓存失败: {e}")
 
 
 class RoutePlanner:
@@ -35,6 +160,7 @@ class RoutePlanner:
 
     def __init__(self, amap_key: str):
         self.amap_key = amap_key
+        self._cache = RouteCache()
 
     def geocode(self, address: str) -> Dict:
         """地理编码：地址转坐标（使用 /v3/geocode/geo 接口）
@@ -85,6 +211,12 @@ class RoutePlanner:
         Returns:
             {"status": "1", "tips": [{"name": str, "location": "lng,lat", "address": str, "district": str}, ...]}
         """
+        # 先查缓存
+        cached = self._cache.get_inputtips(keywords)
+        if cached:
+            logger.info(f"inputtips 缓存命中: {keywords}")
+            return cached
+
         try:
             import urllib.parse
             url = f"{AMAP_PLACE_URL}/text"
@@ -117,10 +249,13 @@ class RoutePlanner:
                             "address": poi.get("address", "") or "",
                             "district": f"{poi.get('pname', '')}{poi.get('cityname', '')}{poi.get('adname', '')}"
                         })
-                return {
+                result = {
                     "status": "1",
                     "tips": tips
                 }
+                # 写入缓存
+                self._cache.set_inputtips(keywords, result)
+                return result
             return {"status": "0", "info": data.get("info", "查询失败")}
 
         except Exception as e:
@@ -140,6 +275,16 @@ class RoutePlanner:
             {"status": "success", "distance": int, "duration": int, "path": [[lng, lat], ...], "steps": [...]}
             {"status": "error", "error": str}
         """
+        # 先查缓存
+        cached = self._cache.get_route(
+            from_loc['lng'], from_loc['lat'],
+            to_loc['lng'], to_loc['lat'],
+            strategy, strategy_param
+        )
+        if cached:
+            logger.info(f"plan_segment 缓存命中: {from_loc['name']} -> {to_loc['name']}")
+            return cached
+
         origin = f"{from_loc['lng']},{from_loc['lat']}"
         destination = f"{to_loc['lng']},{to_loc['lat']}"
 
@@ -166,7 +311,17 @@ class RoutePlanner:
             if data.get("status") != "1":
                 return {"status": "error", "error": data.get("info", "API 调用失败")}
 
-            return self._parse_single_response(strategy, data, from_loc, to_loc, strategy_param)
+            result = self._parse_single_response(strategy, data, from_loc, to_loc, strategy_param)
+
+            # 写入缓存
+            if result.get("status") == "success":
+                self._cache.set_route(
+                    from_loc['lng'], from_loc['lat'],
+                    to_loc['lng'], to_loc['lat'],
+                    strategy, result, strategy_param
+                )
+
+            return result
 
         except Exception as e:
             logger.error(f"路径规划 API 调用失败: {e}")
