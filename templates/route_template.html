@@ -41,12 +41,19 @@
     </div>
 
     <!-- 每日路径切换面板 -->
-    <div id="daily-route-panel" class="daily-panel" style="display:none;">
+    <div id="daily-route-panel" class="daily-panel hidden">
         <div class="daily-panel-header" onclick="toggleDailyPanel()">
             <span id="current-day-title">选择日期</span>
             <span class="arrow">▼</span>
         </div>
         <div id="daily-route-list" class="daily-panel-list"></div>
+    </div>
+
+    <!-- 日期切换悬浮球 -->
+    <div class="float-ball daily-float-btn hidden" id="dailyFloatBtn" onclick="toggleFloatBall('daily')">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+        </svg>
     </div>
 
     <div class="main-container">
@@ -86,6 +93,13 @@
         </div>
     </div>
 
+    <!-- 地点悬浮球 -->
+    <div class="float-ball location-float-btn hidden" id="locationFloatBtn" onclick="toggleFloatBall('location')">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+    </div>
+
     <!-- 右侧路线概览 - 浮层 -->
     <div class="floating-panel result-panel" id="resultPanel">
         <div class="floating-panel-header">
@@ -99,6 +113,13 @@
         <div class="floating-panel-content" id="resultContent">
             <div class="result-empty">输入地点后点击"开始规划"</div>
         </div>
+    </div>
+
+    <!-- 路线悬浮球 -->
+    <div class="float-ball result-float-btn hidden" id="resultFloatBtn" onclick="toggleFloatBall('result')">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="currentColor" d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
+        </svg>
     </div>
 
     <!-- 搜索结果下拉 -->
@@ -129,9 +150,64 @@
 
         // 面板状态
         let panelStates = {
-            locationPanel: 'expanded',
-            resultPanel: 'expanded'
+            location: 'expanded',
+            result: 'expanded',
+            daily: 'collapsed'
         };
+
+        // 悬浮球映射
+        const floatBallMap = {
+            location: { panel: 'locationPanel', ball: 'locationFloatBtn' },
+            result: { panel: 'resultPanel', ball: 'resultFloatBtn' },
+            daily: { panel: 'daily-route-panel', ball: 'dailyFloatBtn' }
+        };
+
+        // 切换悬浮球展开/收起
+        function toggleFloatBall(type) {
+            const mapping = floatBallMap[type];
+            const panel = document.getElementById(mapping.panel);
+
+            if (panelStates[type] === 'expanded') {
+                // 收起
+                panelStates[type] = 'collapsed';
+                panel.classList.add('collapsed');
+            } else {
+                // 展开
+                panelStates[type] = 'expanded';
+                panel.classList.remove('collapsed');
+            }
+
+            // 更新悬浮球状态
+            updateFloatBalls();
+        }
+
+        // 隐藏/显示悬浮球
+        function updateFloatBalls() {
+            const locationBall = document.getElementById('locationFloatBtn');
+            const resultBall = document.getElementById('resultFloatBtn');
+            const dailyBall = document.getElementById('dailyFloatBtn');
+
+            // 地点面板收起时显示悬浮球
+            if (panelStates.location === 'collapsed') {
+                locationBall.classList.remove('hidden');
+            } else {
+                locationBall.classList.add('hidden');
+            }
+
+            // 路线面板收起时显示悬浮球
+            if (panelStates.result === 'collapsed') {
+                resultBall.classList.remove('hidden');
+            } else {
+                resultBall.classList.add('hidden');
+            }
+
+            // 日期面板展开时显示悬浮球激活状态，收起时不显示
+            if (panelStates.daily === 'expanded') {
+                dailyBall.classList.add('active');
+            } else {
+                dailyBall.classList.remove('active');
+            }
+        }
 
         // 颜色映射
         const STRATEGY_COLORS = {
@@ -172,6 +248,9 @@
 
             // 检查是否从路书导入
             checkRoadbookImport();
+
+            // 更新悬浮球状态
+            updateFloatBalls();
         }
 
         // 检查路书导入
@@ -351,8 +430,9 @@
             // 渲染日期列表
             renderDailyRouteList(itinerary);
 
-            // 显示面板
-            panel.style.display = 'block';
+            // 显示面板（使用 class 控制）
+            panel.classList.remove('hidden');
+            panelStates.daily = 'expanded';
 
             // 默认选中当前天
             const dayIndex = parseInt(localStorage.getItem('roadbook_day_index') || '0');
@@ -363,6 +443,9 @@
             if (dayTitle) {
                 document.getElementById('current-day-title').textContent = dayTitle;
             }
+
+            // 更新悬浮球状态
+            updateFloatBalls();
         }
 
         // 渲染日期列表
@@ -460,7 +543,9 @@
         // 展开/收缩面板
         function toggleDailyPanel() {
             const panel = document.getElementById('daily-route-panel');
-            panel.classList.toggle('expanded');
+            const isExpanded = panel.classList.toggle('expanded');
+            panelStates.daily = isExpanded ? 'expanded' : 'collapsed';
+            updateFloatBalls();
         }
 
         // 高亮选中项
@@ -585,20 +670,27 @@
             }
         }
 
-        // 切换面板展开/收起
+        // 切换面板展开/收起（通过面板上的按钮）
         function togglePanel(panelId) {
             const panel = document.getElementById(panelId);
             const btn = panel.querySelector('.btn-collapse .collapse-icon');
 
-            if (panelStates[panelId] === 'expanded') {
-                panelStates[panelId] = 'collapsed';
+            // 从 panelId 转换为 type
+            const typeMap = { locationPanel: 'location', resultPanel: 'result' };
+            const type = typeMap[panelId];
+
+            if (panelStates[type] === 'expanded') {
+                panelStates[type] = 'collapsed';
                 panel.classList.add('collapsed');
                 btn.style.transform = 'rotate(180deg)';
             } else {
-                panelStates[panelId] = 'expanded';
+                panelStates[type] = 'expanded';
                 panel.classList.remove('collapsed');
                 btn.style.transform = 'rotate(0deg)';
             }
+
+            // 更新悬浮球
+            updateFloatBalls();
         }
 
         // 渲染地点列表 - 紧凑模式（无策略选择）
