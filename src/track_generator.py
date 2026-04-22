@@ -384,11 +384,12 @@ def render_html_template(points: List[Dict], output_path: str, templates_dir: st
         # 计算静态资源基础路径（output/{testX}/ 目录需回退两级到 travellingMap 根目录）
         static_base = '../../'
 
-        # 渲染模板
+# 渲染模板
         html_content = template.render(
             amap_ak=amap_web_ak,
             static_base=static_base,
-            track_points=points
+            track_points=points,
+            single_html=False
         )
 
         # 写入输出文件
@@ -407,15 +408,18 @@ def load_css_inline(static_dir: str) -> str:
     """读取 CSS 文件内容
 
     Returns:
-        str: CSS 文件内容
+        str: CSS 文件内容（common.css + map.css）
     """
-    css_path = os.path.join(static_dir, 'map.css')
-    try:
-        with open(css_path, 'r', encoding='utf-8') as f:
-            return f.read()
-    except Exception as e:
-        logger.error(f"读取 CSS 文件失败: {e}")
-        return ""
+    css_files = ['common.css', 'map.css']
+    css_contents = []
+    for css_file in css_files:
+        css_path = os.path.join(static_dir, css_file)
+        try:
+            with open(css_path, 'r', encoding='utf-8') as f:
+                css_contents.append(f.read())
+        except Exception as e:
+            logger.error(f"读取 CSS 文件失败: {e}")
+    return '\n'.join(css_contents)
 
 
 def convert_car_icon_to_base64(static_dir: str) -> str:

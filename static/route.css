@@ -60,30 +60,10 @@ body {
 }
 
 /* ============================================
-   顶部标题栏
+   顶部标题栏 - 通用样式在 common.css
    ============================================ */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50px;
-    background: var(--bg-panel);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-color);
-    padding: 0 16px;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-}
 
-.header-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
+/* route 页面特有的 header 内元素样式 */
 .import-info {
     font-size: 12px;
     padding: 4px 10px;
@@ -91,91 +71,6 @@ body {
     color: white;
     border-radius: 12px;
     font-weight: 500;
-}
-
-.header-icon-img {
-    width: 28px;
-    height: 28px;
-}
-
-.header h1 {
-    font-size: 15px;
-    font-weight: 600;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.header h1 .title-en {
-    font-size: 0.75em;
-    opacity: 0.7;
-}
-
-.header-right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Theme toggle button */
-.theme-toggle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--bg-glass);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    padding: 0;
-}
-
-.theme-toggle:hover {
-    background: var(--bg-glass-hover);
-    border-color: var(--primary-color);
-    transform: rotate(15deg);
-}
-
-.theme-toggle svg {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
-}
-
-.theme-toggle .icon-moon {
-    display: none;
-}
-
-[data-theme="light"] .theme-toggle .icon-sun {
-    display: none;
-}
-
-[data-theme="light"] .theme-toggle .icon-moon {
-    display: block;
-}
-
-.header-btn {
-    padding: 6px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background: var(--bg-glass);
-    color: var(--text-primary);
-    font-size: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.2s;
-}
-
-.header-btn:hover {
-    background: var(--bg-glass-hover);
-    border-color: var(--primary-color);
 }
 
 /* ============================================
@@ -317,12 +212,6 @@ body {
     transform: rotate(180deg);
 }
 
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
 /* ============================================
    驾车策略栏（右侧面板）
    ============================================ */
@@ -397,12 +286,6 @@ body {
 .btn-swap:hover {
     background: rgba(255,255,255,0.4);
     transform: rotate(180deg);
-}
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 6px;
 }
 
 /* ============================================

@@ -1,253 +1,99 @@
 /* ============================================
-   travellingMap 视觉增强样式表
-   包含: 暗色主题 + 毛玻璃效果 + 流光动画
+   地图页面专用样式
    ============================================ */
 
-:root {
-    /* 主题色彩变量 */
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --accent-color: #f093fb;
-    --glow-color: rgba(102, 126, 234, 0.6);
-
-    /* 暗色主题变量 */
-    --bg-dark: #0a0a15;
-    --bg-panel: rgba(20, 20, 40, 0.85);
-    --bg-glass: rgba(255, 255, 255, 0.08);
-    --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-muted: rgba(255, 255, 255, 0.5);
-    --border-color: rgba(255, 255, 255, 0.1);
-    --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.3);
-}
-
-/* 亮色主题覆盖 */
-body.light-theme {
-    --bg-dark: #f0f2f5;
-    --bg-panel: rgba(255, 255, 255, 0.95);
-    --bg-glass: rgba(0, 0, 0, 0.05);
-    --text-primary: #1a1a2e;
-    --text-secondary: rgba(26, 26, 46, 0.7);
-    --text-muted: rgba(26, 26, 46, 0.5);
-    --border-color: rgba(0, 0, 0, 0.1);
-    --shadow-glow: 0 4px 20px rgba(102, 126, 234, 0.15);
-}
-
-body.light-theme .header {
-    background: rgba(255, 255, 255, 0.95);
-    border-bottom: 1px solid var(--border-color);
-}
-
-body.light-theme .left-panel,
-body.light-theme .right-panel,
-body.light-theme .player-bar,
-body.light-theme .legend,
-body.light-theme .altitude-panel,
-body.light-theme .data-table-panel,
-body.light-theme .trip-details-panel {
-    background: rgba(255, 255, 255, 0.98);
-}
-
-body.light-theme .itinerary-item:hover {
-    background: rgba(102, 126, 234, 0.08);
-}
-
-body.light-theme .itinerary-item.active {
-    background: rgba(102, 126, 234, 0.12);
-}
-
-body.light-theme .data-table thead {
-    background: rgba(240, 240, 250, 0.98);
-}
-
-body.light-theme .data-table tbody tr:hover {
-    background: rgba(102, 126, 234, 0.08);
-}
-
-body.light-theme .player-progress {
-    background: rgba(0, 0, 0, 0.08);
-}
-
-body.light-theme .preview-main {
-    background: rgba(240, 240, 250, 0.5);
-}
-
-body.light-theme .preview-thumbnails {
-    background: rgba(240, 240, 250, 0.8);
-}
-
-body.light-theme .preview-info {
-    background: rgba(255, 255, 255, 0.98);
-    border-top: 1px solid var(--border-color);
-}
-
-body.light-theme .table-footer {
-    background: rgba(240, 240, 250, 0.5);
-    border-top: 1px solid var(--border-color);
-}
-
-body.light-theme .data-table-tabs {
-    background: rgba(240, 240, 250, 0.8);
-    border-bottom: 1px solid var(--border-color);
-}
-
-body.light-theme .table-tab {
-    background: rgba(0, 0, 0, 0.04);
-    border-color: var(--border-color);
-    color: var(--text-secondary);
-}
-
-body.light-theme .table-tab:hover {
-    background: rgba(102, 126, 234, 0.12);
-    color: var(--text-primary);
-}
-
-body.light-theme .speed-btn {
-    background: rgba(0, 0, 0, 0.04);
-    border-color: var(--border-color);
-    color: var(--text-secondary);
-}
-
-body.light-theme .speed-btn:hover {
-    background: rgba(102, 126, 234, 0.12);
-    border-color: var(--primary-color);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Microsoft YaHei', '微软雅黑', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-primary);
-    overflow: hidden;
-    transition: background 0.5s ease;
-}
-
-/* 暗色主题氛围背景 */
-body::before {
-    content: '';
+/* 悬浮球样式 */
+.itinerary-float-btn {
     position: fixed;
-    top: 0;
-    left: 0;
+    top: 70px;
+    right: -32px;
+    width: 44px;
+    height: 44px;
+    background: var(--primary-gradient);
+    border-radius: 50% 0 0 50%;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+    cursor: pointer;
+    z-index: 997;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    padding-right: 6px;
+}
+
+.itinerary-float-btn:hover {
     right: 0;
-    bottom: 0;
-    background:
-        radial-gradient(ellipse at 20% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(240, 147, 251, 0.05) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: -1;
-    animation: bgPulse 8s ease-in-out infinite;
+    width: 50px;
+    height: 50px;
 }
 
-@keyframes bgPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+.itinerary-float-btn svg {
+    flex-shrink: 0;
 }
 
+.legend-float-btn {
+    position: fixed;
+    top: 70px;
+    left: -24px;
+    width: 44px;
+    height: 44px;
+    background: var(--primary-gradient);
+    border-radius: 0 50% 50% 0;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+    cursor: pointer;
+    z-index: 997;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    padding-left: 6px;
+}
+
+.legend-float-btn:hover {
+    left: 0;
+    width: 50px;
+    height: 50px;
+}
+
+.legend-float-btn svg {
+    flex-shrink: 0;
+}
+
+.altitude-float-btn {
+    position: fixed;
+    bottom: 80px;
+    right: -32px;
+    width: 44px;
+    height: 44px;
+    background: var(--primary-gradient);
+    border-radius: 50% 0 0 50%;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+    cursor: pointer;
+    z-index: 997;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    padding-right: 6px;
+}
+
+.altitude-float-btn:hover {
+    right: 0;
+    width: 50px;
+    height: 50px;
+}
+
+.altitude-float-btn svg {
+    flex-shrink: 0;
+}
+
+/* 地图容器 */
 #map {
     width: 100vw;
     height: 100vh;
-}
-
-/* ============================================
-   顶部标题栏 - 暗色主题 + 发光效果
-   ============================================ */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: var(--bg-panel);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-color);
-    padding: 12px 20px;
-    z-index: 1000;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), var(--shadow-glow);
-    display: flex;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.header h1 {
-    font-size: 16px;
-    font-weight: 600;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.header h1 .title-en {
-    font-size: 0.8em;
-}
-
-.header-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.header-icon {
-    color: var(--primary-color);
-    filter: drop-shadow(0 0 8px var(--glow-color));
-}
-
-.header-icon-img {
-    width: 32px;
-    height: 32px;
-    vertical-align: middle;
-}
-
-.header-right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.header .stats {
-    font-size: 12px;
-    opacity: 0.9;
-    color: var(--text-secondary);
-}
-
-/* 主题切换按钮 */
-.theme-toggle {
-    padding: 6px 10px;
-    min-width: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.theme-toggle:hover {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(240, 147, 251, 0.4);
-}
-
-/* ============================================
-   毛玻璃面板通用样式
-   ============================================ */
-.glass-panel {
-    background: var(--bg-panel);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.glass-panel:hover {
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), var(--shadow-glow);
-    border-color: rgba(102, 126, 234, 0.3);
 }
 
 /* ============================================
@@ -273,17 +119,6 @@ body::before {
 
 .left-panel.active {
     display: block;
-}
-
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
 }
 
 .left-panel-header {
@@ -394,17 +229,6 @@ body::before {
 
 .right-panel.active {
     display: flex;
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
 }
 
 .right-panel-header {
@@ -762,17 +586,6 @@ body::before {
     animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes modalIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
 .photo-preview.active {
     display: flex;
 }
@@ -792,11 +605,6 @@ body::before {
     max-height: 65vh;
     object-fit: contain;
     animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
 
 .preview-nav {
@@ -1057,267 +865,6 @@ body::before {
 
 .legend-text {
     color: var(--text-primary);
-}
-
-/* ============================================
-   图例悬浮球
-   ============================================ */
-.legend-float-btn {
-    position: fixed;
-    top: 70px;
-    left: -24px;
-    width: 44px;
-    height: 44px;
-    background: var(--primary-gradient);
-    border-radius: 0 50% 50% 0;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
-    cursor: pointer;
-    z-index: 997;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    transition: all 0.3s ease;
-    padding-left: 6px;
-}
-
-.legend-float-btn:hover {
-    left: 0;
-    width: 50px;
-    height: 50px;
-}
-
-.legend-float-btn svg {
-    flex-shrink: 0;
-}
-
-/* ============================================
-   行程列表悬浮球
-   ============================================ */
-.itinerary-float-btn {
-    position: fixed;
-    top: 70px;
-    right: -32px;
-    width: 44px;
-    height: 44px;
-    background: var(--primary-gradient);
-    border-radius: 50% 0 0 50%;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
-    cursor: pointer;
-    z-index: 997;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    transition: all 0.3s ease;
-    padding-right: 6px;
-}
-
-.itinerary-float-btn:hover {
-    right: 0;
-    width: 50px;
-    height: 50px;
-}
-
-.itinerary-float-btn svg {
-    flex-shrink: 0;
-}
-
-/* ============================================
-   海拔悬浮球
-   ============================================ */
-.altitude-float-btn {
-    position: fixed;
-    bottom: 80px;
-    right: -32px;
-    width: 44px;
-    height: 44px;
-    background: var(--primary-gradient);
-    border-radius: 50% 0 0 50%;
-    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
-    cursor: pointer;
-    z-index: 997;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    transition: all 0.3s ease;
-    padding-right: 6px;
-}
-
-.altitude-float-btn:hover {
-    right: 0;
-    width: 50px;
-    height: 50px;
-}
-
-.altitude-float-btn svg {
-    flex-shrink: 0;
-}
-
-/* ============================================
-   加载状态 - 霓虹风格
-   ============================================ */
-.loading {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 2000;
-}
-
-.loading-spinner {
-    width: 60px;
-    height: 60px;
-    border: 4px solid rgba(102, 126, 234, 0.2);
-    border-top-color: var(--primary-color);
-    border-bottom-color: var(--accent-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite, borderGlow 2s ease-in-out infinite;
-    margin: 0 auto 20px;
-    box-shadow: 0 0 30px var(--glow-color);
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-@keyframes borderGlow {
-    0%, 100% {
-        box-shadow: 0 0 20px var(--glow-color);
-        border-color: rgba(102, 126, 234, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 40px var(--glow-color), 0 0 60px rgba(240, 147, 251, 0.3);
-        border-color: rgba(240, 147, 251, 0.5);
-    }
-}
-
-.loading p {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-top: 15px;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
-}
-
-@keyframes labelPulse {
-    0%, 100% {
-        box-shadow: 0 0 15px rgba(102, 126, 234, 0.6), 0 2px 6px rgba(0,0,0,0.3);
-        transform: scale(1);
-    }
-    50% {
-        box-shadow: 0 0 25px rgba(102, 126, 234, 0.9), 0 0 40px rgba(102, 126, 234, 0.4), 0 2px 6px rgba(0,0,0,0.3);
-        transform: scale(1.05);
-    }
-}
-
-/* ============================================
-   移动端适配
-   ============================================ */
-@media (max-width: 768px) {
-    .left-panel, .right-panel {
-        width: calc(100vw - 20px);
-        max-height: 45vh;
-    }
-
-    .left-panel {
-        top: auto;
-        bottom: 130px;
-        left: 10px;
-        right: 10px;
-    }
-
-    .right-panel {
-        top: auto;
-        bottom: 130px;
-        right: 10px;
-        left: 10px;
-        width: auto;
-    }
-
-    .player-bar {
-        left: 10px;
-        right: 10px;
-        transform: none;
-        justify-content: center;
-        padding: 10px 16px;
-    }
-
-    .player-progress {
-        width: 100px;
-    }
-
-    .player-info {
-        min-width: 200px;
-    }
-
-    .legend {
-        display: none;
-    }
-
-    .altitude-panel {
-        width: calc(100vw - 20px);
-        right: 10px;
-    }
-}
-
-/* ============================================
-   地图主题选择器
-   ============================================ */
-.map-style-selector {
-    display: flex;
-    align-items: center;
-}
-
-.map-style-selector select {
-    padding: 6px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--bg-glass);
-    color: var(--text-primary);
-    font-size: 12px;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.2s;
-}
-
-.map-style-selector select:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: var(--primary-color);
-}
-
-.map-style-selector select option {
-    background: var(--bg-dark);
-    color: var(--text-primary);
-}
-
-/* ============================================
-   页头按钮 - 霓虹风格
-   ============================================ */
-.header-btn {
-    padding: 6px 14px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--bg-glass);
-    color: var(--text-primary);
-    font-size: 12px;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s;
-    font-family: inherit;
-}
-
-.header-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: var(--primary-color);
-    box-shadow: 0 0 15px var(--glow-color);
-    transform: translateY(-1px);
 }
 
 /* ============================================
