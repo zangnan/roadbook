@@ -5,6 +5,8 @@
     max-width: 920px;
     margin: 0 auto;
     padding: 80px 20px 24px;
+    overflow-y: auto;
+    max-height: 100vh;
 }
 
 /* ===== Header ===== */

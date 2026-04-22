@@ -851,12 +851,7 @@
     border: 3px solid rgba(102, 126, 234, 0.2);
     border-top-color: var(--primary-color);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
     margin: 0 auto 12px;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
 }
 
 .loading p {

@@ -242,14 +242,18 @@
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>
     <script>
+        // 主题初始化
+        (function() {
+            const saved = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', saved);
+        })();
+
         // 主题切换
         function toggleTheme() {
             const body = document.body;
-            if (body.getAttribute('data-theme') === 'light') {
-                body.setAttribute('data-theme', 'dark');
-            } else {
-                body.setAttribute('data-theme', 'light');
-            }
+            const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
         }
 
         // 传递配置到前端

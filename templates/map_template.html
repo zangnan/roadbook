@@ -228,16 +228,15 @@
         // 主题切换功能
         function toggleTheme() {
             const body = document.body;
-            if (body.getAttribute('data-theme') === 'light') {
-                body.setAttribute('data-theme', 'dark');
-            } else {
-                body.setAttribute('data-theme', 'light');
-            }
+            const newTheme = body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
         }
 
         // 初始化主题
         function initTheme() {
-            document.body.setAttribute('data-theme', 'dark');
+            const saved = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', saved);
         }
 
         // 轨迹回放动画状态

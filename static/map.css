@@ -114,8 +114,7 @@
     z-index: 999;
     overflow: hidden;
     display: none;
-    animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+    }
 
 .left-panel.active {
     display: block;
@@ -224,8 +223,7 @@
     overflow: hidden;
     display: none;
     flex-direction: column;
-    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+    }
 
 .right-panel.active {
     display: flex;
@@ -404,8 +402,7 @@
     align-items: center;
     padding: 12px 24px;
     gap: 16px;
-    animation: floatUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
+    }
 
 @keyframes floatUp {
     from {
@@ -583,8 +580,7 @@
     display: none;
     overflow: hidden;
     flex-direction: column;
-    animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+    }
 
 .photo-preview.active {
     display: flex;
@@ -604,8 +600,7 @@
     max-width: 100%;
     max-height: 65vh;
     object-fit: contain;
-    animation: fadeIn 0.3s ease;
-}
+    }
 
 .preview-nav {
     position: absolute;
@@ -746,8 +741,7 @@
     backdrop-filter: blur(5px);
     z-index: 1999;
     display: none;
-    animation: fadeIn 0.3s ease;
-}
+    }
 
 .photo-overlay.active {
     display: block;
@@ -887,8 +881,7 @@
     display: none;
     flex-direction: column;
     overflow: hidden;
-    animation: modalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+    }
 
 .trip-details-header {
     background: var(--primary-gradient);
@@ -971,8 +964,7 @@
     display: none;
     flex-direction: column;
     overflow: hidden;
-    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
+    }
 
 .altitude-panel.active {
     display: flex;
