@@ -17,12 +17,22 @@
     /* 暗色主题变量 */
     --bg-dark: #0a0a15;
     --bg-panel: rgba(20, 20, 40, 0.85);
+    --bg-panel-solid: #14142a;
     --bg-glass: rgba(255, 255, 255, 0.08);
+    --bg-glass-hover: rgba(255, 255, 255, 0.12);
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-muted: rgba(255, 255, 255, 0.5);
     --border-color: rgba(255, 255, 255, 0.1);
     --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.3);
+    --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --map-filter: none;
+
+    /* 路径规划交通方式颜色 */
+    --color-driving: #0084ff;
+    --color-walking: #43a047;
+    --color-riding: #ff9800;
+    --color-transit: #9c27b0;
 
     /* style.css 变量暗色版本 */
     --bg: #0f172a;
@@ -59,13 +69,24 @@
     --slate-700: #f1f5f9;
     --slate-800: #f8fafc;
     --slate-900: #ffffff;
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius: 8px;
+    --radius-lg: 12px;
+
+    /* Transition */
+    --transition-fast: 150ms ease;
+    --transition: 200ms ease;
 }
 
 /* 亮色主题覆盖 */
 body[data-theme="light"] {
     --bg-dark: #f0f2f5;
     --bg-panel: rgba(255, 255, 255, 0.95);
+    --bg-panel-solid: #ffffff;
     --bg-glass: rgba(0, 0, 0, 0.05);
+    --bg-glass-hover: rgba(0, 0, 0, 0.08);
     --text-primary: #1a1a2e;
     --text-secondary: rgba(26, 26, 46, 0.7);
     --text-muted: rgba(26, 26, 46, 0.5);
@@ -118,11 +139,31 @@ body[data-theme="light"] .glass-panel {
     background: rgba(255, 255, 255, 0.98);
 }
 
+/* 暗色主题覆盖 - 确保 common.css 变量在暗色模式下正确 */
+body[data-theme="dark"] {
+    --bg-dark: #0a0a15;
+    --bg-panel: rgba(20, 20, 40, 0.85);
+    --bg-panel-solid: #14142a;
+    --bg-glass: rgba(255, 255, 255, 0.08);
+    --bg-glass-hover: rgba(255, 255, 255, 0.12);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.3);
+    --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --map-filter: none;
+    /* style.css 变量覆盖 */
+    --bg: #0f172a;
+}
+
 /* 兼容旧的 .light-theme 类 */
 body.light-theme {
     --bg-dark: #f0f2f5;
     --bg-panel: rgba(255, 255, 255, 0.95);
+    --bg-panel-solid: #ffffff;
     --bg-glass: rgba(0, 0, 0, 0.05);
+    --bg-glass-hover: rgba(0, 0, 0, 0.08);
     --text-primary: #1a1a2e;
     --text-secondary: rgba(26, 26, 46, 0.7);
     --text-muted: rgba(26, 26, 46, 0.5);
@@ -610,5 +651,161 @@ body::before {
     .header-btn {
         padding: 5px 10px;
         font-size: 11px;
+    }
+}
+
+/* 首页样式 */
+.home-main {
+    padding-top: 80px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.hero-title-en {
+    font-size: 0.6em;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.feature-cards {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.feature-card {
+    width: 260px;
+    padding: 32px 24px;
+    background: var(--bg-panel);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-gradient);
+    border-radius: 16px;
+}
+
+.feature-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: white;
+}
+
+.feature-card h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.feature-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--primary-light);
+    color: var(--primary-color);
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.recent-outputs {
+    margin-top: 20px;
+}
+
+.section-title {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.output-list {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.output-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.output-item:hover {
+    color: var(--text-primary);
+    border-color: var(--primary-color);
+}
+
+.output-time {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .feature-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .feature-card {
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .hero-title {
+        font-size: 32px;
     }
 }

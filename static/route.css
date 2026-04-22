@@ -2,63 +2,6 @@
    路径规划页面样式
    ============================================ */
 
-:root {
-    /* Dark theme (default) */
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --accent-color: #f093fb;
-    --glow-color: rgba(102, 126, 234, 0.6);
-
-    --bg-dark: #0a0a15;
-    --bg-panel: rgba(20, 20, 40, 0.95);
-    --bg-panel-solid: #14142a;
-    --bg-glass: rgba(255, 255, 255, 0.08);
-    --bg-glass-hover: rgba(255, 255, 255, 0.12);
-    --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-muted: rgba(255, 255, 255, 0.5);
-    --border-color: rgba(255, 255, 255, 0.1);
-    --shadow-glow: 0 0 30px rgba(102, 126, 234, 0.3);
-    --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.4);
-
-    --color-driving: #0084ff;
-    --color-walking: #43a047;
-    --color-riding: #ff9800;
-    --color-transit: #9c27b0;
-
-    --map-filter: none;
-}
-
-/* Light theme */
-[data-theme="light"] {
-    --bg-dark: #f0f2f5;
-    --bg-panel: rgba(255, 255, 255, 0.95);
-    --bg-panel-solid: #ffffff;
-    --bg-glass: rgba(0, 0, 0, 0.04);
-    --bg-glass-hover: rgba(0, 0, 0, 0.08);
-    --text-primary: #1a1a2e;
-    --text-secondary: #4a4a6a;
-    --text-muted: #8a8aa0;
-    --border-color: rgba(0, 0, 0, 0.1);
-    --shadow-panel: 0 8px 32px rgba(0, 0, 0, 0.12);
-    --map-filter: grayscale(20%) sepia(10%);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Microsoft YaHei', '微软雅黑', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: var(--bg-dark);
-    color: var(--text-primary);
-    overflow: hidden;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 /* ============================================
    顶部标题栏 - 通用样式在 common.css
    ============================================ */

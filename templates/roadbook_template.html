@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>路书 RoadBook - 创建路书</title>
+    <title>路书 RoadBook - AI路书</title>
     <link rel="icon" href="{{ static_base }}static/assets/favicon-48.png" type="image/png">
     <link rel="stylesheet" href="{{ static_base }}static/common.css">
     <link rel="stylesheet" href="{{ static_base }}static/route.css">
@@ -2938,12 +2938,9 @@
         <div class="header-brand">
             <img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img">
             <h1>路书 <span class="title-en">RoadBook</span></h1>
-            <span class="header-subtitle">创建路书</span>
+            <span class="header-subtitle">AI路书</span>
         </div>
         <div class="header-right">
-            <button class="header-btn" onclick="goToRoutePlanner()">
-                路径规划
-            </button>
             <div class="collection-dropdown">
                 <button class="header-btn" onclick="toggleCollectionPanel()">
                     🌟 收藏
@@ -3071,13 +3068,13 @@
         let currentTheme = localStorage.getItem(THEME_KEY) || 'dark';
 
         function initTheme() {
-            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.body.setAttribute('data-theme', currentTheme);
             document.getElementById('themeToggle').addEventListener('click', toggleTheme);
         }
 
         function toggleTheme() {
             currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.body.setAttribute('data-theme', currentTheme);
             localStorage.setItem(THEME_KEY, currentTheme);
         }
 

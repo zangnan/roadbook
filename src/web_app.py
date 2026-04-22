@@ -205,13 +205,21 @@ def roadbook_page():
 
 
 @app.route('/')
-def index():
-    """主页"""
+def home_page():
+    """首页 - 功能门户"""
+    output_dirs = get_output_dirs()
+    return render_template('home_template.html',
+                           static_base='',
+                           outputs=output_dirs)
+
+
+@app.route('/photo-track')
+def photo_track_page():
+    """照片轨迹页面"""
     photo_dirs = get_photo_dirs()
     output_dirs = get_output_dirs()
-    # Debug: 打印路径信息
-    print(f"index: get_output_base_dir() = {get_output_base_dir()}")
     return render_template('config_template.html',
+                           static_base='',
                            photo_dirs=photo_dirs,
                            output_dirs=output_dirs,
                            config_base=CONFIG_APP_DIR,
