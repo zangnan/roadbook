@@ -559,7 +559,7 @@ small {
 }
 
 .log-container {
-    background: var(--slate-900);
+    background: var(--surface-elevated);
     border-radius: var(--radius);
     padding: 16px;
     max-height: 280px;
@@ -569,7 +569,7 @@ small {
 .log-output {
     font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
     font-size: 0.8rem;
-    color: var(--slate-300);
+    color: var(--text-secondary);
     line-height: 1.7;
 }
 
@@ -579,11 +579,11 @@ small {
 }
 
 .log-line .time {
-    color: var(--slate-500);
+    color: var(--text-muted);
     margin-right: 12px;
 }
 
-.log-line.info { color: var(--slate-300); }
+.log-line.info { color: var(--text-secondary); }
 .log-line.warning { color: var(--warning); }
 .log-line.error { color: var(--danger); }
 .log-line.success { color: var(--success); }
@@ -652,7 +652,7 @@ small {
 .btn-link {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    margin-right: 4px;
     padding: 4px 10px;
     border-radius: var(--radius-sm);
     font-size: 0.8rem;

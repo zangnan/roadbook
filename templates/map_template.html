@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>路书</title>
+    <title>路书 RoadBook - 轨迹地图</title>
     <link rel="icon" href="{{ static_base }}static/assets/favicon-48.png" type="image/png">
     {% if single_html %}
     <style id="inline-css">{{ css_content }}</style>
@@ -189,7 +189,7 @@
         let map, markers = [], polylines = [], infoWindow;
 
         // 主题状态
-        
+
         // 检测桌面模式
         var isDesktop = new URLSearchParams(window.location.search).get('desktop') === '1';
 
