@@ -92,6 +92,10 @@
 | 🔄 **离线分享** | 单 HTML 文件模式，图片 base64 内联，可离线访问 |
 | 💾 **智能缓存** | SQLite/JSON 缓存地理编码结果，重复运行大幅加速 |
 | 🖥️ **桌面应用** | PyWebView 原生窗口，无需浏览器即可运行 |
+| 🚗 **路径规划** | 高德地图路线规划 |
+| 🤖 **AI 生成** | 一键生成完整路书，支持 DeepSeek 大模型 |
+| 📊 **Excel 导出** | 多 Sheet 行程报表（行程/景点/预算/清单） |
+| 🌤️ **天气查询** | 行程期间各目的地天气预报预览 |
 
 ### 键盘快捷键（地图页面）
 
@@ -226,6 +230,36 @@ output/my-trip/
 └── timeline.html               # 时间轴页面
 ```
 
+### 路径规划
+
+通过路径规划功能，可以使用高德地图规划出行路线：
+
+1. 打开应用，访问 `/route` 页面
+2. 输入起点、途经点和终点
+3. 点击开始规划，查看路线结果
+
+### AI 生成路书
+
+通过 AI 功能可以一键生成完整路书：
+
+1. 在路书页面点击「AI 生成」
+2. 填写行程信息（目的地、天数、人数、房数等）
+3. 提交后 AI 自动生成标准 JSON 路书
+4. 可进行路径规划、编辑和导出
+
+### Excel 导出
+
+将路书导出为多 Sheet Excel 文件：
+
+1. 在路书页面点击「导出 Excel」
+2. 自动生成包含以下 Sheet 的文件：
+   - **行程概览**：日期/星期/路线/里程
+   - **每日详情**：景点/住宿/美食/ Tips
+   - **路线站点**：途经站点列表
+   - **景点攻略**：门票/开放时间/游览贴士
+   - **预算明细**：交通/住宿/餐饮/门票
+   - **出行清单**：分类物品清单
+
 ---
 
 ## 🏗 技术架构
@@ -335,23 +369,37 @@ roadbook/
 │   ├── exif_reader.py     # EXIF 读取
 │   ├── coord_converter.py # 坐标转换
 │   ├── thumbnail.py       # 缩略图生成
-│   └── geo_coder.py       # 地理编码
+│   ├── geo_coder.py       # 地理编码
+│   ├── route_planner.py   # 路径规划（高德API）
+│   ├── ai_generator.py    # AI 路书生成（DeepSeek）
+│   ├── excel_exporter.py  # Excel 导出
+│   └── weather.py         # 天气查询
 │
 ├── templates/
 │   ├── map_template.html      # 轨迹地图模板
 │   ├── timeline_template.html # 时间轴模板
-│   └── config_template.html   # 配置页面模板
+│   ├── config_template.html   # 配置页面模板
+│   ├── home_template.html     # 首页模板
+│   ├── route_template.html   # 路径规划页面
+│   └── roadbook_template.html # 路书展示页面
 │
 ├── static/
 │   ├── app.js            # 应用脚本
 │   ├── map.css           # 地图样式
 │   ├── style.css         # 界面样式
+│   ├── common.css        # 通用样式（主题/动画/悬浮球）
+│   ├── route.css         # 路径规划样式
 │   └── assets/           # 静态资源
 │       ├── app.ico       # 应用图标
 │       ├── favicon-*.png # 多尺寸图标
 │       ├── car.png       # 车辆图标
 │       ├── dir-marker.png # 地点标记图标
 │       └── preview-*.png # 预览图
+│
+├── docs/                 # 文档目录
+│   ├── route.md          # 路书示例
+│   ├── route_example.json # 路书 JSON 示例
+│   └── route_template.json # 路书 JSON Schema
 │
 ├── photo/                # 照片目录（可配置）
 ├── output/               # 输出目录（可配置）

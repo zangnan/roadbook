@@ -247,10 +247,17 @@ python src/web_app.py
 | 路由 | 方法 | 说明 |
 |------|------|------|
 | `/` | GET | 主页面（配置页面） |
+| `/route` | GET | 路径规划页面 |
+| `/roadbook` | GET | 路书展示页面 |
 | `/api/directories` | GET | 获取照片目录列表 |
 | `/api/outputs` | GET | 获取输出目录列表 |
 | `/api/run` | POST | 执行 photo_track.py |
 | `/api/status/<task_id>` | GET | 查询任务状态（轮询） |
+| `/api/route/inputtips` | GET | 地点搜索（高德） |
+| `/api/route/plan` | POST | 路径规划（高德） |
+| `/api/ai/generate` | POST | AI 生成路书（DeepSeek） |
+| `/api/export/excel` | POST | Excel 导出 |
+| `/api/weather` | GET | 天气查询（高德） |
 | `/output/<path>` | GET | 访问生成的输出文件 |
 
 ---
@@ -273,3 +280,150 @@ webview.start(main, window, debug=False)
 |------|------|
 | `debug=False` | 关闭 PyWebView 内置开发者工具 |
 | `debug=True` | 开启 PyWebView 内置开发者工具 |
+
+---
+
+## 8. 路书数据格式
+
+路书（Roadbook）数据用于路径规划和 AI 生成功能，JSON Schema 定义在 `docs/route_template.json`。
+
+### 8.1 顶层结构
+
+```json
+{
+  "basic_info": { ... },
+  "daily_itinerary": [ ... ],
+  "budget": { ... }
+}
+```
+
+### 8.2 basic_info（基本信息）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `title` | string | 行程标题 |
+| `travel_date_start` | string | 出发日期 (YYYY-MM-DD) |
+| `travel_date_end` | string | 返回日期 (YYYY-MM-DD) |
+| `days` | int | 天数 |
+| `car_type` | string | 车型 |
+| `people_count` | int | 人数 |
+| `room_count` | int | 房间数 |
+| `total_distance_km` | float | 总里程 (km) |
+
+### 8.3 daily_itinerary[]（每日行程）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `day_number` | int | 第几天 |
+| `date` | string | 日期 (YYYY-MM-DD) |
+| `origin` | string | 出发地 |
+| `destination` | string | 目的地 |
+| `distance_km` | float | 里程 (km) |
+| `duration_hours` | float | 时长 (小时) |
+| `route` | string | 路线描述 |
+| `highlights[]` | string[] | 亮点景点 |
+| `accommodation` | string | 住宿地点 |
+| `food[]` | string[] | 推荐美食 |
+| `tips[]` | string[] | 游览 Tips |
+| `gas_station` | string | 加油站在哪 |
+| `notes` | string | 注意事项 |
+
+### 8.4 budget（预算明细）
+
+```json
+{
+  "transportation": {
+    "fuel_total_liters": float,
+    "fuel_cost": int,
+    "toll_fees": int,
+    "transportation_total": int,
+    "per_person": int
+  },
+  "accommodation": [
+    { "location": string, "type": string, "price_per_room": int, "nights": int, "rooms": int }
+  ],
+  "food": {
+    "daily_budget_per_person": int,
+    "days": int,
+    "per_person": int,
+    "group_total": int
+  },
+  "tickets": [
+    { "item": string, "total": int, "remark": string }
+  ],
+  "misc": [
+    { "item": string, "total": int }
+  ],
+  "grand_total": {
+    "per_person": int,
+    "group_total": int
+  }
+}
+```
+
+---
+
+## 9. 缓存系统
+
+### 9.1 地理编码缓存 — `GeoCodeCache`
+
+逆地理编码结果缓存，支持两种存储方式：
+
+| 存储方式 | 配置 | 文件 |
+|----------|------|------|
+| JSON | `CACHE_TYPE = 'json'` | `cache/geocode_cache.json` |
+| SQLite | `CACHE_TYPE = 'sqlite'` | `cache/cache.db` |
+
+- 缓存键精度：小数点后5位（约1.1米）
+
+### 9.2 路径规划缓存 — `RouteCache`
+
+路径规划结果缓存（SQLite），缓存键精度：小数点后5位（约1.1米）。
+
+| 缓存类型 | TTL | 说明 |
+|----------|-----|------|
+| `inputtips_cache` | 30天 | 地点搜索结果 |
+| `route_cache` | 7天 | 路径规划结果 |
+
+---
+
+## 10. PyInstaller 打包配置（roadbook.spec）
+
+| 配置项 | 说明 |
+|--------|------|
+| `console=True/False` | 是否显示控制台窗口 |
+
+### 10.1 打包文件清单
+
+```python
+datas=[
+    ('templates', 'templates'),
+    ('static', 'static'),
+    ('src/config.py', '.'),
+    ('src/web_app.py', '.'),
+    ('src/photo_track.py', '.'),
+    ('src/exif_reader.py', '.'),
+    ('src/coord_converter.py', '.'),
+    ('src/thumbnail.py', '.'),
+    ('src/geo_coder.py', '.'),
+    ('src/track_generator.py', '.'),
+    ('src/route_planner.py', '.'),      # 路径规划
+    ('src/ai_generator.py', '.'),       # AI 生成
+    ('src/excel_exporter.py', '.'),     # Excel 导出
+    ('src/weather.py', '.'),            # 天气查询
+],
+```
+
+### 10.2 新增依赖
+
+```python
+hiddenimports=[
+    # ... 原有依赖 ...
+    'route_planner',
+    'ai_generator',
+    'excel_exporter',
+    'weather',
+    'openpyxl',  # Excel 导出
+    'requests',  # 外部 API 调用
+],
+```
