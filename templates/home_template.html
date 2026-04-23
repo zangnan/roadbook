@@ -53,7 +53,7 @@
         </div>
 
         <div class="feature-cards">
-            <a href="/photo-track" target="_blank" class="feature-card card-photo">
+            <a href="/photo-track" onclick="navigateTo('/photo-track'); return false;" class="feature-card card-photo">
                 <div class="feature-glow"></div>
                 <div class="feature-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -67,7 +67,7 @@
                 <span class="feature-tag">照片 → 轨迹地图</span>
             </a>
 
-            <a href="/route" target="_blank" class="feature-card card-route">
+            <a href="/route" onclick="navigateTo('/route'); return false;" class="feature-card card-route">
                 <div class="feature-glow"></div>
                 <div class="feature-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -81,7 +81,7 @@
                 <span class="feature-tag">起点 → 终点</span>
             </a>
 
-            <a href="/roadbook" target="_blank" class="feature-card card-ai">
+            <a href="/roadbook" onclick="navigateTo('/roadbook'); return false;" class="feature-card card-ai">
                 <div class="feature-glow"></div>
                 <div class="feature-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -102,7 +102,7 @@
         <div class="recent-outputs">
             <h3 class="section-title">最近输出</h3>
             <div class="output-list">
-                {% for output in outputs %}
+{% for output in outputs %}
                 <a href="/output/{{ output.name }}/track_output.html" class="output-item">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
@@ -118,6 +118,17 @@
     </main>
 
     <script>
+        // 导航函数（桌面模式下使用 PyWebView 的 navigate，浏览器模式下使用 location.href）
+        function navigateTo(url) {
+            if (window.navigate) {
+                // 桌面模式：使用 PyWebView 暴露的 navigate 函数
+                window.navigate(url);
+            } else {
+                // 浏览器模式：使用原生导航
+                window.location.href = url;
+            }
+        }
+
         // 主题切换
         function toggleTheme() {
             const body = document.body;

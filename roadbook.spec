@@ -43,6 +43,7 @@ a = Analysis(
         'excel_exporter',
         'weather',
         'openpyxl',
+        'openai',
         'webview',
     ],
     hookspath=[],
