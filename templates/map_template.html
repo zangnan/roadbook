@@ -16,8 +16,8 @@
 <body>
     <div class="header">
         <div class="header-brand">
-            <img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img">
-            <h1>路书 <span class="title-en">RoadBook</span></h1>
+            <a href="/"><img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img"></a>
+            <a href="/"><h1>路书 <span class="title-en">RoadBook</span></h1></a>
             <span class="header-subtitle">轨迹地图</span>
         </div>
         <div class="header-right">
@@ -82,28 +82,28 @@
     </div>
 
     <!-- 右侧行程面板 -->
-    <div class="right-panel" id="rightPanel">
-        <div class="right-panel-header">
+    <div class="right-panel common-panel common-panel-right" id="rightPanel">
+        <div class="right-panel-header common-panel-header">
             <span>行程列表 (<span id="pointCount">0</span> 个地点)</span>
-            <button class="right-panel-close" onclick="closeRightPanel()">×</button>
+            <button class="right-panel-close common-panel-close" onclick="closeRightPanel()">×</button>
         </div>
-        <div class="right-panel-list" id="itineraryList">
+        <div class="right-panel-list common-panel-body" id="itineraryList">
             <!-- 动态列表 -->
         </div>
     </div>
 
     <!-- 行程列表悬浮球 -->
-    <div class="itinerary-float-btn" id="itineraryFloatBtn" onclick="showRightPanel()">
+    <div class="itinerary-float-btn floating-btn floating-btn-right" id="itineraryFloatBtn" onclick="showRightPanel()">
         <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="currentColor" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
         </svg>
     </div>
 
     <!-- 行程详情面板 -->
-    <div class="trip-details-panel" id="tripDetailsPanel">
-        <div class="trip-details-header">
+    <div class="trip-details-panel common-panel common-panel-lg" id="tripDetailsPanel">
+        <div class="trip-details-header common-panel-header">
             <span>行程详情</span>
-            <button class="trip-details-close" onclick="closeTripDetails()">×</button>
+            <button class="trip-details-close common-panel-close" onclick="closeTripDetails()">×</button>
         </div>
         <div class="trip-details-content" id="tripDetailsContent">
             <!-- 动态内容 -->
@@ -111,18 +111,18 @@
     </div>
 
     <!-- 图例 -->
-    <div class="legend" id="legend">
-        <div class="legend-header">
+    <div class="legend common-panel common-panel-sm" id="legend">
+        <div class="legend-header common-panel-header common-panel-header-flat">
             <span>图例</span>
-            <button class="legend-close" onclick="closeLegend()">×</button>
+            <button class="legend-close common-panel-close" onclick="closeLegend()">×</button>
         </div>
-        <div class="legend-body" id="legendBody">
+        <div class="legend-body common-panel-body" id="legendBody">
             <!-- 动态生成 -->
         </div>
     </div>
 
     <!-- 图例悬浮球 -->
-    <div class="legend-float-btn" id="legendFloatBtn" onclick="showLegend()">
+    <div class="legend-float-btn floating-btn floating-btn-left" id="legendFloatBtn" onclick="showLegend()">
         <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
         </svg>
@@ -1447,7 +1447,7 @@
             `;
 
             document.getElementById('tripDetailsPanel').style.display = 'flex';
-            document.getElementById('btnTripDetails').style.display = 'none';
+            // document.getElementById('btnTripDetails').style.display = 'none';
         }
 
         function closeTripDetails() {
@@ -1693,36 +1693,37 @@
     </script>
 
     <!-- 数据表格面板 -->
-    <div class="data-table-panel" id="dataTablePanel">
-        <div class="data-table-header">
+    <div class="data-table-panel common-panel common-panel-lg" id="dataTablePanel">
+        <div class="data-table-header common-panel-header">
             <span>数据表格</span>
-            <button class="data-table-close" onclick="closeDataTable()">×</button>
+            <button class="data-table-close common-panel-close" onclick="closeDataTable()">×</button>
         </div>
         <div class="data-table-tabs">
             <button class="table-tab active" data-type="original" onclick="switchTable('original')">原始数据</button>
             <button class="table-tab" data-type="unknown" onclick="switchTable('unknown')">未知位置</button>
             <button class="table-tab" data-type="converted" onclick="switchTable('converted')">转换后数据</button>
         </div>
-        <div class="data-table-content" id="dataTableContent">
+        <div class="data-table-content common-panel-body" id="dataTableContent">
             <!-- 动态内容 -->
         </div>
     </div>
 
     <!-- 海拔浮窗 -->
-    <div class="altitude-panel" id="altitudePanel">
-        <div class="altitude-header">
+    <div class="altitude-panel common-panel common-panel-altitude common-panel-header-flat" id="altitudePanel">
+        <div class="altitude-header common-panel-header">
             <span>海拔变化</span>
             <div class="altitude-toggle" id="altitudeToggle">
                 <button class="toggle-btn active" data-mode="day" onclick="setAltitudeMode('day')">按天</button>
                 <button class="toggle-btn" data-mode="point" onclick="setAltitudeMode('point')">按坐标点</button>
             </div>
-            <button class="altitude-close" onclick="closeAltitudePanel()">×</button>
+            <!-- <button class="altitude-close common-panel-close" onclick="closeAltitudePanel()">×</button> -->
+            <button class="data-table-close common-panel-close" onclick="closeAltitudePanel()">×</button>
         </div>
-        <div class="altitude-chart" id="altitudeChart"></div>
+        <div class="altitude-chart common-panel-body" id="altitudeChart"></div>
     </div>
 
     <!-- 海拔悬浮球 -->
-    <div class="altitude-float-btn" id="altitudeFloatBtn" onclick="showAltitudePanel()">
+    <div class="altitude-float-btn floating-btn floating-btn-right" id="altitudeFloatBtn" onclick="showAltitudePanel()">
         <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="currentColor" d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
         </svg>

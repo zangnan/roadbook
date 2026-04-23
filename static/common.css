@@ -16,6 +16,9 @@
 
     /* 暗色主题变量 */
     --bg-dark: #0a0a15;
+    --bg-primary: #0a0a15;
+    --bg-secondary: #1a1a35;
+    --bg-tertiary: #252550;
     --bg-panel: rgba(20, 20, 40, 0.85);
     --bg-panel-solid: #14142a;
     --bg-glass: rgba(255, 255, 255, 0.08);
@@ -83,6 +86,9 @@
 /* 亮色主题覆盖 */
 body[data-theme="light"] {
     --bg-dark: #f0f2f5;
+    --bg-primary: #f0f2f5;
+    --bg-secondary: #e8eaef;
+    --bg-tertiary: #dce0e8;
     --bg-panel: rgba(255, 255, 255, 0.95);
     --bg-panel-solid: #ffffff;
     --bg-glass: rgba(0, 0, 0, 0.05);
@@ -297,6 +303,11 @@ body::before {
     gap: 10px;
 }
 
+.header-brand a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .header-icon {
     color: var(--primary-color);
     filter: drop-shadow(0 0 8px var(--glow-color));
@@ -383,6 +394,142 @@ body::before {
 }
 
 /* ============================================
+   通用浮层面板样式
+   ============================================ */
+.common-panel {
+    position: fixed;
+    background: var(--bg-panel);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+    z-index: 998;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.common-panel.active {
+    display: flex;
+}
+
+.common-panel-header {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 8px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.common-panel-close {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.common-panel-close:hover {
+    background: rgba(255,255,255,0.4);
+    transform: rotate(90deg);
+}
+
+.common-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+/* 面板变体 - 小圆角（图例等） */
+.common-panel-sm {
+    border-radius: 14px;
+}
+
+/* 面板变体 - 大圆角（弹窗等） */
+.common-panel-lg {
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(102, 126, 234, 0.2);
+    z-index: 2000;
+}
+
+/* 面板变体 - 右侧面板z-index */
+.common-panel-right {
+    z-index: 999;
+}
+
+/* 面板变体 - 无圆角（贴合头部） */
+.common-panel-flat {
+    border-radius: 0;
+}
+
+/* 面板header变体 - 无圆角 */
+.common-panel-header-flat {
+    border-radius: 0;
+}
+
+/* 面板变体 - 海拔面板阴影+圆角 */
+.common-panel-altitude {
+    border-radius: 18px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 50px rgba(102, 126, 234, 0.15);
+}
+
+/* 面板变体 - 路径规划左侧面板 */
+.common-panel-left {
+    left: 15px;
+    top: 70px;
+    width: 340px;
+    max-height: calc(100% - 80px);
+}
+
+/* 面板变体 - 路径规划右侧面板 */
+.common-panel-result {
+    right: 15px;
+    top: 70px;
+    width: 300px;
+    max-height: calc(100% - 80px);
+}
+
+/* 面板变体 - 每日面板 */
+.common-panel-daily {
+    left: 10px;
+    bottom: 10px;
+    width: 340px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-panel);
+    background: var(--bg-panel-solid);
+}
+
+/* 面板变体 - 每日面板收起状态 */
+.common-panel-daily.hidden {
+    display: none;
+}
+
+/* 面板header标题 */
+.common-panel-header span {
+    flex: 1;
+    font-weight: 600;
+}
+
+/* 面板变体 - 路径规划面板标题 */
+.panel-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+}
+
+/* ============================================
    悬浮球通用样式
    ============================================ */
 .floating-btn {
@@ -418,8 +565,6 @@ body::before {
 
 .floating-btn-right:hover {
     right: 0;
-    width: 50px;
-    height: 50px;
 }
 
 /* 左侧悬浮球（收起时在左侧） */
@@ -431,8 +576,6 @@ body::before {
 
 .floating-btn-left:hover {
     left: 0;
-    width: 50px;
-    height: 50px;
 }
 
 /* ============================================
@@ -657,6 +800,70 @@ body::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 动态渐变背景 */
+.bg-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+    opacity: 0.9;
+    z-index: -3;
+}
+
+/* 装饰光球 */
+.bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    z-index: -2;
+    animation: float 20s ease-in-out infinite;
+}
+
+.orb-1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+    top: -150px;
+    right: -100px;
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+    bottom: -100px;
+    left: -100px;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -30px) scale(1.05); }
+    50% { transform: translate(-20px, 20px) scale(0.95); }
+    75% { transform: translate(20px, 30px) scale(1.02); }
+}
+
+/* 网格装饰 */
+.bg-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(var(--border-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.15;
+    z-index: -1;
 }
 
 .hero-section {
@@ -665,85 +872,167 @@ body::before {
 }
 
 .hero-title {
-    font-size: 48px;
-    font-weight: 700;
+    font-size: 64px;
+    font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-color) 50%, var(--accent-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .hero-title-en {
-    font-size: 0.6em;
+    font-size: 0.5em;
     color: var(--text-secondary);
     font-weight: 400;
+    -webkit-text-fill-color: var(--text-secondary);
 }
 
 .hero-subtitle {
-    font-size: 18px;
+    font-size: 20px;
     color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+/* 功能徽章 */
+.hero-badges {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 8px 20px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .feature-cards {
     display: flex;
-    gap: 24px;
+    gap: 32px;
     margin-bottom: 40px;
 }
 
 .feature-card {
-    width: 260px;
-    padding: 32px 24px;
+    position: relative;
+    width: 300px;
+    padding: 40px 28px;
     background: var(--bg-panel);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: 20px;
     text-decoration: none;
     color: var(--text-primary);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .feature-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-10px);
     border-color: var(--primary-color);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 40px var(--glow-color);
 }
 
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+/* 卡片光晕效果 */
+.feature-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.feature-card:hover .feature-glow {
+    opacity: 0.15;
+}
+
+/* 各卡片独特配色 */
+.card-photo:hover { border-color: #667eea; }
+.card-photo::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+.card-photo .feature-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
+
+.card-route:hover { border-color: #4facfe; }
+.card-route::before { background: linear-gradient(90deg, #4facfe, #00f2fe); }
+.card-route .feature-icon { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+
+.card-ai:hover { border-color: #a855f7; }
+.card-ai::before { background: linear-gradient(90deg, #a855f7, #ec4899); }
+.card-ai .feature-icon { background: linear-gradient(135deg, #a855f7, #ec4899); }
+
 .feature-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 20px;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--primary-gradient);
-    border-radius: 16px;
+    border-radius: 18px;
+    transition: transform 0.4s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(-5deg);
 }
 
 .feature-icon svg {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     stroke: white;
 }
 
 .feature-card h2 {
-    font-size: 20px;
-    margin-bottom: 12px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 14px;
 }
 
 .feature-card p {
     font-size: 14px;
     color: var(--text-secondary);
-    margin-bottom: 16px;
-    line-height: 1.5;
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
 .feature-tag {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 6px 16px;
     background: var(--primary-light);
     color: var(--primary-color);
     border-radius: 20px;
     font-size: 12px;
+    font-weight: 500;
 }
 
 .recent-outputs {

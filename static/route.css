@@ -43,22 +43,10 @@
 }
 
 /* ============================================
-   浮层面板通用样式
+   浮层面板通用样式（使用通用面板样式）
    ============================================ */
 .floating-panel {
-    position: fixed;
-    top: 60px;
-    background: var(--bg-panel);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: var(--shadow-panel);
     z-index: 500;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: all 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* 悬浮球收起状态 - 面板完全隐藏 */
@@ -77,21 +65,7 @@
     display: flex;
 }
 
-.floating-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: var(--primary-gradient);
-    flex-shrink: 0;
-}
-
-.floating-panel-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: white;
-}
-
+/* 面板头部操作区 */
 .floating-panel-actions {
     display: flex;
     align-items: center;
@@ -234,14 +208,7 @@
 /* ============================================
    左侧地点列表 - 浮层
    ============================================ */
-.location-panel {
-    left: 10px;
-    width: 340px;
-    max-height: calc(100% - 80px);
-}
-
-.location-panel .btn-swap,
-.location-panel .btn-collapse {
+.location-panel .btn-swap {
     padding: 4px 6px;
     border-radius: 4px;
     background: rgba(255,255,255,0.1);
@@ -253,18 +220,15 @@
     justify-content: center;
 }
 
-.location-panel .btn-swap:hover,
-.location-panel .btn-collapse:hover {
+.location-panel .btn-swap:hover {
     background: rgba(255,255,255,0.2);
 }
 
-[data-theme="light"] .location-panel .btn-swap,
-[data-theme="light"] .location-panel .btn-collapse {
+[data-theme="light"] .location-panel .btn-swap {
     background: rgba(0,0,0,0.05);
 }
 
-[data-theme="light"] .location-panel .btn-swap:hover,
-[data-theme="light"] .location-panel .btn-collapse:hover {
+[data-theme="light"] .location-panel .btn-swap:hover {
     background: rgba(0,0,0,0.1);
 }
 
@@ -301,9 +265,6 @@
    右侧路线概览 - 浮层
    ============================================ */
 .result-panel {
-    right: 10px;
-    width: 300px;
-    max-height: calc(100% - 80px);
 }
 
 /* ============================================
@@ -1027,18 +988,6 @@
 /* ============================================
    每日路径切换面板
    ============================================ */
-.daily-panel {
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    width: 340px;
-    background: var(--bg-panel-solid);
-    border-radius: 10px;
-    box-shadow: var(--shadow-panel);
-    z-index: 100;
-    overflow: hidden;
-}
-
 .daily-panel.hidden {
     display: none;
 }
@@ -1141,7 +1090,6 @@
 
 /* 地点悬浮球 - 左侧 */
 .location-float-btn {
-    left: 10px;
     top: 70px;
 }
 
@@ -1152,7 +1100,6 @@
 
 /* 路线悬浮球 - 右侧 */
 .result-float-btn {
-    right: 10px;
     top: 70px;
 }
 

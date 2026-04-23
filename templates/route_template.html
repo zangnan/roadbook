@@ -11,8 +11,8 @@
 <body>
     <div class="header">
         <div class="header-brand">
-            <img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img">
-            <h1>路书 <span class="title-en">RoadBook</span></h1>
+            <a href="/"><img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img"></a>
+            <a href="/"><h1>路书 <span class="title-en">RoadBook</span></h1></a>
             <span class="header-subtitle">路径规划</span>
             <span id="importInfo" class="import-info" style="display:none;">从路书【概要】导入</span>
         </div>
@@ -37,17 +37,17 @@
     </div>
 
     <!-- 每日路径切换面板 -->
-    <div id="daily-route-panel" class="daily-panel hidden">
-        <div class="daily-panel-header" onclick="toggleDailyPanel()">
+    <div id="daily-route-panel" class="daily-panel common-panel common-panel-daily hidden">
+        <div class="daily-panel-header common-panel-header" onclick="toggleDailyPanel()">
             <span id="current-day-title">选择日期</span>
-            <span class="arrow">▼</span>
+            <button class="common-panel-close" onclick="hideDailyPanel()">×</button>
         </div>
         <div id="daily-route-list" class="daily-panel-list"></div>
     </div>
 
     <!-- 日期切换悬浮球 -->
-    <div class="float-ball daily-float-btn hidden" id="dailyFloatBtn" onclick="toggleFloatBall('daily')">
-        <svg viewBox="0 0 24 24" width="18" height="18">
+    <div class="daily-float-btn floating-btn floating-btn-left" id="dailyFloatBtn" onclick="toggleFloatBall('daily')">
+        <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
         </svg>
     </div>
@@ -64,17 +64,12 @@
     </div>
 
     <!-- 左侧地点列表 - 浮层 -->
-    <div class="floating-panel location-panel" id="locationPanel">
-        <div class="floating-panel-header">
-            <button class="btn-swap" onclick="swapStartEnd()" title="交换起终点">
-                <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/></svg>
-            </button>
-            <button class="btn-collapse" onclick="togglePanel('locationPanel')" title="收起面板">
-                <svg viewBox="0 0 24 24" width="14" height="14" class="collapse-icon"><path fill="currentColor" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
-            </button>
+    <div class="floating-panel location-panel common-panel common-panel-left" id="locationPanel">
+        <div class="floating-panel-header common-panel-header">
+            <span class="panel-title">地点列表</span>
+            <button class="common-panel-close" onclick="hideLocationPanel()">×</button>
         </div>
-
-        <div class="floating-panel-content">
+        <div class="floating-panel-content common-panel-body">
             <div class="location-list-compact" id="locationList">
                 <!-- 动态生成 -->
             </div>
@@ -90,30 +85,26 @@
     </div>
 
     <!-- 地点悬浮球 -->
-    <div class="float-ball location-float-btn hidden" id="locationFloatBtn" onclick="toggleFloatBall('location')">
-        <svg viewBox="0 0 24 24" width="18" height="18">
+    <div class="location-float-btn floating-btn floating-btn-left" id="locationFloatBtn" onclick="showLocationPanel()">
+        <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
         </svg>
     </div>
 
     <!-- 右侧路线概览 - 浮层 -->
-    <div class="floating-panel result-panel" id="resultPanel">
-        <div class="floating-panel-header">
-            <span class="floating-panel-title" id="resultPanelTitle">路线概览</span>
-            <div class="floating-panel-actions">
-                <button class="btn-collapse" onclick="togglePanel('resultPanel')" title="收起面板">
-                    <svg viewBox="0 0 24 24" width="14" height="14" class="collapse-icon"><path fill="currentColor" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
-                </button>
-            </div>
+    <div class="floating-panel result-panel common-panel common-panel-result" id="resultPanel">
+        <div class="floating-panel-header common-panel-header">
+            <span class="panel-title" id="resultPanelTitle">路线概览</span>
+            <button class="common-panel-close" onclick="hideResultPanel()">×</button>
         </div>
-        <div class="floating-panel-content" id="resultContent">
+        <div class="floating-panel-content common-panel-body" id="resultContent">
             <div class="result-empty">输入地点后点击"开始规划"</div>
         </div>
     </div>
 
     <!-- 路线悬浮球 -->
-    <div class="float-ball result-float-btn hidden" id="resultFloatBtn" onclick="toggleFloatBall('result')">
-        <svg viewBox="0 0 24 24" width="18" height="18">
+    <div class="result-float-btn floating-btn floating-btn-right" id="resultFloatBtn" onclick="showResultPanel()">
+        <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="currentColor" d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
         </svg>
     </div>
@@ -185,16 +176,16 @@
 
             // 地点面板收起时显示悬浮球
             if (panelStates.location === 'collapsed') {
-                locationBall.classList.remove('hidden');
+                locationBall.style.display = 'flex';
             } else {
-                locationBall.classList.add('hidden');
+                locationBall.style.display = 'none';
             }
 
             // 路线面板收起时显示悬浮球
             if (panelStates.result === 'collapsed') {
-                resultBall.classList.remove('hidden');
+                resultBall.style.display = 'flex';
             } else {
-                resultBall.classList.add('hidden');
+                resultBall.style.display = 'none';
             }
 
             // 日期面板展开时显示悬浮球激活状态，收起时不显示
@@ -203,6 +194,38 @@
             } else {
                 dailyBall.classList.remove('active');
             }
+        }
+
+        // 显示地点面板
+        function showLocationPanel() {
+            const panel = document.getElementById('locationPanel');
+            panel.classList.remove('collapsed');
+            panelStates.location = 'expanded';
+            updateFloatBalls();
+        }
+
+        // 隐藏地点面板
+        function hideLocationPanel() {
+            const panel = document.getElementById('locationPanel');
+            panel.classList.add('collapsed');
+            panelStates.location = 'collapsed';
+            updateFloatBalls();
+        }
+
+        // 显示结果面板
+        function showResultPanel() {
+            const panel = document.getElementById('resultPanel');
+            panel.classList.remove('collapsed');
+            panelStates.result = 'expanded';
+            updateFloatBalls();
+        }
+
+        // 隐藏结果面板
+        function hideResultPanel() {
+            const panel = document.getElementById('resultPanel');
+            panel.classList.add('collapsed');
+            panelStates.result = 'collapsed';
+            updateFloatBalls();
         }
 
         // 颜色映射
