@@ -145,3 +145,9 @@ SHOW_WEATHER_INFO = os.getenv('SHOW_WEATHER_INFO', 'true').lower() == 'true'
 # 可选类型: start, gas, transit, scenic, food, accommodation, end
 # 默认包含 start, end, scenic, accommodation（排除 gas/transit/food 减少节点数）
 ROUTE_DETAIL_STOP_TYPES = os.getenv('ROUTE_DETAIL_STOP_TYPES', 'start,end,scenic,accommodation').split(',')
+
+# AI 路书输出模块配置
+# 可选模块: basic_info, scenic_guides, daily_itinerary, budget, checklist
+# 默认全部启用，逗号分隔
+# AI_ROUTE_OUTPUT_MODULES = os.getenv('AI_ROUTE_OUTPUT_MODULES', 'basic_info,scenic_guides,daily_itinerary,budget,checklist').split(',')
+AI_ROUTE_OUTPUT_MODULES = os.getenv('AI_ROUTE_OUTPUT_MODULES', 'basic_info,daily_itinerary').split(',')
