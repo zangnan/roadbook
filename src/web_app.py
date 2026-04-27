@@ -50,6 +50,7 @@ get_photo_base_dir = config.get_photo_base_dir
 get_output_base_dir = config.get_output_base_dir
 CONFIG_APP_DIR = config.APP_DIR
 WEB_PORT = config.WEB_PORT
+DESKTOP_PORT = config.DESKTOP_PORT
 DEEPSEEK_API_KEY = config.DEEPSEEK_API_KEY
 DEEPSEEK_API_URL = config.DEEPSEEK_API_URL
 DEEPSEEK_MODEL = config.DEEPSEEK_MODEL
@@ -314,9 +315,14 @@ def api_ai_generate_roadbook():
         return jsonify({'status': 'error', 'error': 'DeepSeek API Key 未配置'}), 500
 
     try:
-        from ai_generator import generate_roadbook
+        # 动态导入 ai_generator（解决打包后导入问题）
+        import importlib.util
+        ai_path = os.path.join(CONFIG_BASE_DIR, 'ai_generator.py')
+        ai_spec = importlib.util.spec_from_file_location("ai_generator", ai_path)
+        ai_module = importlib.util.module_from_spec(ai_spec)
+        ai_spec.loader.exec_module(ai_module)
 
-        result = generate_roadbook(
+        result = ai_module.generate_roadbook(
             user_input=data,
             api_key=DEEPSEEK_API_KEY,
             api_url=DEEPSEEK_API_URL,
@@ -329,44 +335,79 @@ def api_ai_generate_roadbook():
             return jsonify(result), 400
 
     except Exception as e:
-        return jsonify({'status': 'error', 'error': str(e)}), 500
+        import traceback
+        return jsonify({'status': 'error', 'error': str(e), 'trace': traceback.format_exc()}), 500
 
 
 @app.route('/api/ai/generate-roadbook/stream', methods=['POST'])
 def api_ai_generate_roadbook_stream():
     """流式 AI 生成路书"""
-    data = request.json
+    import traceback
+    import sys
 
-    # 验证必填字段
-    required_fields = ['destination', 'travel_date_start', 'travel_date_end', 'people_count', 'car_type']
-    for field in required_fields:
-        if not data.get(field):
-            return jsonify({'status': 'error', 'error': f'缺少必填字段: {field}'}), 400
+    print("[DEBUG] api_ai_generate_roadbook_stream called", flush=True)
+    try:
+        data = request.json
+        print(f"[DEBUG] request.json OK, data keys: {list(data.keys())}", flush=True)
 
-    # 检查 API Key
-    if not DEEPSEEK_API_KEY:
-        return jsonify({'status': 'error', 'error': 'DeepSeek API Key 未配置'}), 500
+        # 验证必填字段
+        required_fields = ['destination', 'travel_date_start', 'travel_date_end', 'people_count', 'car_type']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({'status': 'error', 'error': f'缺少必填字段: {field}'}), 400
 
-    from ai_generator import RoadbookGenerator
+        # 检查 API Key
+        if not DEEPSEEK_API_KEY:
+            print("[DEBUG] DEEPSEEK_API_KEY not configured", flush=True)
+            return jsonify({'status': 'error', 'error': 'DeepSeek API Key 未配置'}), 500
 
-    generator = RoadbookGenerator(
-        api_key=DEEPSEEK_API_KEY,
-        api_url=DEEPSEEK_API_URL,
-        model=DEEPSEEK_MODEL
-    )
+        print(f"[DEBUG] DEEPSEEK_API_KEY configured: {DEEPSEEK_API_KEY[:4]}...", flush=True)
+        print("[DEBUG] About to load ai_generator...", flush=True)
+        # 动态导入 ai_generator（解决打包后导入问题）
+        import importlib.util
+        ai_path = os.path.join(CONFIG_BASE_DIR, 'ai_generator.py')
+        print(f"[DEBUG] Loading ai_generator from: {ai_path}", flush=True)
+        ai_spec = importlib.util.spec_from_file_location("ai_generator", ai_path)
+        ai_module = importlib.util.module_from_spec(ai_spec)
+        print(f"[DEBUG] Executing ai_generator module...", flush=True)
+        ai_spec.loader.exec_module(ai_module)
+        print(f"[DEBUG] ai_generator module loaded successfully", flush=True)
 
-    def generate():
-        for chunk in generator.generate_stream(data):
-            yield chunk
+        generator = ai_module.RoadbookGenerator(
+            api_key=DEEPSEEK_API_KEY,
+            api_url=DEEPSEEK_API_URL,
+            model=DEEPSEEK_MODEL
+        )
+        print("[DEBUG] RoadbookGenerator created", flush=True)
 
-    return Response(
-        generate(),
-        mimetype='text/event-stream',
-        headers={
-            'Cache-Control': 'no-cache',
-            'X-Accel-Buffering': 'no'
-        }
-    )
+        def generate():
+            print("[DEBUG] generate() started", flush=True)
+            try:
+                for chunk in generator.generate_stream(data):
+                    yield chunk
+            except Exception as e:
+                import traceback
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"AI生成流错误: {e}\n{traceback.format_exc()}")
+                yield f"data: {json.dumps({'type': 'error', 'error': str(e)})}\n\n"
+
+        print("[DEBUG] About to return Response", flush=True)
+        response = Response(
+            generate(),
+            mimetype='text/event-stream',
+            headers={
+                'Cache-Control': 'no-cache',
+                'X-Accel-Buffering': 'no'
+            }
+        )
+        print("[DEBUG] Response object created", flush=True)
+        return response
+    except Exception as e:
+        import traceback
+        print(f"[ERROR] ai_generator stream exception: {e}", flush=True)
+        print(traceback.format_exc(), flush=True)
+        return jsonify({'status': 'error', 'error': str(e), 'trace': traceback.format_exc()}), 500
 
 
 @app.route('/api/weather')
@@ -391,6 +432,80 @@ def api_weather():
 def api_outputs():
     """获取输出目录列表"""
     return jsonify(get_output_dirs())
+
+
+@app.route('/api/save/roadbook', methods=['POST'])
+def api_save_roadbook():
+    """保存路书为 JSON 文件"""
+    data = request.json
+    roadbook_data = data.get('roadbook_data')
+    filename = data.get('filename', 'roadbook.json')
+
+    if not roadbook_data:
+        return jsonify({'status': 'error', 'error': '缺少路书数据'}), 400
+
+    try:
+        import json as json_module
+
+        # 生成文件路径
+        save_dir = os.path.join(CONFIG_APP_DIR, 'output', 'roadbook')
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+
+        # 确保文件名安全
+        safe_filename = "".join(c for c in filename if c.isalnum() or c in ('_', '-', '.', ' ', '(', ')'))
+        file_path = os.path.join(save_dir, safe_filename)
+
+        # 保存文件
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json_module.dump(roadbook_data, f, ensure_ascii=False, indent=2)
+
+        return jsonify({
+            'status': 'success',
+            'filename': safe_filename,
+            'path': f'/output/roadbook/{safe_filename}',
+            'full_url': f'http://localhost:{DESKTOP_PORT}/output/roadbook/{safe_filename}'
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({'status': 'error', 'error': str(e), 'trace': traceback.format_exc()}), 500
+
+
+@app.route('/output/roadbook/<filename>')
+def serve_roadbook(filename):
+    """下载路书 JSON 文件"""
+    save_dir = os.path.join(CONFIG_APP_DIR, 'output', 'roadbook')
+    safe_path = os.path.join(save_dir, filename)
+
+    if not os.path.exists(safe_path):
+        abort(404)
+
+    return send_file(safe_path, as_attachment=True, download_name=filename)
+
+
+@app.route('/api/collections', methods=['GET'])
+def get_collections():
+    """获取收藏的路书列表"""
+    collections_file = os.path.join(CONFIG_APP_DIR, 'collections.json')
+    if os.path.exists(collections_file):
+        with open(collections_file, 'r', encoding='utf-8') as f:
+            return jsonify({'status': 'success', 'collections': json.load(f)})
+    return jsonify({'status': 'success', 'collections': []})
+
+
+@app.route('/api/collections', methods=['POST'])
+def save_collections():
+    """保存收藏的路书列表"""
+    data = request.json
+    collections = data.get('collections', [])
+    collections_file = os.path.join(CONFIG_APP_DIR, 'collections.json')
+    try:
+        with open(collections_file, 'w', encoding='utf-8') as f:
+            json.dump(collections, f, ensure_ascii=False, indent=2)
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'error': str(e)}), 500
 
 
 @app.route('/api/export/excel', methods=['POST'])
@@ -419,7 +534,8 @@ def api_export_excel():
         return jsonify({
             'status': 'success',
             'filename': filename,
-            'path': f'/output/excel/{filename}'
+            'path': f'/output/excel/{filename}',
+            'full_url': f'http://localhost:{DESKTOP_PORT}/output/excel/{filename}'
         })
 
     except Exception as e:

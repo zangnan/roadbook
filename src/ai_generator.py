@@ -2,9 +2,33 @@
 import json
 import logging
 import re
+import sys
+import os
 from datetime import datetime
 
-from config import AI_ROUTE_OUTPUT_MODULES
+# 动态导入 config（解决 PyInstaller 打包问题）
+import importlib.util
+
+# 确定 config.py 的路径
+if getattr(sys, 'frozen', False):
+    # 打包后：config.py 在 sys._MEIPASS 根目录
+    config_path = os.path.join(sys._MEIPASS, 'config.py')
+else:
+    # 开发环境：config.py 在 src/ 目录下
+    _base_dir = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(_base_dir, 'config.py')
+
+print(f"[DEBUG] ai_generator loading config from: {config_path}")
+print(f"[DEBUG] sys.frozen = {getattr(sys, 'frozen', False)}")
+if getattr(sys, 'frozen', False):
+    print(f"[DEBUG] sys._MEIPASS = {sys._MEIPASS}")
+
+config_spec = importlib.util.spec_from_file_location("config", config_path)
+config = importlib.util.module_from_spec(config_spec)
+config_spec.loader.exec_module(config)
+
+AI_ROUTE_OUTPUT_MODULES = config.AI_ROUTE_OUTPUT_MODULES
+print(f"[DEBUG] AI_ROUTE_OUTPUT_MODULES = {AI_ROUTE_OUTPUT_MODULES}")
 
 logger = logging.getLogger(__name__)
 

@@ -46,9 +46,9 @@
             <h1 class="hero-title">路书 <span class="hero-title-en">RoadBook</span></h1>
             <p class="hero-subtitle">将旅行照片转化为交互式轨迹地图</p>
             <div class="hero-badges">
-                <span class="badge">照片轨迹</span>
-                <span class="badge">路径规划</span>
-                <span class="badge">AI 路书</span>
+                <span class="badge">照片</span>
+                <span class="badge">地图</span>
+                <span class="badge">智能</span>
             </div>
         </div>
 
@@ -97,24 +97,6 @@
                 <span class="feature-tag">AI 智能规划</span>
             </a>
         </div>
-
-        {% if outputs %}
-        <div class="recent-outputs">
-            <h3 class="section-title">最近输出</h3>
-            <div class="output-list">
-{% for output in outputs %}
-                <a href="/output/{{ output.name }}/track_output.html" class="output-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                    <span class="output-name">{{ output.name }}</span>
-                    <span class="output-time">{{ output.mtime }}</span>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
     </main>
 
     <script>

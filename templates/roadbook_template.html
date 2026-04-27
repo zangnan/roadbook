@@ -2202,7 +2202,7 @@
             top: calc(100% + 8px);
             right: 0;
             width: 280px;
-            background: var(--bg-glass);
+            background: var(--bg-primary);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -3088,15 +3088,53 @@
         function getCollections() {
             try {
                 const data = localStorage.getItem(COLLECTION_KEY);
-                return data ? JSON.parse(data) : [];
+                if (data) {
+                    console.log('[DEBUG] getCollections from localStorage, count:', JSON.parse(data).length);
+                    return JSON.parse(data);
+                }
+
+                console.log('[DEBUG] localStorage empty, checking if desktop...');
+                // localStorage 为空且是桌面端时，从服务器获取
+                // 直接检查 window.pywebview 而不是 URL 参数
+                if (window.pywebview) {
+                    console.log('[DEBUG] Desktop mode detected, fetching from server...');
+                    // 同步请求获取数据
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', '/api/collections', false);
+                    xhr.send();
+                    console.log('[DEBUG] XHR status:', xhr.status);
+                    if (xhr.status === 200) {
+                        const result = JSON.parse(xhr.responseText);
+                        console.log('[DEBUG] Server result:', result);
+                        if (result.status === 'success' && result.collections) {
+                            localStorage.setItem(COLLECTION_KEY, JSON.stringify(result.collections));
+                            return result.collections;
+                        }
+                    }
+                }
+                return [];
             } catch (e) {
-                console.error('Failed to parse collections:', e);
+                console.error('Failed to get collections:', e);
                 return [];
             }
         }
 
         function saveCollections(collections) {
             localStorage.setItem(COLLECTION_KEY, JSON.stringify(collections));
+            console.log('[DEBUG] Saving collections, count:', collections.length);
+            console.log('[DEBUG] window.pywebview exists:', !!window.pywebview);
+            // 桌面端：同步到服务器
+            if (window.pywebview) {
+                console.log('[DEBUG] Syncing collections to server...');
+                fetch('/api/collections', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ collections })
+                })
+                .then(r => r.json())
+                .then(result => console.log('[DEBUG] Server response:', result))
+                .catch(e => console.error('Failed to sync collections:', e));
+            }
         }
 
         function getCurrentCollectionId() {
@@ -4768,18 +4806,30 @@
             const title = currentRoadbook.basic_info?.title || '未命名';
             const filename = `路书_${title}_${formatTimestamp(Date.now())}.json`;
 
-            const blob = new Blob([JSON.stringify(currentRoadbook, null, 2)], {
-                type: 'application/json'
+            // 通过 API 下载（兼容 PyWebView）
+            fetch('/api/save/roadbook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ roadbook_data: currentRoadbook, filename: filename })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    // 桌面端：使用 PyWebView 的 download_file API
+                    if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.download_file === 'function') {
+                        window.pywebview.api.download_file(result.path);
+                    } else {
+                        // 浏览器端：使用相对路径
+                        window.location.href = result.path;
+                    }
+                } else {
+                    alert('保存失败: ' + (result.error || '未知错误'));
+                }
+            })
+            .catch(error => {
+                console.error('Save error:', error);
+                alert('保存失败: ' + error.message);
             });
-            const url = URL.createObjectURL(blob);
-
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
         }
 
         async function exportRoadbookToExcel() {
@@ -4789,6 +4839,7 @@
             }
 
             try {
+                // 先调用 API 生成 Excel 文件
                 const response = await fetch('/api/export/excel', {
                     method: 'POST',
                     headers: {
@@ -4797,11 +4848,16 @@
                     body: JSON.stringify({ roadbook_data: currentRoadbook })
                 });
 
-                const result = await response.json();
+const result = await response.json();
 
                 if (result.status === 'success') {
-                    // 下载文件
-                    window.location.href = result.path;
+                    // 桌面端：使用 PyWebView 的 download_file API
+                    if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.download_file === 'function') {
+                        window.pywebview.api.download_file(result.path);
+                    } else {
+                        // 浏览器端：使用相对路径
+                        window.location.href = result.path;
+                    }
                 } else {
                     alert('导出失败: ' + (result.error || '未知错误'));
                 }

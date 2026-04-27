@@ -58,7 +58,85 @@ def main(window):
 
     window.expose(navigate)
 
-    print("PyWebView API exposed: navigate")
+    # 暴露下载函数给 JavaScript - 用于 PyWebView 中的文件下载
+    def download_file(relative_url):
+        """触发文件下载 - 通过 HTTP 获取文件内容并保存到用户选择的目录"""
+        import urllib.request
+        from urllib.parse import quote, unquote
+        import threading
+
+        if relative_url.startswith('/'):
+            # 对 URL 中的中文进行编码
+            parts = relative_url.split('/')
+            filename = unquote(parts[-1])
+            encoded_path = '/'.join(parts[:-1]) + '/' + quote(filename, safe='')
+            full_url = f'http://localhost:{port}{encoded_path}'
+        else:
+            full_url = relative_url
+            filename = full_url.split('/')[-1]
+            filename = unquote(filename)
+
+        print(f'Downloading: {full_url}')
+
+        def do_download(save_path):
+            try:
+                with urllib.request.urlopen(full_url) as response:
+                    content = response.read()
+
+                with open(save_path, 'wb') as f:
+                    f.write(content)
+
+                print(f'File saved to: {save_path}')
+            except Exception as e:
+                print(f'Download error: {e}')
+
+        # 使用 tkinter 文件对话框选择保存位置（在后台线程中运行避免阻塞）
+        def show_save_dialog():
+            import tkinter as tk
+            from tkinter import filedialog
+            from tkinter import messagebox
+
+            root = tk.Tk()
+            root.withdraw()
+            root.attributes('-topmost', True)
+            root.lift()
+
+            # 显示保存对话框
+            save_path = filedialog.asksaveasfilename(
+                title='保存文件',
+                initialfile=filename,
+                defaultextension=os.path.splitext(filename)[1] if os.path.splitext(filename)[1] else '',
+                filetypes=[
+                    ('JSON 文件', '*.json'),
+                    ('Excel 文件', '*.xlsx'),
+                    ('所有文件', '*.*')
+                ]
+            )
+
+            root.destroy()
+
+            if save_path:
+                do_download(save_path)
+            else:
+                print('User cancelled save dialog')
+
+        # 在后台线程中显示文件对话框
+        dialog_thread = threading.Thread(target=show_save_dialog, daemon=True)
+        dialog_thread.start()
+
+        return True
+
+    window.expose(download_file)
+
+    print("PyWebView API exposed: navigate, download_file")
+
+
+# PyWebView 下载处理回调
+def on_download(window, url):
+    """处理文件下载"""
+    print(f'Download callback: {url}')
+    # 返回 None 使用默认下载行为（下载到浏览器默认目录）
+    return None
 
 
 if __name__ == '__main__':
