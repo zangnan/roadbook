@@ -27,6 +27,7 @@
 - [技术架构](#-技术架构)
 - [项目结构](#-项目结构)
 - [配置说明](#-配置说明)
+- [API 接口](#-api-接口)
 - [常见问题](#-常见问题)
 - [许可证](#-许可证)
 
@@ -68,6 +69,23 @@
   <img src="static/assets/roadbook1.png" alt="暗色主题预览" />
   <br/>
   <em>参数设置</em>
+
+  <br/><br/>
+  <img src="static/assets/roadbook6.png" alt="暗色主题预览" />
+  <br/>
+  <em>AI路书1</em>
+  <br/><br/>
+  <img src="static/assets/roadbook7.png" alt="暗色主题预览" />
+  <br/>
+  <em>AI路书2</em>
+  <br/><br/>
+  <img src="static/assets/roadbook8.png" alt="暗色主题预览" />
+  <br/>
+  <em>AI路书3</em>
+  <br/><br/>
+  <img src="static/assets/roadbook9.png" alt="暗色主题预览" />
+  <br/>
+  <em>AI路书4</em>
 </p>
 
 <!-- 时间轴预览截图（首次运行后生成，可替换此处）
@@ -215,6 +233,7 @@ python src/photo_track.py my-trip
 | `-d, --distance-threshold` | 距离阈值（米） | 1000 |
 | `-t, --time-threshold` | 时间阈值（秒） | 7200 |
 | `-H, --html-only` | 仅重新生成 HTML（跳过照片解析） | False |
+| `-v, --verbose` | 详细日志 | False |
 
 ### 输出文件
 
@@ -343,6 +362,7 @@ output/my-trip/
 | [python-dotenv](https://pypi.org/project/python-dotenv/) | >=0.19 | 环境变量加载 |
 | [requests](https://requests.readthedocs.io/) | >=2.28 | HTTP 请求 |
 | [PyWebView](https://pywebview.flowrl.com/) | >=5.0 | 桌面应用框架 |
+| [openpyxl](https://openpyxl.readthedocs.io/) | >=3.0 | Excel 文件生成 |
 | 高德地图 JavaScript API | - | 地图展示 |
 | SQLite / JSON | - | 数据缓存 |
 | PyInstaller | >=6.0 | 打包工具 |
@@ -443,6 +463,23 @@ OUTPUT_BASE_DIR=D:\RoadBook\output
 PHOTO_BASE_DIR=\photo
 OUTPUT_BASE_DIR=\output
 ```
+
+---
+
+## 🌐 API 接口
+
+| 路由 | 方法 | 说明 |
+|------|------|------|
+| `/api/directories` | GET | 获取照片目录列表 |
+| `/api/outputs` | GET | 获取输出目录列表 |
+| `/api/run` | POST | 执行轨迹生成任务 |
+| `/api/status/<task_id>` | GET | 查询任务状态 |
+| `/api/route/inputtips` | GET | 地点搜索（高德） |
+| `/api/route/plan` | POST | 路径规划（高德） |
+| `/api/ai/generate` | POST | AI 生成路书 |
+| `/api/export/excel` | POST | Excel 导出 |
+| `/api/weather` | GET | 天气查询 |
+| `/output/<path>` | GET | 访问输出文件 |
 
 ---
 

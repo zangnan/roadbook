@@ -149,5 +149,5 @@ ROUTE_DETAIL_STOP_TYPES = os.getenv('ROUTE_DETAIL_STOP_TYPES', 'start,end,scenic
 # AI 路书输出模块配置
 # 可选模块: basic_info, scenic_guides, daily_itinerary, budget, checklist
 # 默认全部启用，逗号分隔
-# AI_ROUTE_OUTPUT_MODULES = os.getenv('AI_ROUTE_OUTPUT_MODULES', 'basic_info,scenic_guides,daily_itinerary,budget,checklist').split(',')
-AI_ROUTE_OUTPUT_MODULES = os.getenv('AI_ROUTE_OUTPUT_MODULES', 'basic_info,daily_itinerary').split(',')
+AI_ROUTE_OUTPUT_MODULES = os.getenv('AI_ROUTE_OUTPUT_MODULES', 'basic_info,scenic_guides,daily_itinerary,budget,checklist').split(',')
+# AI_ROUTE_OUTPUT_MODULES = os.getenv('AI_ROUTE_OUTPUT_MODULES', 'basic_info,daily_itinerary').split(',')
