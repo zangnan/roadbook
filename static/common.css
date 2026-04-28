@@ -326,6 +326,64 @@ body::before {
     gap: 12px;
 }
 
+/* 导航菜单 - 位于 header-brand 左侧 */
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.header-nav a {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.header-nav a:hover {
+    color: var(--text-primary);
+    background: var(--bg-glass);
+}
+
+.header-nav a.active {
+    color: var(--primary-color);
+    background: var(--primary-light);
+}
+
+/* GitHub 图标 */
+.header-github {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.header-github a {
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.header-github a:hover {
+    color: var(--text-primary);
+    background: var(--bg-glass);
+}
+
+.header-github svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* 桌面模式下隐藏 GitHub 图标 */
+body.desktop-mode .header-github {
+    display: none;
+}
+
 .header-actions {
     display: flex;
     align-items: center;
