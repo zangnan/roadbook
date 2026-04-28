@@ -235,7 +235,7 @@ body {
     font-family: 'Microsoft YaHei', '微软雅黑', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: var(--bg-dark);
     color: var(--text-primary);
-    overflow: hidden;
+    /* overflow: hidden; */
     }
 
 /* 暗色主题氛围背景 */
@@ -674,6 +674,23 @@ body.desktop-mode .header-github {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* ============================================
+   中间地图
+   ============================================ */
+.map-container {
+    position: fixed;
+    top: 61px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    transition: filter 0.3s ease;
 }
 
 /* ============================================

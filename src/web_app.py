@@ -214,6 +214,12 @@ def home_page():
                            outputs=output_dirs)
 
 
+@app.route('/help')
+def help_page():
+    """使用说明页面"""
+    return render_template('help_template.html', static_base='')
+
+
 @app.route('/photo-track')
 def photo_track_page():
     """照片轨迹页面"""

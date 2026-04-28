@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用说明 - 路书 RoadBook</title>
+    <link rel="icon" href="{{ static_base }}static/assets/favicon-48.png" type="image/png">
+    <link rel="stylesheet" href="{{ static_base }}static/common.css">
+    <link rel="stylesheet" href="{{ static_base }}static/help.css">
+</head>
+<body>
+    <div class="header">
+        <div class="header-brand">
+            <img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img">
+            <h1>路书 <span class="title-en">RoadBook</span></h1>
+            <nav class="header-nav">
+                <a href="/">首页</a>
+                <a href="/photo-track">照片轨迹</a>
+                <a href="/route">路径规划</a>
+                <a href="/roadbook">AI路书</a>
+                <a href="/help" class="active">使用说明</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">
+                <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+            <div class="header-github" id="headerGithub">
+                <a href="https://github.com/zangnan/roadbook" target="_blank" title="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gradient"></div>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-grid"></div>
+
+    <main class="help-main">
+        <div class="help-hero">
+            <div class="help-hero-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            <h1 class="help-hero-title">使用说明</h1>
+            <p class="help-hero-subtitle">了解如何使用路书的三大核心功能</p>
+        </div>
+
+        <div class="help-cards">
+            <!-- 照片轨迹 -->
+            <div class="help-card" id="photo-track-help">
+                <div class="help-card-header">
+                    <div class="help-icon photo">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                    </div>
+                    <h2>照片轨迹</h2>
+                </div>
+                <div class="help-card-content">
+                    <p class="help-desc">从照片提取 GPS 信息，自动生成交互式轨迹地图和时间轴</p>
+
+                    <div class="help-steps">
+                        <h3>Web 使用步骤</h3>
+                        <ol>
+                            <li>将包含 GPS 信息的照片放入 <code>photo/&lt;目录名&gt;/</code> 目录</li>
+                            <li>访问 <a href="/photo-track">照片轨迹</a> 页面</li>
+                            <li>选择或输入目录名</li>
+                            <li>（可选）调整距离阈值和时间阈值参数</li>
+                            <li>点击「开始生成」，等待处理完成</li>
+                            <li>点击「查看轨迹地图」或「查看时间轴」浏览结果</li>
+                        </ol>
+                    </div>
+
+                    <div class="help-cli">
+                        <h3>CLI 使用方式</h3>
+                        <pre><code>python src/photo_track.py &lt;照片目录&gt; [选项]</code></pre>
+                        <div class="help-options">
+                            <table>
+                                <tr><td><code>-H, --html-only</code></td><td>跳过图片解析，仅生成 HTML</td></tr>
+                                <tr><td><code>-d, --distance-threshold</code></td><td>距离阈值（米），默认 1000</td></tr>
+                                <tr><td><code>-t, --time-threshold</code></td><td>时间阈值（秒），默认 7200</td></tr>
+                                <tr><td><code>-v, --verbose</code></td><td>详细日志输出</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 路径规划 -->
+            <div class="help-card" id="route-help">
+                <div class="help-card-header">
+                    <div class="help-icon route">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h2>路径规划</h2>
+                </div>
+                <div class="help-card-content">
+                    <p class="help-desc">基于高德地图的路线规划功能，支持多种出行方式</p>
+
+                    <div class="help-steps">
+                        <h3>使用步骤</h3>
+                        <ol>
+                            <li>访问 <a href="/route">路径规划</a> 页面</li>
+                            <li>在搜索框中输入起点，按回车添加</li>
+                            <li>继续添加途经点和终点（最多支持 16 个途经点）</li>
+                            <!-- <li>选择出行方式：驾车 / 步行 / 骑行 / 公交</li> -->
+                            <!-- <li>（驾车）选择策略：推荐 / 最短 / 避免收费</li> -->
+                            <li>点击「开始规划」，查看路线详情</li>
+                        </ol>
+                    </div>
+
+                    <!-- <div class="help-tips">
+                        <h3>出行方式</h3>
+                        <ul>
+                            <li><strong>驾车</strong> — 支持多种策略选择，适合自驾出行</li>
+                            <li><strong>步行</strong> — 适合短距离步行导航</li>
+                            <li><strong>骑行</strong> — 适合自行车或电动车出行</li>
+                            <li><strong>公交</strong> — 公共交通路线规划</li>
+                        </ul>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- AI路书 -->
+            <div class="help-card" id="roadbook-help">
+                <div class="help-card-header">
+                    <div class="help-icon ai">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            <line x1="8" y1="6" x2="16" y2="6"/>
+                            <line x1="8" y1="10" x2="16" y2="10"/>
+                            <line x1="8" y1="14" x2="12" y2="14"/>
+                        </svg>
+                    </div>
+                    <h2>AI路书</h2>
+                </div>
+                <div class="help-card-content">
+                    <p class="help-desc">AI 生成完整旅行行程，包含景点、住宿、餐饮推荐和预算估算</p>
+
+                    <div class="help-steps">
+                        <h3>使用步骤</h3>
+                        <ol>
+                            <li>访问 <a href="/roadbook">AI路书</a> 页面</li>
+                            <li>点击页头右上角AI生成按钮</li>
+                            <li>填写行程标题、天数、人数、旅行日期范围</li>
+                            <li>选择人数和房间数</li>
+                            <li>选择车型（轿车/SUV/越野车/MVP）</li>
+                            <li>（可选）填写预算偏好和特殊需求</li>
+                            <li>点击「生成路书」，等待 AI 完成</li>
+                            <li>查看生成的行程，可收藏、导出Json、导出为 Excel</li>
+                        </ol>
+                    </div>
+
+                    <div class="help-tips">
+                        <h3>配置 API Key</h3>
+                        <p>AI 路书功能需要配置 DeepSeek API Key，请在 <code>.env</code> 文件中设置：</p>
+                        <pre><code>DEEPSEEK_API_KEY=your_api_key_here
+DEEPSEEK_API_URL=https://api.deepseek.com/v1
+DEEPSEEK_MODEL=deepseek-reasoner</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ 区域 -->
+        <div class="faq-section">
+            <h2 class="faq-title">常见问题</h2>
+
+            <details class="faq-item">
+                <summary>如何获取高德地图 API Key？</summary>
+                <div class="faq-answer">
+                    <p>1. 访问 <a href="https://console.amap.com/dev/key/app" target="_blank">高德开放平台控制台</a></p>
+                    <p>2. 注册账号并完成开发者认证</p>
+                    <p>3. 创建应用，获取 Web API Key 和 Web Service Key</p>
+                    <p>4. 在 <code>.env</code> 文件中配置：</p>
+                    <pre><code>AMAP_WEB_AK=你的Web端Key
+AMAP_SERVER_AK=你的服务端Key</code></pre>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>照片没有 GPS 信息怎么办？</summary>
+                <div class="faq-answer">
+                    <p>路书依赖照片中的 EXIF GPS 信息来生成轨迹。如果照片没有 GPS 信息：</p>
+                    <ul>
+                        <li>可以手动添加 GPS 坐标（需要修改 EXIF 数据）</li>
+                        <li>或使用「仅生成 HTML」模式，手动编辑生成的 JSON 数据</li>
+                    </ul>
+                    <p>提示：手机拍摄的照片通常包含 GPS 信息，但经过压缩或编辑的照片可能会丢失。</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>如何配置 DeepSeek API Key？</summary>
+                <div class="faq-answer">
+                    <p>1. 访问 <a href="https://platform.deepseek.com/" target="_blank">DeepSeek 开放平台</a></p>
+                    <p>2. 注册账号并获取 API Key</p>
+                    <p>3. 在项目根目录的 <code>.env</code> 文件中添加：</p>
+                    <pre><code>DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxx</code></pre>
+                    <p>4. 重启应用即可使用 AI 路书功能</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>生成的轨迹地图如何分享？</summary>
+                <div class="faq-answer">
+                    <p>生成的轨迹地图是独立的 HTML 文件，可以：</p>
+                    <ul>
+                        <li>直接打开 <code>output/&lt;目录名&gt;/track_output.html</code> 文件</li>
+                        <li>将整个输出目录压缩打包分享给其他人</li>
+                        <li>部署到 Web 服务器上访问</li>
+                    </ul>
+                    <p>注意：地图需要联网加载高德地图资源，离线无法正常显示。</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>桌面应用和 Web 应用有什么区别？</summary>
+                <div class="faq-answer">
+                    <p><strong>桌面应用（PyWebView）</strong>：通过 <code>build.bat</code> 打包的独立可执行文件，适合不熟悉命令行的用户。</p>
+                    <p><strong>Web 应用</strong>：通过 <code>python src/web_app.py</code> 启动，适合开发者或需要远程访问的场景。</p>
+                    <p>两者功能完全一致，界面相同。</p>
+                </div>
+            </details>
+
+            <details class="faq-item">
+                <summary>距离阈值和时间阈值是什么？</summary>
+                <div class="faq-answer">
+                    <p>这两个参数用于控制轨迹点的「合并策略」：</p>
+                    <ul>
+                        <li><strong>距离阈值</strong>（默认 1000 米）：相邻两点距离小于此值时，可能被合并</li>
+                        <li><strong>时间阈值</strong>（默认 7200 秒 = 2 小时）：相邻两点时间差小于此值时，可能被合并</li>
+                    </ul>
+                    <p>如果同一天拍的照片间隔很近，系统会将其合并为同一个地点节点，避免轨迹过于密集。</p>
+                </div>
+            </details>
+        </div>
+    </main>
+
+    <script>
+        // 检测桌面模式并隐藏 GitHub 图标
+        (function() {
+            const isDesktop = new URLSearchParams(window.location.search).get('desktop') === '1';
+            if (isDesktop) document.body.classList.add('desktop-mode');
+        })();
+
+        // 设置导航高亮
+        (function() {
+            const path = window.location.pathname;
+            const navLinks = document.querySelectorAll('.header-nav a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === path) {
+                    link.classList.add('active');
+                }
+            });
+        })();
+
+        // 导航函数（桌面模式下使用 PyWebView 的 navigate，浏览器模式下使用 location.href）
+        function navigateTo(url) {
+            if (window.navigate) {
+                window.navigate(url);
+            } else {
+                window.location.href = url;
+            }
+        }
+
+        // 主题切换
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // 初始化主题
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</body>
+</html>
