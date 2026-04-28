@@ -829,6 +829,16 @@
             opacity: 0.8;
         }
 
+        /* 亮色主题下天气卡片 */
+        body[data-theme="light"] .day-weather-hero {
+            background: linear-gradient(135deg, #c7d2fe 0%, #e0e7ff 100%);
+            color: #1e1b4b;
+        }
+
+        body[data-theme="light"] .day-weather-hero .day-weather-temp {
+            color: #312e81;
+        }
+
         /* 路线信息横向条 - 跨两列 */
         .day-route-bar {
             grid-column: 1 / -1;
