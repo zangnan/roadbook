@@ -21,6 +21,7 @@ a = Analysis(
         ('src/ai_generator.py', '.'),
         ('src/excel_exporter.py', '.'),
         ('src/weather.py', '.'),
+        ('src/footprint.py', '.'),
     ],
     hiddenimports=[
         'flask',
@@ -45,6 +46,7 @@ a = Analysis(
         'openpyxl',
         'openai',
         'webview',
+        'footprint',
     ],
     hookspath=[],
     hooksconfig={},
