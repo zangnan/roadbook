@@ -264,6 +264,7 @@ max-width: 1200px;
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
     font-size: 0.85rem;
     color: var(--text-primary);
+    line-height: 1.8;
 }
 
 /* FAQ 区域 */

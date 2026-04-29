@@ -323,7 +323,7 @@ body::before {
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 4px;
 }
 
 /* 导航菜单 - 位于 header-brand 左侧 */
@@ -353,34 +353,37 @@ body::before {
     background: var(--primary-light);
 }
 
-/* GitHub 图标 */
-.header-github {
+/* 右侧按钮 */
+.header-r-btn {
     display: flex;
     align-items: center;
-    margin-left: 8px;
-}
-
-.header-github a {
-    display: flex;
-    align-items: center;
-    padding: 6px;
-    border-radius: 6px;
-    color: var(--text-secondary);
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: var(--text-primary);
     transition: all 0.2s ease;
 }
 
-.header-github a:hover {
-    color: var(--text-primary);
-    background: var(--bg-glass);
+.header-r-btn:hover {
+    /* color: var(--primary-color); */
+    background-color: #ddd;
+    border-radius: 6px;
 }
 
-.header-github svg {
+.header-r-btn svg {
     width: 18px;
     height: 18px;
 }
 
-/* 桌面模式下隐藏 GitHub 图标 */
-body.desktop-mode .header-github {
+.icon-sun { display: none; }
+.icon-moon { display: block; }
+
+[data-theme="light"] .icon-sun { display: block; }
+[data-theme="light"] .icon-moon { display: none; }
+
+/* 桌面模式下隐藏右侧按钮 */
+body.desktop-mode .header-r-btn {
     display: none;
 }
 
@@ -696,36 +699,6 @@ body.desktop-mode .header-github {
 /* ============================================
    通用 UI 组件
    ============================================ */
-
-/* 主题切换按钮 */
-.theme-toggle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid var(--border-color);
-    background: var(--bg-glass);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-primary);
-    transition: all 0.2s;
-}
-
-.theme-toggle:hover {
-    background: var(--bg-glass-hover);
-}
-
-.theme-toggle svg {
-    width: 18px;
-    height: 18px;
-}
-
-.icon-sun { display: none; }
-.icon-moon { display: block; }
-
-[data-theme="light"] .icon-sun { display: block; }
-[data-theme="light"] .icon-moon { display: none; }
 
 /* 页头按钮 */
 .header-btn {
@@ -1064,6 +1037,10 @@ body.desktop-mode .header-github {
 .card-ai:hover { border-color: #a855f7; }
 .card-ai::before { background: linear-gradient(90deg, #a855f7, #ec4899); }
 .card-ai .feature-icon { background: linear-gradient(135deg, #a855f7, #ec4899); }
+
+.card-footprint:hover { border-color: #22c55e; }
+.card-footprint::before { background: linear-gradient(90deg, #22c55e, #10b981); }
+.card-footprint .feature-icon { background: linear-gradient(135deg, #22c55e, #10b981); }
 
 .feature-icon {
     width: 72px;

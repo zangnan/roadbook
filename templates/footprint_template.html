@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>路书 RoadBook - 足迹地图</title>
+    <link rel="icon" href="{{ static_base }}static/assets/favicon-48.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ static_base }}static/common.css">
+    <link rel="stylesheet" href="{{ static_base }}static/footprint.css">
+    <style>
+        /* 使用 common.css 中的 CSS 变量，无重复定义 */
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* 主布局 */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 60px);
+            margin-top: 60px;
+        }
+        .sidebar {
+            width: 320px;
+            background: var(--bg-panel);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+        .sidebar-section {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .stat-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .stat-card:hover {
+            background: var(--bg-glass-hover);
+            transform: translateY(-2px);
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        .timeline-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            margin: 0 -16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+        .timeline-item:hover {
+            background: var(--bg-glass-hover);
+        }
+        .timeline-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            flex-shrink: 0;
+            box-shadow: 0 0 8px var(--primary-color);
+        }
+        .timeline-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        .timeline-location {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .badge-item {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 6px 12px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .badge-item.locked {
+            opacity: 0.4;
+            filter: grayscale(50%);
+        }
+        .badge-item:not(.locked):hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-glow);
+            border-color: var(--primary-color);
+        }
+        .badge-icon {
+            font-size: 14px;
+        }
+
+        /* 地图容器 */
+        #map {
+            flex: 1;
+            min-width: 0;
+            height: 100%;
+        }
+        #mapContainer {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 视图切换 */
+        .view-switcher {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: var(--bg-panel);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 4px;
+            z-index: 100;
+            display: flex;
+            gap: 4px;
+            box-shadow: var(--shadow-panel);
+        }
+        .view-btn {
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+        .view-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-glass-hover);
+        }
+        .view-btn.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 足迹弹窗 */
+        .marker-popup {
+            max-width: 280px;
+            background: var(--bg-panel);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow-panel);
+        }
+        .popup-header {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .popup-province {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .popup-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .popup-stat {
+            text-align: center;
+            padding: 8px;
+            background: var(--bg-glass);
+            border-radius: 8px;
+        }
+        .popup-stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .popup-stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .popup-dates {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .popup-photos {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .popup-photo {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .popup-photo:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+
+        /* 空状态 */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 40px;
+        }
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .empty-desc {
+            font-size: 14px;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-brand">
+            <img src="{{ static_base }}static/assets/favicon-48.png" alt="icon" class="header-icon-img">
+            <h1>路书 <span class="title-en">RoadBook</span></h1>
+            <nav class="header-nav">
+                <a href="/">首页</a>
+                <a href="/photo-track">照片轨迹</a>
+                <a href="/route">路径规划</a>
+                <a href="/roadbook">AI路书</a>
+                <a href="/footprint">足迹地图</a>
+                <a href="/help">使用说明</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="header-r-btn" onclick="toggleTheme()" title="切换主题">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path fill="currentColor" d="m7.001 15.848-1.226 1.226a.58.58 0 0 0 0 .818.58.58 0 0 0 .818 0l1.226-1.226a.58.58 0 0 0 0-.818.58.58 0 0 0-.818 0m-.352-8.735a.584.584 0 0 0 .825-.825L6.237 5.051a.584.584 0 0 0-.825.825zM5.011 11.07h-1.75a.584.584 0 0 0 0 1.167h1.75c.324 0 .584-.26.584-.583a.585.585 0 0 0-.584-.584m7.003-5.835c.324 0 .584-.26.584-.584V2.9a.58.58 0 0 0-.584-.584.58.58 0 0 0-.583.583V4.65c0 .323.262.584.583.584m5.616 1.621 1.226-1.225a.58.58 0 0 0 0-.818.58.58 0 0 0-.818 0l-1.226 1.225a.58.58 0 0 0 0 .818.576.576 0 0 0 .818 0m3.138 4.214h-1.75a.58.58 0 0 0-.584.584c0 .324.26.584.583.584h1.751a.584.584 0 1 0 0-1.167m-3.389 5.124a.584.584 0 0 0-.825.825l1.238 1.238a.584.584 0 0 0 .825-.826zm-5.365-9.795a5.256 5.256 0 0 0-5.257 5.258 5.256 5.256 0 0 0 5.257 5.257 5.256 5.256 0 0 0 5.257-5.257 5.256 5.256 0 0 0-5.257-5.258m0 11.675a.58.58 0 0 0-.583.583v1.751a.582.582 0 1 0 1.167 0v-1.75a.584.584 0 0 0-.584-.584"></path></svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" viewBox="0 0 19 19"><path fill="currentColor" d="M9.166 0a9.2 9.2 0 0 1 1.857.188.834.834 0 0 1 .042 1.623 4.47 4.47 0 1 0 5.457 5.457l.048-.135a.834.834 0 0 1 1.575.177q.186.902.188 1.856A9.168 9.168 0 1 1 9.166 0"></path></svg>
+            </div>
+            <div class="header-r-btn" id="headerGithub">
+                <a href="https://github.com/zangnan/roadbook" target="_blank" title="GitHub">
+                    <svg viewBox="64 64 896 896" focusable="false" data-icon="github" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9 26.4 39.1 77.9 32.5 104 26 5.7-23.5 17.9-44.5 34.7-60.8-140.6-25.2-199.2-111-199.2-213 0-49.5 16.3-95 48.3-131.7-20.4-60.5 1.9-112.3 4.9-120 58.1-5.2 118.5 41.6 123.2 45.3 33-8.9 70.7-13.6 112.9-13.6 42.4 0 80.2 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.3-43.9 2.9 7.7 24.7 58.3 5.5 118 32.4 36.8 48.9 82.7 48.9 132.3 0 102.2-59 188.1-200 212.9a127.5 127.5 0 0138.1 91v112.5c.8 9 0 17.9 15 17.9 177.1-59.7 304.6-227 304.6-424.1 0-247.2-200.4-447.3-447.5-447.3z"></path></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3v18h18"/>
+                        <path d="M18 17V9"/>
+                        <path d="M13 17V5"/>
+                        <path d="M8 17v-3"/>
+                    </svg>
+                    我的足迹
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statProvinces">0</div>
+                        <div class="stat-label">个省份</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCities">0</div>
+                        <div class="stat-label">个城市</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTrips">0</div>
+                        <div class="stat-label">次旅行</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statPhotos">0</div>
+                        <div class="stat-label">张照片</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    旅行时间线
+                </div>
+                <ul class="timeline-list" id="timelineList">
+                    <!-- 动态生成 -->
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="8" r="7"/>
+                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                    </svg>
+                    成就徽章
+                </div>
+                <div class="badge-list" id="badgeList">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 地图 -->
+        <div id="map" style="position: relative;">
+            <div class="view-switcher">
+                <button class="view-btn active" data-view="markers" onclick="switchView('markers')">足迹点</button>
+                <button class="view-btn" data-view="heatmap" onclick="switchView('heatmap')">热力图</button>
+            </div>
+            <div id="mapContainer"></div>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <svg class="empty-icon" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+                <div class="empty-title">暂无足迹数据</div>
+                <div class="empty-desc">处理一些照片轨迹后，这里将展示你的旅行足迹地图</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 高德地图 JS API -->
+    <script src="https://webapi.amap.com/maps?v=2.0&key={{ amap_web_ak }}&plugin=AMap.Marker"></script>
+
+    <script>
+        // 全局变量
+        let map = null;
+        let markers = [];
+        let markerLocationMap = {};  // marker 索引 -> location 数据
+        let heatmapOverlay = null;
+        let currentView = 'markers';
+        let footprintData = null;
+
+        // 沿海城市白名单
+        const COASTAL_CITIES = [
+            // 辽宁省
+            '大连', '丹东', '锦州', '营口', '盘锦', '葫芦岛',
+            // 河北省
+            '秦皇岛', '唐山', '沧州',
+            // 天津市
+            '天津',
+            // 山东省
+            '青岛', '烟台', '威海', '潍坊', '东营', '滨州', '日照',
+            // 江苏省
+            '连云港', '盐城', '南通',
+            // 上海市
+            '上海',
+            // 浙江省
+            '宁波', '温州', '台州', '舟山', '嘉兴', '绍兴', '杭州',
+            // 福建省
+            '福州', '厦门', '漳州', '泉州', '莆田', '宁德',
+            // 广东省
+            '广州', '深圳', '珠海', '汕头', '湛江', '茂名', '阳江', '江门', '中山', '东莞', '惠州', '汕尾', '揭阳', '潮州',
+            // 广西壮族自治区
+            '北海', '防城港', '钦州',
+            // 海南省
+            '海口', '三亚', '儋州', '三沙'
+        ];
+
+        // 判断是否为沿海城市
+        function isCoastalCity(cityName) {
+            return COASTAL_CITIES.some(c => cityName.includes(c) || c.includes(cityName));
+        }
+
+        // 成就徽章定义 (使用 SVG 图标)
+        const BADGES = [
+            { id: 'coastal', name: '沿海探索者', icon: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M12 2v20"/></svg>', desc: '访问10+沿海城市', check: (d) => {
+                const coastalCount = d.locations.filter(loc => isCoastalCity(loc.name)).length;
+                return coastalCount >= 10;
+            }},
+            { id: 'traveler', name: '足迹旅行者', icon: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>', desc: '足迹遍及5+省份', check: (d) => d.provinces_visited.length >= 5 },
+            { id: 'photographer', name: '摄影达人', icon: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>', desc: '累计100+照片', check: (d) => d.total_photos >= 100 },
+            { id: 'frequent', name: '常旅达人', icon: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>', desc: '10+次旅行', check: (d) => d.total_trips >= 10 },
+            { id: 'explorer', name: '城市探索者', icon: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></svg>', desc: '访问20+城市', check: (d) => d.cities_visited.length >= 20 }
+        ];
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            initTheme();
+            // 设置导航高亮
+            const path = window.location.pathname;
+            const navLinks = document.querySelectorAll('.header-nav a');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === path) {
+                    link.classList.add('active');
+                }
+            });
+            await loadFootprintData();
+        });
+
+        // 主题初始化
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+        }
+
+        // 主题切换
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // 加载足迹数据
+        async function loadFootprintData() {
+            try {
+                const resp = await fetch('/api/footprint/summary');
+                footprintData = await resp.json();
+                renderStats();
+                renderTimeline();
+                renderBadges();
+                renderMap();
+            } catch (err) {
+                console.error('加载足迹数据失败:', err);
+                document.getElementById('emptyState').style.display = 'flex';
+            }
+        }
+
+        // 渲染统计
+        function renderStats() {
+            document.getElementById('statProvinces').textContent = footprintData.provinces_visited.length;
+            document.getElementById('statCities').textContent = footprintData.cities_visited.length;
+            document.getElementById('statTrips').textContent = footprintData.total_trips;
+            document.getElementById('statPhotos').textContent = footprintData.total_photos;
+        }
+
+        // 渲染时间线（按年月+地点去重）
+        function renderTimeline() {
+            const list = document.getElementById('timelineList');
+            if (!footprintData.timeline || footprintData.timeline.length === 0) {
+                list.innerHTML = '<li class="timeline-item"><span class="timeline-location">暂无数据</span></li>';
+                return;
+            }
+
+            // 按年月+地点去重
+            const seen = new Set();
+            const uniqueItems = footprintData.timeline.filter(item => {
+                const key = item.date.substring(0, 7) + '|' + item.location; // YYYY-MM|地点
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+
+            list.innerHTML = uniqueItems.slice(0, 20).map(item => `
+                <li class="timeline-item" onclick="focusLocation('${item.location}')">
+                    <span class="timeline-dot"></span>
+                    <span class="timeline-date">${item.date}</span>
+                    <span class="timeline-location">${item.location}</span>
+                </li>
+            `).join('');
+        }
+
+        // 渲染徽章
+        function renderBadges() {
+            const list = document.getElementById('badgeList');
+            list.innerHTML = BADGES.map(badge => {
+                const unlocked = badge.check(footprintData);
+                return `
+                    <div class="badge-item ${unlocked ? '' : 'locked'}">
+                        <span class="badge-icon">${badge.icon}</span>
+                        <span>${badge.name}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 渲染地图
+        function renderMap() {
+            if (!footprintData.locations || footprintData.locations.length === 0) {
+                document.getElementById('emptyState').style.display = 'flex';
+                return;
+            }
+
+            const isDark = document.body.getAttribute('data-theme') === 'dark';
+            map = new AMap.Map('mapContainer', {
+                zoom: 5,
+                center: [105, 36],
+                mapStyle: isDark ? 'amap://styles/dark' : 'amap://styles/light',
+                viewMode: '2D'
+            });
+
+            renderMarkers();
+        }
+
+        // 渲染足迹点
+        function renderMarkers() {
+            if (!map || !footprintData.locations) return;
+
+            // 清除旧标记
+            markers.forEach(m => m.setMap(null));
+            markers = [];
+            markerLocationMap = {};
+
+            footprintData.locations.forEach((loc, idx) => {
+                const marker = new AMap.Circle({
+                    center: [loc.lng, loc.lat],
+                    radius: Math.min(8 + loc.trip_count * 2, 20) * 1000,
+                    strokeColor: '#4a9eff',
+                    strokeWeight: 2,
+                    fillColor: '#4a9eff',
+                    fillOpacity: 0.8,
+                    bubble: true,
+                    cursor: 'pointer'
+                });
+
+                marker.on('click', () => showLocationPopup(loc));
+                markerLocationMap[idx] = [loc.lng, loc.lat];
+
+                marker.setMap(map);
+                markers.push(marker);
+            });
+        }
+
+        // 显示位置弹窗
+        function showLocationPopup(loc) {
+            const photos = getLocationPhotos(loc);
+            const popup = `
+                <div class="marker-popup">
+                    <div class="popup-header">${loc.name}</div>
+                    <div class="popup-province">${loc.province}</div>
+                    <div class="popup-stats">
+                        <div class="popup-stat">
+                            <div class="popup-stat-value">${loc.trip_count}</div>
+                            <div class="popup-stat-label">次到访</div>
+                        </div>
+                        <div class="popup-stat">
+                            <div class="popup-stat-value">${loc.total_photos}</div>
+                            <div class="popup-stat-label">张照片</div>
+                        </div>
+                    </div>
+                    <div class="popup-dates">
+                        访问时间: ${loc.visit_dates.join(', ') || '暂无'}
+                    </div>
+                    ${photos.length > 0 ? `
+                        <div class="popup-photos">
+                            ${photos.slice(0, 4).map(p => `<img class="popup-photo" src="/output/${p}" onclick="previewPhoto('${p}')">`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            // 创建并打开信息窗
+            const infoWindow = new AMap.InfoWindow({
+                content: popup,
+                offset: new AMap.Pixel(0, -20)
+            });
+
+            // 直接打开信息窗到该位置
+            infoWindow.open(map, new AMap.LngLat(loc.lng, loc.lat));
+        }
+
+        // 获取位置的照片
+        function getLocationPhotos(loc) {
+            return footprintData.locations.find(l => l.name === loc.name)?.cover_photos || [];
+        }
+
+        // 切换视图
+        function switchView(view) {
+            currentView = view;
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === view);
+            });
+
+            if (view === 'markers') {
+                // 清除热力图
+                if (heatmapOverlay && Array.isArray(heatmapOverlay)) {
+                    heatmapOverlay.forEach(m => map.remove(m));
+                    heatmapOverlay = null;
+                }
+                markers.forEach(m => m.show());
+            } else if (view === 'heatmap') {
+                // 隐藏普通标记
+                markers.forEach(m => m.hide());
+                markers.forEach(m => m.hide());
+                renderHeatmap();
+            }
+        }
+
+        // 渲染热力图（用标记点大小表示密度）
+        function renderHeatmap() {
+            if (!map || !footprintData.locations) return;
+
+            // 清除旧的热力图标记
+            if (heatmapOverlay) {
+                heatmapOverlay.forEach(m => map.remove(m));
+                heatmapOverlay = null;
+            }
+            heatmapOverlay = [];
+
+            // 找出最大 trip_count 用于归一化
+            const maxTrips = Math.max(...footprintData.locations.map(l => l.trip_count));
+
+            footprintData.locations.forEach(loc => {
+                // 根据访问次数计算圆的大小和颜色深度
+                const ratio = loc.trip_count / maxTrips;
+                const radius = 20 + ratio * 40;  // 20-60px
+                const opacity = 0.3 + ratio * 0.5;  // 0.3-0.8
+
+                const circle = new AMap.Circle({
+                    center: [loc.lng, loc.lat],
+                    radius: radius * 1000,
+                    fillColor: `rgba(74, 158, 255, ${opacity})`,
+                    strokeColor: '#4a9eff',
+                    strokeWeight: 1,
+                    fillOpacity: opacity,
+                    bubble: true
+                });
+
+                circle.on('click', () => showLocationPopup(loc));
+                circle.setMap(map);
+                heatmapOverlay.push(circle);
+            });
+        }
+
+        // 聚焦位置
+        function focusLocation(name) {
+            const loc = footprintData.locations.find(l => l.name === name);
+            if (loc && map) {
+                map.setZoomAndCenter(10, [loc.lng, loc.lat]);
+                showLocationPopup(loc);
+            }
+        }
+
+        // 照片预览（简单实现，可扩展）
+        function previewPhoto(path) {
+            window.open(`/output/${path}`, '_blank');
+        }
+    </script>
+</body>
+</html>

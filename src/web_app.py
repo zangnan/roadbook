@@ -6,6 +6,7 @@ import uuid
 import threading
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request, send_file, abort, Response
+from footprint import get_footprint_summary
 
 # 打包后运行：sys._MEIPASS 是 PyInstaller 解压临时资源的目录
 if getattr(sys, 'frozen', False):
@@ -218,6 +219,14 @@ def home_page():
 def help_page():
     """使用说明页面"""
     return render_template('help_template.html', static_base='')
+
+
+@app.route('/footprint')
+def footprint_page():
+    """足迹地图页面"""
+    return render_template('footprint_template.html',
+                           static_base='',
+                           amap_web_ak=AMAP_WEB_AK)
 
 
 @app.route('/photo-track')
@@ -438,6 +447,12 @@ def api_weather():
 def api_outputs():
     """获取输出目录列表"""
     return jsonify(get_output_dirs())
+
+
+@app.route('/api/footprint/summary')
+def api_footprint_summary():
+    """获取足迹地图汇总数据"""
+    return jsonify(get_footprint_summary())
 
 
 @app.route('/api/save/roadbook', methods=['POST'])
