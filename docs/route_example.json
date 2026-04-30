@@ -1,186 +1,702 @@
 {
   "basic_info": {
-    "title": "大连出发・8天无回头草原环线自驾路书",
-    "travel_date_start": "2026-07-15",
-    "travel_date_end": "2026-07-22",
-    "days": 8,
-    "car_type": "轿车",
-    "people_count": 5,
-    "room_count": 2,
-    "total_distance_km": 2800,
-    "fuel_consumption": "6.5L/100km",
+    "car_type": "SUV",
+    "days": 7,
+    "elevation_range": "0-50m",
+    "fuel_consumption": "8L/100km",
     "fuel_price": 8.5,
-    "elevation_range": "20-1400m",
     "high_altitude_warning": false,
-    "route_summary": "大连→通辽→霍林郭勒→乌拉盖→锡林浩特→经棚→热水塘→赤峰→大连"
+    "people_count": 2,
+    "room_count": 1,
+    "route_summary": "广州→珠海→中山→江门→广州",
+    "title": "广州至珠海深度自驾7日游",
+    "total_distance_km": 480,
+    "travel_date_end": "2026-05-07",
+    "travel_date_start": "2026-05-01"
   },
-
-  "daily_itinerary": [
-    {
-      "day_number": 1,
-      "date": "2026-07-15",
-      "origin": "大连",
-      "destination": "通辽",
-      "distance_km": 580,
-      "duration_hours": 6.5,
-      "elevation_m": "20-190",
-      "route": "沈海高速→阜营高速→新鲁高速",
-      "highlights": ["科尔沁博物馆", "大青沟（顺路可选）"],
-      "accommodation": "通辽市区",
-      "food": ["蒙式奶茶", "手把肉", "东北锅包肉"],
-      "tips": ["大青沟骑马漂流先问价", "高速口特产慎买"],
-      "gas_station": "通辽市区加满"
-    },
-    {
-      "day_number": 2,
-      "date": "2026-07-16",
-      "origin": "通辽",
-      "destination": "霍林郭勒",
-      "distance_km": 320,
-      "duration_hours": 4,
-      "elevation_m": "190-850",
-      "route": "G304国道（草原景观大道）",
-      "highlights": ["珠日河草原", "扎鲁特山地草原", "风车天路"],
-      "accommodation": "霍林郭勒市区",
-      "food": ["涮羊肉", "羊汤面", "草原烧烤"],
-      "tips": ["不碾压草场", "不买路边无检疫羊肉"],
-      "gas_station": "霍林郭勒市区加满"
-    },
-    {
-      "day_number": 3,
-      "date": "2026-07-17",
-      "origin": "霍林郭勒",
-      "destination": "乌拉盖草原深度游",
-      "distance_km": 180,
-      "duration_hours": 2.5,
-      "elevation_m": "850-920",
-      "route": "乌拉盖内部景观公路",
-      "highlights": ["布林泉", "兵团小镇", "乌拉盖九曲湾", "野狼谷"],
-      "accommodation": "乌拉盖巴彦胡硕镇",
-      "food": ["烤羊腿", "手抓肉", "铁锅炖"],
-      "tips": ["九曲湾必坐景区车", "蒙古包做好防蚊"],
-      "gas_station": "巴彦胡硕镇加满"
-    },
-    {
-      "day_number": 4,
-      "date": "2026-07-18",
-      "origin": "乌拉盖",
-      "destination": "锡林浩特",
-      "distance_km": 360,
-      "duration_hours": 5,
-      "elevation_m": "900-1000",
-      "route": "S307→G306（天边草原公路）",
-      "highlights": ["乌珠穆沁草原", "平顶山火山群远景"],
-      "accommodation": "锡林浩特市区",
-      "food": ["正宗蒙餐", "血肠肉肠", "铜锅涮肉"],
-      "tips": ["部分路段无信号，提前下离线地图"],
-      "gas_station": "锡林浩特市区加满"
-    },
-    {
-      "day_number": 5,
-      "date": "2026-07-19",
-      "origin": "锡林浩特",
-      "destination": "锡林浩特（深度一日游）",
-      "distance_km": 100,
-      "duration_hours": 0,
-      "elevation_m": "1000-1380",
-      "route": "锡林浩特周边",
-      "highlights": ["贝子庙", "锡林九曲", "平顶山火山群"],
-      "accommodation": "锡林浩特市区",
-      "food": ["手把肉", "奶茶", "酸奶", "牛肉干"],
-      "tips": ["平顶山风大防晒", "不敲挖火山岩石"],
-      "gas_station": "市区就近补油",
-      "notes": "全程最高海拔1380m"
-    },
-    {
-      "day_number": 6,
-      "date": "2026-07-20",
-      "origin": "锡林浩特",
-      "destination": "热水塘",
-      "distance_km": 260,
-      "duration_hours": 4,
-      "elevation_m": "1000-1200",
-      "route": "G16丹锡高速",
-      "highlights": ["贡格尔草原", "达里诺尔湖（顺路打卡）"],
-      "accommodation": "热水塘镇",
-      "food": ["草原家常菜", "温泉小镇炖菜"],
-      "tips": ["达里湖景区消费理性", "温泉注意安全"],
-      "gas_station": "经棚镇加满"
-    },
-    {
-      "day_number": 7,
-      "date": "2026-07-21",
-      "origin": "热水塘",
-      "destination": "赤峰",
-      "distance_km": 340,
-      "duration_hours": 5.5,
-      "elevation_m": "1200-600",
-      "route": "达达线→热阿线→丹锡高速",
-      "highlights": ["达达线（中国最美草原公路）", "黄岗梁", "云杉林"],
-      "accommodation": "赤峰市区",
-      "food": ["赤峰对夹", "羊杂", "东北菜"],
-      "tips": ["达达线停车注意安全", "不随意占道拍照"],
-      "gas_station": "赤峰市区加满"
-    },
-    {
-      "day_number": 8,
-      "date": "2026-07-22",
-      "origin": "赤峰",
-      "destination": "大连",
-      "distance_km": 660,
-      "duration_hours": 7.5,
-      "elevation_m": "600-20",
-      "route": "丹锡高速→沈海高速",
-      "highlights": [],
-      "accommodation": "",
-      "food": ["高速服务区简餐"],
-      "tips": ["长途驾驶轮换休息", "备足饮用水"],
-      "gas_station": "赤峰出发满油，中途按需补给",
-      "notes": "全程返程，中途简单午餐"
-    }
-  ],
-
   "budget": {
     "transportation": {
-      "fuel_total_liters": 238.0,
-      "fuel_cost": 2023,
-      "toll_fees": 1400,
-      "transportation_total": 3423,
-      "per_person": 685
+      "fuel_total_liters": 38.4,
+      "fuel_cost": 326,
+      "toll_fees": 180,
+      "transportation_total": 506,
+      "per_person": 253,
+      "car_type": "SUV"
     },
     "accommodation": [
-      { "location": "通辽市区", "type": "连锁酒店", "price_per_room": 280, "nights": 1, "rooms": 2 },
-      { "location": "霍林郭勒市区", "type": "酒店", "price_per_room": 300, "nights": 1, "rooms": 2 },
-      { "location": "乌拉盖巴彦胡硕镇", "type": "酒店", "price_per_room": 350, "nights": 1, "rooms": 2 },
-      { "location": "锡林浩特市区", "type": "酒店", "price_per_room": 350, "nights": 2, "rooms": 2 },
-      { "location": "热水塘镇", "type": "温泉酒店", "price_per_room": 320, "nights": 1, "rooms": 2 },
-      { "location": "赤峰市区", "type": "酒店", "price_per_room": 300, "nights": 1, "rooms": 2 }
+      {
+        "location": "珠海市香洲区",
+        "nights": 1,
+        "price_per_room": 380,
+        "rooms": 1,
+        "type": "舒适型酒店"
+      },
+      {
+        "location": "珠海市横琴新区",
+        "nights": 1,
+        "price_per_room": 420,
+        "rooms": 1,
+        "type": "舒适型酒店"
+      },
+      {
+        "location": "珠海市香洲区",
+        "nights": 1,
+        "price_per_room": 380,
+        "rooms": 1,
+        "type": "舒适型酒店"
+      },
+      {
+        "location": "中山市石岐区",
+        "nights": 1,
+        "price_per_room": 350,
+        "rooms": 1,
+        "type": "舒适型酒店"
+      },
+      {
+        "location": "江门市蓬江区",
+        "nights": 1,
+        "price_per_room": 350,
+        "rooms": 1,
+        "type": "舒适型酒店"
+      },
+      {
+        "location": "广州市海珠区",
+        "nights": 2,
+        "price_per_room": 400,
+        "rooms": 1,
+        "type": "舒适型酒店"
+      }
     ],
     "food": {
-      "daily_budget_per_person": 200,
-      "days": 8,
-      "per_person": 1600,
-      "group_total": 8000
+      "daily_budget_per_person": 130,
+      "days": 7,
+      "per_person": 910,
+      "group_total": 1820
     },
     "tickets": [
-      { "item": "九曲湾景区", "total": 200, "remark": "2大1小" },
-      { "item": "布林泉", "total": 120, "remark": "2大" },
-      { "item": "野狼谷", "total": 100, "remark": "2大" },
-      { "item": "贝子庙", "total": 60, "remark": "2大" }
+      {
+        "item": "广州塔观光",
+        "remark": "2人票价",
+        "total": 300
+      },
+      {
+        "item": "长隆海洋王国",
+        "remark": "2人票价",
+        "total": 790
+      },
+      {
+        "item": "开平碉楼联票",
+        "remark": "2人联票",
+        "total": 360
+      },
+      {
+        "item": "中山詹园",
+        "remark": "2人票价",
+        "total": 100
+      },
+      {
+        "item": "小鸟天堂",
+        "remark": "2人含船票",
+        "total": 100
+      }
     ],
     "misc": [
-      { "item": "停车费", "total": 200 },
-      { "item": "零食/应急", "total": 200 }
+      {
+        "item": "停车费",
+        "total": 250
+      },
+      {
+        "item": "纪念品",
+        "total": 300
+      },
+      {
+        "item": "零食饮水",
+        "total": 200
+      }
     ],
     "grand_total": {
-      "per_person": 3400,
-      "group_total": 17000
+      "per_person": 3703,
+      "group_total": 7406
     }
   },
-
   "checklist": [
-    { "category": "证件类", "items": ["身份证", "驾驶证", "行驶证", "车辆保险单"] },
-    { "category": "日用品", "items": ["防晒霜", "墨镜", "雨衣", "充电宝", "常备药品"] },
-    { "category": "车辆装备", "items": ["备胎", "千斤顶", "反光背心", "车载灭火器"] }
-  ]
+    {
+      "category": "证件",
+      "items": [
+        "身份证",
+        "驾驶证",
+        "行驶证",
+        "行驶证副页"
+      ]
+    },
+    {
+      "category": "衣物",
+      "items": [
+        "T恤/短裤",
+        "防晒衣",
+        "泳衣（酒店可泳池）",
+        "舒适运动鞋",
+        "拖鞋"
+      ]
+    },
+    {
+      "category": "电子设备",
+      "items": [
+        "手机充电器",
+        "车载充电器",
+        "充电宝",
+        "相机/GoPro",
+        "无人机（需确认景区禁飞）"
+      ]
+    },
+    {
+      "category": "药品/防护",
+      "items": [
+        "防晒霜",
+        "防蚊液",
+        "创可贴",
+        "晕车药",
+        "肠胃药",
+        "消毒湿巾"
+      ]
+    },
+    {
+      "category": "车辆用品",
+      "items": [
+        "行车记录仪",
+        "车载手机支架",
+        "遮阳挡",
+        "雨伞",
+        "车载冰箱（可选）"
+      ]
+    },
+    {
+      "category": "其他",
+      "items": [
+        "现金若干",
+        "信用卡/手机支付",
+        "旅行保险单",
+        "钥匙",
+        "垃圾袋"
+      ]
+    }
+  ],
+  "daily_itinerary": [
+    {
+      "accommodation": "珠海市香洲区",
+      "date": "2026-05-01",
+      "day_number": 1,
+      "destination": "珠海",
+      "distance_km": 150,
+      "duration_hours": 2,
+      "elevation_m": "0-30m",
+      "food": [
+        "海鲜大餐",
+        "粤式茶点"
+      ],
+      "gas_station": "广珠西线顺德服务区加油站",
+      "highlights": [
+        "珠海渔女"
+      ],
+      "origin": "广州",
+      "route": "广珠西线高速",
+      "route_stops": [
+        {
+          "description": "从广州家中出发",
+          "location": "广州市",
+          "name": "出发",
+          "type": "start"
+        },
+        {
+          "description": "行驶约2小时",
+          "location": "广珠西线高速",
+          "name": "途经",
+          "type": "transit"
+        },
+        {
+          "description": "品尝海鲜或粤菜",
+          "location": "珠海市香洲区",
+          "name": "午餐",
+          "type": "food"
+        },
+        {
+          "description": "打卡标志性雕塑，沿海散步",
+          "location": "珠海市香洲区情侣路",
+          "name": "珠海渔女",
+          "type": "scenic"
+        },
+        {
+          "description": "入住酒店",
+          "location": "珠海市香洲区",
+          "name": "住宿",
+          "type": "accommodation"
+        },
+        {
+          "description": "推荐海鲜大排档",
+          "location": "珠海市香洲区",
+          "name": "晚餐",
+          "type": "food"
+        }
+      ],
+      "tips": [
+        "五一期间高速可能拥堵，建议早出发",
+        "珠海市内停车位紧张，酒店最好带停车场"
+      ]
+    },
+    {
+      "accommodation": "珠海市横琴新区",
+      "date": "2026-05-02",
+      "day_number": 2,
+      "destination": "珠海",
+      "distance_km": 10,
+      "duration_hours": 0.5,
+      "elevation_m": "0-20m",
+      "food": [
+        "粤式烧腊",
+        "茶餐厅"
+      ],
+      "gas_station": "珠海市区加油站",
+      "highlights": [
+        "圆明新园",
+        "长隆海洋王国"
+      ],
+      "origin": "珠海市香洲区",
+      "route": "市内道路",
+      "route_stops": [
+        {
+          "description": "酒店出发",
+          "location": "珠海市香洲区",
+          "name": "出发",
+          "type": "start"
+        },
+        {
+          "description": "游览古典园林",
+          "location": "珠海市香洲区九洲大道",
+          "name": "圆明新园",
+          "type": "scenic"
+        },
+        {
+          "description": "简餐或粤式快餐",
+          "location": "珠海市香洲区",
+          "name": "午餐",
+          "type": "food"
+        },
+        {
+          "description": "全天游玩",
+          "location": "珠海市横琴新区",
+          "name": "长隆海洋王国",
+          "type": "scenic"
+        },
+        {
+          "description": "住横琴附近酒店",
+          "location": "珠海市横琴新区",
+          "name": "住宿",
+          "type": "accommodation"
+        },
+        {
+          "description": "长隆园区内或周边",
+          "location": "珠海市横琴新区",
+          "name": "晚餐",
+          "type": "food"
+        }
+      ],
+      "tips": [
+        "长隆海洋王国建议早点入园，先看剧场表演",
+        "横琴新区晚上较冷清，注意安全"
+      ]
+    },
+    {
+      "accommodation": "珠海市香洲区",
+      "date": "2026-05-03",
+      "day_number": 3,
+      "destination": "珠海",
+      "distance_km": 40,
+      "duration_hours": 1,
+      "elevation_m": "0-30m",
+      "food": [
+        "海鲜",
+        "糖水"
+      ],
+      "gas_station": "珠海市区加油站",
+      "highlights": [
+        "港珠澳大桥珠海公路口岸"
+      ],
+      "origin": "珠海市横琴新区",
+      "route": "港珠澳大桥连接线",
+      "route_stops": [
+        {
+          "description": "酒店出发",
+          "location": "珠海市横琴新区",
+          "name": "出发",
+          "type": "start"
+        },
+        {
+          "description": "远观大桥，了解建设史",
+          "location": "珠海市香洲区",
+          "name": "港珠澳大桥珠海公路口岸",
+          "type": "scenic"
+        },
+        {
+          "description": "海鲜午餐",
+          "location": "珠海市香洲区",
+          "name": "午餐",
+          "type": "food"
+        },
+        {
+          "description": "再次打卡，海边散步",
+          "location": "珠海市香洲区情侣路",
+          "name": "珠海渔女",
+          "type": "scenic"
+        },
+        {
+          "description": "返回香洲区住宿",
+          "location": "珠海市香洲区",
+          "name": "住宿",
+          "type": "accommodation"
+        },
+        {
+          "description": "粤式晚餐",
+          "location": "珠海市香洲区",
+          "name": "晚餐",
+          "type": "food"
+        }
+      ],
+      "tips": [
+        "港珠澳大桥公路口岸不能过境，只能远观",
+        "情侣路可租自行车骑行，沿途风景很好"
+      ]
+    },
+    {
+      "accommodation": "中山市石岐区",
+      "date": "2026-05-04",
+      "day_number": 4,
+      "destination": "中山",
+      "distance_km": 50,
+      "duration_hours": 1,
+      "elevation_m": "0-20m",
+      "food": [
+        "石岐乳鸽",
+        "中山脆肉鲩"
+      ],
+      "gas_station": "中山市区加油站",
+      "highlights": [
+        "孙中山故居纪念馆",
+        "中山詹园"
+      ],
+      "origin": "珠海市香洲区",
+      "route": "广珠西线高速",
+      "route_stops": [
+        {
+          "description": "酒店出发",
+          "location": "珠海市香洲区",
+          "name": "出发",
+          "type": "start"
+        },
+        {
+          "description": "行驶约1小时",
+          "location": "广珠西线高速",
+          "name": "途经",
+          "type": "transit"
+        },
+        {
+          "description": "参观纪念馆",
+          "location": "中山市翠亨村",
+          "name": "孙中山故居纪念馆",
+          "type": "scenic"
+        },
+        {
+          "description": "中山特色菜",
+          "location": "中山市翠亨村",
+          "name": "午餐",
+          "type": "food"
+        },
+        {
+          "description": "游览岭南园林",
+          "location": "中山市南区街道",
+          "name": "中山詹园",
+          "type": "scenic"
+        },
+        {
+          "description": "入住酒店",
+          "location": "中山市石岐区",
+          "name": "住宿",
+          "type": "accommodation"
+        },
+        {
+          "description": "品尝石岐乳鸽",
+          "location": "中山市石岐区",
+          "name": "晚餐",
+          "type": "food"
+        }
+      ],
+      "tips": [
+        "孙中山故居周一闭馆，确认5月4日是否开放",
+        "中山詹园人较少，适合慢慢逛"
+      ]
+    },
+    {
+      "accommodation": "江门市蓬江区",
+      "date": "2026-05-05",
+      "day_number": 5,
+      "destination": "江门",
+      "distance_km": 80,
+      "duration_hours": 1.5,
+      "elevation_m": "0-40m",
+      "food": [
+        "开平马冈鹅",
+        "陈皮排骨"
+      ],
+      "gas_station": "开平市区加油站",
+      "highlights": [
+        "开平碉楼与村落"
+      ],
+      "origin": "中山市石岐区",
+      "route": "广珠西线高速→江鹤高速",
+      "route_stops": [
+        {
+          "description": "酒店出发",
+          "location": "中山市石岐区",
+          "name": "出发",
+          "type": "start"
+        },
+        {
+          "description": "行驶约1.5小时",
+          "location": "江鹤高速",
+          "name": "途经",
+          "type": "transit"
+        },
+        {
+          "description": "游览世界文化遗产",
+          "location": "江门市开平市自力村",
+          "name": "开平碉楼与村落",
+          "type": "scenic"
+        },
+        {
+          "description": "开平特色农家菜",
+          "location": "开平市",
+          "name": "午餐",
+          "type": "food"
+        },
+        {
+          "description": "继续游览另一碉楼群",
+          "location": "江门市开平市马降龙",
+          "name": "开平碉楼与村落",
+          "type": "scenic"
+        },
+        {
+          "description": "入住酒店",
+          "location": "江门市蓬江区",
+          "name": "住宿",
+          "type": "accommodation"
+        },
+        {
+          "description": "江门陈皮宴",
+          "location": "江门市蓬江区",
+          "name": "晚餐",
+          "type": "food"
+        }
+      ],
+      "tips": [
+        "开平各碉楼群相距20-30分钟车程，自驾方便",
+        "建议买联票更划算"
+      ]
+    },
+    {
+      "accommodation": "广州市海珠区",
+      "date": "2026-05-06",
+      "day_number": 6,
+      "destination": "广州",
+      "distance_km": 100,
+      "duration_hours": 2,
+      "elevation_m": "0-30m",
+      "food": [
+        "新会陈皮鸡",
+        "竹筒饭"
+      ],
+      "gas_station": "江门市区加油站",
+      "highlights": [
+        "小鸟天堂"
+      ],
+      "origin": "江门市蓬江区",
+      "route": "江鹤高速→广珠西线高速",
+      "route_stops": [
+        {
+          "description": "酒店出发",
+          "location": "江门市蓬江区",
+          "name": "出发",
+          "type": "start"
+        },
+        {
+          "description": "乘船观赏独木成林的榕树和鸟类",
+          "location": "江门市新会区会城街道天马村",
+          "name": "小鸟天堂",
+          "type": "scenic"
+        },
+        {
+          "description": "新会陈皮宴",
+          "location": "江门市新会区",
+          "name": "午餐",
+          "type": "food"
+        },
+        {
+          "description": "返回广州",
+          "location": "广珠西线高速",
+          "name": "途经",
+          "type": "transit"
+        },
+        {
+          "description": "入住广州酒店",
+          "location": "广州市海珠区",
+          "name": "住宿",
+          "type": "accommodation"
+        },
+        {
+          "description": "广州粤菜晚餐",
+          "location": "广州市海珠区",
+          "name": "晚餐",
+          "type": "food"
+        }
+      ],
+      "tips": [
+        "小鸟天堂最佳游览时间下午4-5点，鸟类归巢时最为壮观",
+        "返回广州可走新开通的江珠高速，少堵车"
+      ]
+    },
+    {
+      "accommodation": "广州市海珠区",
+      "date": "2026-05-07",
+      "day_number": 7,
+      "destination": "广州",
+      "distance_km": 50,
+      "duration_hours": 1,
+      "elevation_m": "0-30m",
+      "food": [
+        "广州早茶",
+        "云吞面"
+      ],
+      "gas_station": "广州市区加油站",
+      "highlights": [
+        "广州塔",
+        "沙面岛"
+      ],
+      "origin": "广州市海珠区",
+      "route": "市区道路",
+      "route_stops": [
+        {
+          "description": "酒店出发",
+          "location": "广州市海珠区",
+          "name": "出发",
+          "type": "start"
+        },
+        {
+          "description": "登广州塔俯瞰羊城",
+          "location": "广州市海珠区阅江西路",
+          "name": "广州塔",
+          "type": "scenic"
+        },
+        {
+          "description": "广式早茶或点心",
+          "location": "广州市海珠区",
+          "name": "午餐",
+          "type": "food"
+        },
+        {
+          "description": "欧陆风情建筑群，适合拍照",
+          "location": "广州市荔湾区沙面大街",
+          "name": "沙面岛",
+          "type": "scenic"
+        },
+        {
+          "description": "晚餐后结束行程",
+          "location": "广州市荔湾区",
+          "name": "晚餐",
+          "type": "food"
+        },
+        {
+          "description": "回到温暖的家",
+          "location": "广州市",
+          "name": "返回",
+          "type": "end"
+        }
+      ],
+      "tips": [
+        "最后一天行李可寄存在酒店或广州塔",
+        "沙面岛是步行区，建议停车在附近商场"
+      ]
+    }
+  ],
+  "scenic_guides": {
+    "圆明新园": {
+      "description": "圆明新园是以北京圆明园为蓝本，按1:1比例精选复原而成的古典园林景区，再现了清代皇家园林的宏伟与精致。园内有正大光明、九州清晏、蓬岛瑶台等景点，还融合了现代游乐设施和表演。",
+      "location": "广东省珠海市香洲区九洲大道石林山",
+      "name": "圆明新园",
+      "opening_hours": "08:00-18:00",
+      "recommended_visit_time": "3-4小时",
+      "ticket_info": "免费（部分演出另收费）",
+      "tips": [
+        "适合穿汉服拍照，很出片",
+        "附近停车较紧张，建议早点到"
+      ]
+    },
+    "孙中山故居纪念馆": {
+      "description": "孙中山故居是孙中山先生出生和成长的地方，包括故居、纪念馆和翠亨民居展示区。故居为中西合璧的二层小楼，纪念馆内陈列了大量孙中山生平文物和图片，是了解近代历史的重要场所。",
+      "location": "广东省中山市翠亨村",
+      "name": "孙中山故居纪念馆",
+      "opening_hours": "09:00-17:00（周一闭馆）",
+      "recommended_visit_time": "2小时",
+      "ticket_info": "免费（需预约）",
+      "tips": [
+        "周一闭馆，请注意安排日期",
+        "可顺道游览翠亨村其他历史建筑"
+      ]
+    },
+    "广州塔": {
+      "description": "广州塔又称广州新电视塔，昵称小蛮腰，总高600米，是中国第一高塔。塔身造型纤细优美，内部设有观景平台、摩天轮、旋转餐厅等设施。登顶可俯瞰珠江全景和广州城市天际线，夜间灯光秀尤为壮观。",
+      "location": "广东省广州市海珠区阅江西路222号",
+      "name": "广州塔",
+      "opening_hours": "09:30-22:30",
+      "recommended_visit_time": "2-3小时",
+      "ticket_info": "成人票150元（433米观光层），摩天轮套票298元",
+      "tips": [
+        "建议傍晚登塔，日落和夜景都能欣赏",
+        "节假日人流量大，建议提前网上购票"
+      ]
+    },
+    "开平碉楼与村落": {
+      "description": "开平碉楼是中国乡土建筑的一个特殊类型，集防卫、居住和中西建筑艺术于一体，2007年被列入世界文化遗产。主要景点有自力村碉楼群、马降龙碉楼群、立园等，各具特色，展现了侨乡文化。",
+      "location": "广东省江门市开平市",
+      "name": "开平碉楼与村落",
+      "opening_hours": "08:30-17:30",
+      "recommended_visit_time": "4-5小时（含车程）",
+      "ticket_info": "自力村碉楼群78元，联票180元（含多个景区）",
+      "tips": [
+        "建议自驾，各碉楼群间距离不远",
+        "景区较大，穿舒适的鞋子"
+      ]
+    },
+    "珠海渔女": {
+      "description": "珠海渔女是珠海的标志性雕塑，矗立在香炉湾畔，身高8.7米，由花岗岩雕刻而成。渔女双手高举一颗珍珠，寓意珠海迎接繁荣。周边是情侣路海滨步行道，适合散步、骑行，欣赏海景和港珠澳大桥。",
+      "location": "广东省珠海市香洲区情侣路海滨泳场",
+      "name": "珠海渔女",
+      "opening_hours": "全天开放",
+      "recommended_visit_time": "1-2小时",
+      "ticket_info": "免费",
+      "tips": [
+        "早晚人少，适合拍照",
+        "沿海边可以租自行车骑行"
+      ]
+    },
+    "长隆海洋王国": {
+      "description": "长隆海洋王国是世界最大的海洋主题乐园之一，拥有鲸鲨馆、企鹅馆、北极熊馆等多个珍稀动物展馆，以及鹦鹉过山车、冰山过山车等刺激游乐设施。夜间有烟花秀和无人机表演，适合家庭和年轻游客。",
+      "location": "广东省珠海市横琴新区富祥湾",
+      "name": "长隆海洋王国",
+      "opening_hours": "10:00-20:30",
+      "recommended_visit_time": "全天（8-10小时）",
+      "ticket_info": "成人票395元，两日套票625元",
+      "tips": [
+        "入园后先拿地图，规划好表演时间",
+        "带雨衣，部分项目会湿身"
+      ]
+    }
+  }
 }

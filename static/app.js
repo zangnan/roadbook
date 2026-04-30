@@ -336,3 +336,22 @@
     console.log('路书 RoadBook Web 界面已加载');
 
 })();
+
+// 全屏预览功能（挂载到全局）
+window.openPreview = function(imgElement) {
+    const modal = document.getElementById('previewModal');
+    const previewImage = document.getElementById('previewImage');
+    if (modal && previewImage) {
+        previewImage.src = imgElement.src;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+};
+
+window.closePreview = function() {
+    const modal = document.getElementById('previewModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+};

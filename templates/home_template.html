@@ -111,6 +111,111 @@
                 <span class="feature-tag">我的足迹</span>
             </a>
         </div>
+
+        <!-- 效果展示区域 -->
+        <div class="showcase-section">
+            <h2 class="showcase-title">效果展示</h2>
+            <div class="showcase-grid">
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook1.png" alt="照片轨迹生成器" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">照片轨迹生成器</h3>
+                        <p class="showcase-card-desc">从照片提取 GPS 信息，自动生成交互式轨迹地图</p>
+                    </div>
+                </div>
+
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook2.png" alt="照片轨迹地图" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">照片轨迹地图</h3>
+                        <p class="showcase-card-desc">按时间顺序展示旅行足迹，带缩略图预览</p>
+                    </div>
+                </div>
+
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook3.png" alt="照片轨迹地图" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">照片轨迹地图</h3>
+                        <p class="showcase-card-desc">照片原始数据信息展示</p>
+                    </div>
+                </div>
+
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook5.png" alt="照片轨迹地图" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">照片轨迹地图</h3>
+                        <p class="showcase-card-desc">照片轨迹地图查看各个地点的照片</p>
+                    </div>
+                </div>
+
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook4.png" alt="时间轴展示" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">时间轴展示</h3>
+                        <p class="showcase-card-desc">点击标记点查看对应照片缩略图</p>
+                    </div>
+                </div>
+
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook6.png" alt="AI 路书" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">AI 路书</h3>
+                        <p class="showcase-card-desc">AI 智能生成完整旅行行程推荐</p>
+                    </div>
+                </div>
+
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook7.png" alt="AI 路书" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">AI 路书</h3>
+                        <p class="showcase-card-desc">AI 智能生成完整旅行行程推荐</p>
+                    </div>
+                </div>
+
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook8.png" alt="AI 路书" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">AI 路书</h3>
+                        <p class="showcase-card-desc">AI 智能生成完整旅行行程推荐</p>
+                    </div>
+                </div>
+
+                <div class="showcase-card">
+                    <div class="showcase-img-wrapper">
+                        <img src="{{ static_base }}static/assets/roadbook9.png" alt="AI 路书" class="showcase-img" onclick="openPreview(this)">
+                    </div>
+                    <div class="showcase-info">
+                        <h3 class="showcase-card-title">AI 路书</h3>
+                        <p class="showcase-card-desc">AI 智能生成完整旅行行程地图展示</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 全屏预览弹窗 -->
+        <div class="preview-modal" id="previewModal" onclick="handlePreviewClick(event)">
+            <button class="preview-close" onclick="closePreview()">&times;</button>
+            <button class="preview-arrow preview-arrow-left" onclick="prevImage(event)">&#10094;</button>
+            <img class="preview-image" id="previewImage" src="" alt="预览">
+            <button class="preview-arrow preview-arrow-right" onclick="nextImage(event)">&#10095;</button>
+            <div class="preview-counter" id="previewCounter"></div>
+        </div>
     </main>
 
     <script>
@@ -157,6 +262,71 @@
             const savedTheme = localStorage.getItem('theme') || 'dark';
             document.body.setAttribute('data-theme', savedTheme);
         })();
+
+        // 全屏预览功能
+        var previewImages = [];
+        var currentPreviewIndex = 0;
+
+        function openPreview(imgElement) {
+            const modal = document.getElementById('previewModal');
+            const previewImage = document.getElementById('previewImage');
+            if (modal && previewImage) {
+                // 收集所有展示图片
+                previewImages = Array.from(document.querySelectorAll('.showcase-img')).map(img => img.src);
+                currentPreviewIndex = previewImages.indexOf(imgElement.src);
+                if (currentPreviewIndex === -1) currentPreviewIndex = 0;
+                previewImage.src = previewImages[currentPreviewIndex];
+                updatePreviewCounter();
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closePreview() {
+            const modal = document.getElementById('previewModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function handlePreviewClick(event) {
+            // 如果点击的是背景（不是图片或按钮），则关闭
+            if (event.target.classList.contains('preview-modal')) {
+                closePreview();
+            }
+        }
+
+        function prevImage(event) {
+            event.stopPropagation();
+            currentPreviewIndex = (currentPreviewIndex - 1 + previewImages.length) % previewImages.length;
+            document.getElementById('previewImage').src = previewImages[currentPreviewIndex];
+            updatePreviewCounter();
+        }
+
+        function nextImage(event) {
+            event.stopPropagation();
+            currentPreviewIndex = (currentPreviewIndex + 1) % previewImages.length;
+            document.getElementById('previewImage').src = previewImages[currentPreviewIndex];
+            updatePreviewCounter();
+        }
+
+        function updatePreviewCounter() {
+            const counter = document.getElementById('previewCounter');
+            if (counter && previewImages.length > 0) {
+                counter.textContent = (currentPreviewIndex + 1) + ' / ' + previewImages.length;
+            }
+        }
+
+        // 键盘左右箭头切换图片
+        document.addEventListener('keydown', function(event) {
+            const modal = document.getElementById('previewModal');
+            if (modal && modal.classList.contains('active')) {
+                if (event.key === 'ArrowLeft') prevImage(event);
+                if (event.key === 'ArrowRight') nextImage(event);
+                if (event.key === 'Escape') closePreview();
+            }
+        });
     </script>
 </body>
 </html>
