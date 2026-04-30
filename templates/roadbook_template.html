@@ -3020,6 +3020,9 @@
                 <button class="btn btn-secondary" onclick="exportRoadbookToExcel()">
                     📊 导出Excel
                 </button>
+                <button class="btn btn-secondary" onclick="exportRoadbookToMarkdown()">
+                    📝 导出MD
+                </button>
                 <button class="btn btn-secondary" onclick="resetRoadbook()">
                     重置
                 </button>
@@ -4872,6 +4875,41 @@ const result = await response.json();
                 }
             } catch (error) {
                 console.error('Export error:', error);
+                alert('导出失败: ' + error.message);
+            }
+        }
+
+        async function exportRoadbookToMarkdown() {
+            if (!currentRoadbook) {
+                alert('请先生成或加载路书');
+                return;
+            }
+
+            try {
+                // 先调用 API 生成 Markdown 文件
+                const response = await fetch('/api/export/markdown', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ roadbook_data: currentRoadbook })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // 桌面端：使用 PyWebView 的 download_file API
+                    if (window.pywebview && window.pywebview.api && typeof window.pywebview.api.download_file === 'function') {
+                        window.pywebview.api.download_file(result.path);
+                    } else {
+                        // 浏览器端：使用相对路径
+                        window.location.href = result.path;
+                    }
+                } else {
+                    alert('导出失败: ' + (result.error || '未知错误'));
+                }
+            } catch (error) {
+                console.error('Export MD error:', error);
                 alert('导出失败: ' + error.message);
             }
         }

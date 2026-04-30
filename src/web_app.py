@@ -576,6 +576,53 @@ def serve_excel(filename):
     return send_file(safe_path, as_attachment=True, download_name=filename)
 
 
+@app.route('/api/export/markdown', methods=['POST'])
+def api_export_markdown():
+    """导出路书为 Markdown 文件"""
+    data = request.json
+    roadbook_data = data.get('roadbook_data')
+
+    if not roadbook_data:
+        return jsonify({'status': 'error', 'error': '缺少路书数据'}), 400
+
+    try:
+        from md_exporter import export_roadbook_to_markdown, get_markdown_filename
+
+        # 生成临时文件路径
+        md_dir = os.path.join(CONFIG_APP_DIR, 'output', 'markdown')
+        if not os.path.exists(md_dir):
+            os.makedirs(md_dir)
+
+        filename = get_markdown_filename(roadbook_data)
+        md_path = os.path.join(md_dir, filename)
+
+        # 导出 Markdown
+        export_roadbook_to_markdown(roadbook_data, md_path)
+
+        return jsonify({
+            'status': 'success',
+            'filename': filename,
+            'path': f'/output/markdown/{filename}',
+            'full_url': f'http://localhost:{DESKTOP_PORT}/output/markdown/{filename}'
+        })
+
+    except Exception as e:
+        import traceback
+        return jsonify({'status': 'error', 'error': str(e), 'trace': traceback.format_exc()}), 500
+
+
+@app.route('/output/markdown/<filename>')
+def serve_markdown(filename):
+    """下载 Markdown 文件"""
+    md_dir = os.path.join(CONFIG_APP_DIR, 'output', 'markdown')
+    safe_path = os.path.join(md_dir, filename)
+
+    if not os.path.exists(safe_path):
+        abort(404)
+
+    return send_file(safe_path, as_attachment=True, download_name=filename)
+
+
 @app.route('/api/run', methods=['POST'])
 def api_run():
     """执行 photo_track.py"""
