@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 echo ========================================
-echo  RoadBook - Build Script
+echo  RoadBook v1.1.0 - Build Script
 echo ========================================
 echo.
 

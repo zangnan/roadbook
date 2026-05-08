@@ -1,4 +1,4 @@
-# 路书 RoadBook
+# 路书 RoadBook v1.1.0
 
 <p align="center">
   <strong>将旅行照片转化为交互式轨迹地图</strong>
@@ -14,7 +14,23 @@
   <img src="https://img.shields.io/badge/Python-3.11+-green?style=flat-square" alt="Python">
   <img src="https://img.shields.io/badge/Platform-Windows|Web-blue?style=flat-square" alt="Platform">
   <a href="https://github.com/zangnan/RoadBook/releases/latest"><img src="https://img.shields.io/github/v/release/zangnan/RoadBook?style=flat-square" alt="Download"></a>
+  <img src="https://img.shields.io/github/v/tag/zangnan/RoadBook?label=v1.1.0" alt="v1.1.0">
 </p>
+
+---
+
+## 📋 更新日志 (v1.1.0)
+
+### 新增功能
+- **足迹地图** — 在世界地图上展示你去过的所有地方
+- **AI 路书导出 Markdown** — 导出统一格式的旅行说明文档
+- **首页效果展示** — 截图预览画廊，支持左右切换浏览
+- **使用说明页面** — 详细的功能介绍和操作指南
+
+### 功能优化
+- **桌面端打包优化** — 修复 footprint 模块缺失及 JS 错误
+- **亮色主题天气卡片** — 优化天气信息展示
+- **页面样式统一** — 统一主题切换、滚动条样式、页头导航
 
 ---
 
@@ -119,6 +135,8 @@
 | 🚗 **路径规划** | 高德地图路线规划 |
 | 🤖 **AI 生成** | 一键生成完整路书，支持 DeepSeek 大模型 |
 | 📊 **Excel 导出** | 多 Sheet 行程报表（行程/景点/预算/清单） |
+| 📝 **Markdown 导出** | 统一格式的旅行说明文档，像旅行社行程单 |
+| 🗺️ **足迹地图** | 在世界地图上展示你去过的地方 |
 | 🌤️ **天气查询** | 行程期间各目的地天气预报预览 |
 
 ### 键盘快捷键（地图页面）
@@ -284,6 +302,18 @@ output/my-trip/
    - **景点攻略**：门票/开放时间/游览贴士
    - **预算明细**：交通/住宿/餐饮/门票
    - **出行清单**：分类物品清单
+
+### Markdown 导出
+
+将路书导出为统一格式的 Markdown 文档，适合打印或分享：
+
+1. 在路书页面点击「导出 MD」
+2. 生成包含完整行程说明的 Markdown 文件：
+   - 行程概览表格
+   - 每日详细路线（途经站点、亮点、住宿、美食）
+   - 景点攻略（位置、开放时间、门票、贴士）
+   - 费用预算明细
+   - 出行 Checklist
 
 ---
 
