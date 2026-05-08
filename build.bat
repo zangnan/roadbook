@@ -5,17 +5,14 @@ echo  RoadBook v1.1.0 - Build Script
 echo ========================================
 echo.
 
-:: Python path - hardcoded for developer convenience
-:: Other developers: change PYTHON env var or remove this line to use system python
-::set PYTHON=C:\Users\zangnan\AppData\Local\Programs\Python\Python311\python.exe
-
-:: Auto-detect Python (try system python first, then common locations)
-if defined PYTHON goto :check_python
-where python >nul 2>&1 && set PYTHON=python && goto :check_python
+:: Python path - default to Python 3.11 for compatibility
+:: Other developers: set PYTHON env var or modify to use your Python path
 if exist "C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe" (
     set PYTHON=C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe
     goto :check_python
 )
+:: Fallback: try system python
+where python >nul 2>&1 && set PYTHON=python && goto :check_python
 set PYTHON=python
 
 :check_python
