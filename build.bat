@@ -5,14 +5,24 @@ echo  RoadBook v1.1.0 - Build Script
 echo ========================================
 echo.
 
-:: Use Python 3.11
-set PYTHON=C:\Users\zangnan\AppData\Local\Programs\Python\Python311\python.exe
+:: Python path - hardcoded for developer convenience
+:: Other developers: change PYTHON env var or remove this line to use system python
+::set PYTHON=C:\Users\zangnan\AppData\Local\Programs\Python\Python311\python.exe
 
-:: Check Python exists
+:: Auto-detect Python (try system python first, then common locations)
+if defined PYTHON goto :check_python
+where python >nul 2>&1 && set PYTHON=python && goto :check_python
+if exist "C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe" (
+    set PYTHON=C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe
+    goto :check_python
+)
+set PYTHON=python
+
+:check_python
+:: Verify Python works
 %PYTHON% --version >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Python not found at: %PYTHON%
-    echo Please check your Python 3.11 installation
+    echo [ERROR] Python not found. Please install Python 3.11+ or set PYTHON environment variable.
     pause
     exit /b 1
 )
