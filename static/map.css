@@ -532,6 +532,9 @@
     top: 15px;
     left: 50%;
     transform: translateX(-50%);
+    width: max-content;
+    height: fit-content;
+    z-index: 10;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(10px);
     color: white;
@@ -681,6 +684,7 @@
 .legend-text {
     color: var(--text-primary);
     font-size: 13px;
+    white-space: nowrap;
 }
 
 /* ============================================
