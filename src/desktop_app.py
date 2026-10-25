@@ -19,12 +19,11 @@ else:
 sys.path.insert(0, BASE_DIR)
 
 # 加载 config
-if getattr(sys, 'frozen', False):
-    # frozen 模式：datas 中的 'src/config.py' 被提取到 BASE_DIR
-    config_path = os.path.join(BASE_DIR, 'config.py')
-else:
-    # 开发模式：config.py 在 src/ 目录下
-    config_path = os.path.join(BASE_DIR, 'src', 'config.py')
+# 两种模式下 config.py 都直接位于 BASE_DIR：
+#   frozen  : datas 里的 'src/config.py' 被解压到 sys._MEIPASS 根目录
+#   开发模式: desktop_app.py 本身就在 src/，与 config.py 同级
+# （注意别再拼一层 'src'，否则会变成 src/src/config.py）
+config_path = os.path.join(BASE_DIR, 'config.py')
 config_spec = importlib.util.spec_from_file_location("config", config_path)
 config = importlib.util.module_from_spec(config_spec)
 config_spec.loader.exec_module(config)
