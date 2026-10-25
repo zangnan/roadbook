@@ -3079,8 +3079,17 @@
         let currentTheme = localStorage.getItem(THEME_KEY) || 'dark';
 
         function initTheme() {
+            const saved = localStorage.getItem(THEME_KEY);
+            if (saved) {
+                currentTheme = saved;
+            }
             document.body.setAttribute('data-theme', currentTheme);
-            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            // 主题按钮用的是内联 onclick="toggleTheme()"，这里不需要绑定；
+            // 保留按 id 绑定时必须判空，否则 null.addEventListener 会抛错并中断后续初始化
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
         }
 
         function toggleTheme() {
@@ -4984,6 +4993,23 @@ const result = await response.json();
                     body: JSON.stringify(formData)
                 });
 
+                // 后端出错时返回的是普通 JSON（不是 SSE 流），先校验状态码，
+                // 否则会拿空内容去解析 JSON，最后只弹出误导性的“网络错误”
+                if (!response.ok) {
+                    let serverMsg = `服务端返回 ${response.status}`;
+                    try {
+                        const errBody = await response.json();
+                        if (errBody && errBody.error) {
+                            serverMsg = errBody.error;
+                        }
+                    } catch (e) {
+                        // 非 JSON 响应，沿用默认提示
+                    }
+                    const serverErr = new Error(serverMsg);
+                    serverErr.isServerError = true;
+                    throw serverErr;
+                }
+
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let fullContent = '';
@@ -5056,7 +5082,13 @@ const result = await response.json();
                 }
 
             } catch (err) {
-                showAIError('网络错误，请检查网络连接后重试');
+                if (err && err.isServerError) {
+                    // 服务端返回的业务错误（如 API Key 未配置），直接展示原始原因
+                    showAIError(err.message);
+                } else {
+                    console.error('AI 生成路书失败:', err);
+                    showAIError('网络错误，请检查网络连接后重试');
+                }
                 preview.classList.remove('active');
                 formContainer.classList.remove('hidden');
             } finally {

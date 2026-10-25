@@ -32,6 +32,10 @@ AMAP_WEB_AK = os.getenv('AMAP_WEB_AK', '')
 # 高德地图 Web 服务 Key（用于逆地理编码 API）
 AMAP_SERVER_AK = os.getenv('AMAP_SERVER_AK', '')
 
+# 高德地图 JS API 安全密钥（2021-12-02 之后新建的 Key 必须配套配置，
+# 在「高德开放平台 → 应用管理 → 我的应用」中与 Key 一起生成）
+AMAP_SECURITY_CODE = os.getenv('AMAP_SECURITY_CODE', '')
+
 # 缩略图大小
 THUMBNAIL_SIZE = (400, 400)
 

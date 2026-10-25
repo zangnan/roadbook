@@ -12,6 +12,15 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 logger = logging.getLogger(__name__)
 
 
+def _get_amap_security_code() -> str:
+    """读取高德 JS API 安全密钥（未配置时返回空串，模板会自动跳过注入）"""
+    try:
+        import config
+        return getattr(config, 'AMAP_SECURITY_CODE', '') or ''
+    except Exception:
+        return ''
+
+
 def filter_nearby_points(points: List[Dict], distance_threshold: int = 1000, time_threshold: int = 7200) -> List[Dict]:
     """过滤相近坐标，合并重复点
 
@@ -387,6 +396,7 @@ def render_html_template(points: List[Dict], output_path: str, templates_dir: st
 # 渲染模板
         html_content = template.render(
             amap_ak=amap_web_ak,
+            amap_security_code=_get_amap_security_code(),
             static_base=static_base,
             track_points=points,
             single_html=False
@@ -602,6 +612,7 @@ def render_html_template_single(points: List[Dict], unknown_points: List[Dict], 
         # 渲染模板（单一文件模式）
         html_content = template.render(
             amap_ak=amap_web_ak,
+            amap_security_code=_get_amap_security_code(),
             static_base='',  # 单一文件模式不需要 base path
             track_points=points,
             single_html=True,

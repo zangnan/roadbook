@@ -38,6 +38,7 @@ config_spec.loader.exec_module(config)
 CONFIG_BASE_DIR = config.BASE_DIR
 AMAP_WEB_AK = config.AMAP_WEB_AK
 AMAP_SERVER_AK = config.AMAP_SERVER_AK
+AMAP_SECURITY_CODE = config.AMAP_SECURITY_CODE
 THUMBNAIL_SIZE = config.THUMBNAIL_SIZE
 ORIGINAL_IMAGE_QUALITY = config.ORIGINAL_IMAGE_QUALITY
 DISTANCE_THRESHOLD = config.DISTANCE_THRESHOLD
@@ -194,7 +195,8 @@ def run_photo_track(task_id, photo_dir, distance_threshold, time_threshold, html
 def route_page():
     """路径规划页面"""
     return render_template('route_template.html',
-                           amap_ak=AMAP_WEB_AK)
+                           amap_ak=AMAP_WEB_AK,
+                           amap_security_code=AMAP_SECURITY_CODE)
 
 
 @app.route('/roadbook')
@@ -327,7 +329,7 @@ def api_ai_generate_roadbook():
 
     # 检查 API Key
     if not DEEPSEEK_API_KEY:
-        return jsonify({'status': 'error', 'error': 'DeepSeek API Key 未配置'}), 500
+        return jsonify({'status': 'error', 'error': 'AI 服务未配置：请在 .env 中填写 DEEPSEEK_API_KEY 后重启服务'}), 503
 
     try:
         # 动态导入 ai_generator（解决打包后导入问题）
@@ -374,7 +376,7 @@ def api_ai_generate_roadbook_stream():
         # 检查 API Key
         if not DEEPSEEK_API_KEY:
             print("[DEBUG] DEEPSEEK_API_KEY not configured", flush=True)
-            return jsonify({'status': 'error', 'error': 'DeepSeek API Key 未配置'}), 500
+            return jsonify({'status': 'error', 'error': 'AI 服务未配置：请在 .env 中填写 DEEPSEEK_API_KEY 后重启服务'}), 503
 
         print(f"[DEBUG] DEEPSEEK_API_KEY configured: {DEEPSEEK_API_KEY[:4]}...", flush=True)
         print("[DEBUG] About to load ai_generator...", flush=True)

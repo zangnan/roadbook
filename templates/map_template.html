@@ -175,6 +175,12 @@
         <p>地图加载中...</p>
     </div>
 
+    {% if amap_security_code %}
+    <!-- 高德 JS API 安全密钥：必须在加载 maps 脚本之前设置 -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = { securityJsCode: '{{ amap_security_code }}' };
+    </script>
+    {% endif %}
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key={{ amap_ak }}"></script>
     <script>
         // 原始数据（来自 data_original.json）和治理后数据（来自 data_converted.json）
@@ -1696,7 +1702,7 @@
         // 初始化
         if (typeof AMap === 'undefined') {
             document.getElementById('loading').innerHTML =
-                '<p style="color:#ff6b6b;">地图加载失败，请检查网络和 API Key</p>';
+                '<p style="color:#ff6b6b;">地图加载失败：请确认 .env 中 AMAP_WEB_AK 已填入真实 Key（2021-12-02 之后新建的 Key 还需同时配置 AMAP_SECURITY_CODE 安全密钥）</p>';
         } else {
             document.getElementById('rightPanel').classList.add('active');
             document.getElementById('legend').classList.add('active');
