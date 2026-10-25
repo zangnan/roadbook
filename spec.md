@@ -180,15 +180,15 @@
 ### 4.1 photo_track.py（轨迹生成）
 
 ```bash
-python src/photo_track.py <photo_dir> [选项]
+uv run src/photo_track.py <photo_dir> [选项]
 ```
 
 **命令规则：**
 
 | 命令 | 行为 |
 |------|------|
-| `python src/photo_track.py <photo_dir>` | 删除 output 文件夹内容，全量重新处理所有照片 |
-| `python src/photo_track.py <photo_dir> -H` | 仅生成 HTML，使用已有的 thumbnail 文件夹和 JSON 文件 |
+| `uv run src/photo_track.py <photo_dir>` | 删除 output 文件夹内容，全量重新处理所有照片 |
+| `uv run src/photo_track.py <photo_dir> -H` | 仅生成 HTML，使用已有的 thumbnail 文件夹和 JSON 文件 |
 
 **选项：**
 
@@ -202,15 +202,15 @@ python src/photo_track.py <photo_dir> [选项]
 **示例：**
 
 ```bash
-python src/photo_track.py test_photos
-python src/photo_track.py test_photos -d 500 -t 1800
-python src/photo_track.py test_photos -H
+uv run src/photo_track.py test_photos
+uv run src/photo_track.py test_photos -d 500 -t 1800
+uv run src/photo_track.py test_photos -H
 ```
 
 ### 4.2 web_app.py（Web 界面）
 
 ```bash
-python src/web_app.py
+uv run src/web_app.py
 ```
 
 启动 Flask 服务器，打开浏览器访问 `http://localhost:{WEB_PORT}`（默认 18443）。

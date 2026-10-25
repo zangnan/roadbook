@@ -158,7 +158,7 @@ class RoutePlanner:
 
 ## 验证方式
 
-1. 启动 Web 应用: `python src/web_app.py`
+1. 启动 Web 应用: `uv run src/web_app.py`
 2. 访问 `/route` 页面
 3. 输入多个地点，搜索选择
 4. 为每段选择交通方式

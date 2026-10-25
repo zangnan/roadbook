@@ -1,32 +1,23 @@
 @echo off
 chcp 65001 >nul
 echo ========================================
-echo  RoadBook v1.1.0 - Build Script
+echo  RoadBook v1.1.0 - Build Script (uv)
 echo ========================================
 echo.
 
-:: Python path - default to Python 3.11 for compatibility
-:: Other developers: set PYTHON env var or modify to use your Python path
-if exist "C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe" (
-    set PYTHON=C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python311\python.exe
-    goto :check_python
-)
-:: Fallback: try system python
-where python >nul 2>&1 && set PYTHON=python && goto :check_python
-set PYTHON=python
-
-:check_python
-:: Verify Python works
-%PYTHON% --version >nul 2>&1
+:: 检查 uv
+where uv >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Python not found. Please install Python 3.11+ or set PYTHON environment variable.
+    echo [ERROR] uv not found.
+    echo Install it first:  powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
     pause
     exit /b 1
 )
 
-:: Install dependencies
+:: 安装依赖（含 dev 组的 PyInstaller）
+:: Python 版本由 .python-version 决定，uv 会自动下载，无需手工装 Python
 echo [1/4] Installing dependencies...
-%PYTHON% -m pip install -r requirements.txt
+uv sync
 if errorlevel 1 (
     echo [ERROR] Failed to install dependencies
     pause
@@ -34,9 +25,9 @@ if errorlevel 1 (
 )
 echo.
 
-:: Build
+:: 打包
 echo [2/4] Building desktop app (this may take a few minutes)...
-%PYTHON% -m PyInstaller roadbook.spec --clean
+uv run pyinstaller roadbook.spec --clean
 if errorlevel 1 (
     echo [ERROR] Build failed
     pause

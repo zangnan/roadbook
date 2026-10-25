@@ -139,8 +139,13 @@
 
 ### 环境要求
 
-- Python 3.11+
+- [uv](https://docs.astral.sh/uv/)（依赖和 Python 版本都由它管理，无需手工安装 Python）
 - Windows 10/11
+
+> 未安装 uv 时，在 PowerShell 执行：
+> ```powershell
+> powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+> ```
 
 ### 方式一：桌面应用（推荐）
 
@@ -162,8 +167,11 @@ cd roadbook
 #### 2. 安装依赖
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
+
+首次执行会按 `.python-version` 自动下载 Python 3.12、创建 `.venv` 并锁定依赖到 `uv.lock`。
+（只想装运行时依赖、不装 PyInstaller：`uv sync --no-group dev`）
 
 #### 3. 配置 API Key
 
@@ -179,26 +187,45 @@ AMAP_WEB_AK=your_web_ak_here
 
 # 高德地图 Web 服务 Key（用于逆地理编码）
 AMAP_SERVER_AK=your_server_ak_here
+
+# 高德地图 JS API 安全密钥（jscode）
+# 2021-12-02 之后新建的 Key 必须配套填写，否则地图报 INVALID_USER_SCODE
+AMAP_SECURITY_CODE=your_security_js_code_here
+
+# DeepSeek AI（「AI 生成路书」必填，不填该接口会返回 500）
+DEEPSEEK_API_KEY=your_deepseek_api_key_here
+DEEPSEEK_API_URL=https://api.deepseek.com
+DEEPSEEK_MODEL=deepseek-chat
 ```
 
 > 💡 如何获取高德 API Key：[高德开放平台](https://lbs.amap.com/)
+>
+> 💡 如何获取 DeepSeek API Key：[DeepSeek 开放平台](https://platform.deepseek.com/api_keys)
+> 也支持任意 OpenAI 兼容接口（如硅基流动 `https://api.siliconflow.cn/v1`），改 `DEEPSEEK_API_URL` 与 `DEEPSEEK_MODEL` 即可。
+>
+> ⚠️ 若页面提示「地图加载失败」，90% 是 Key 仍为占位符 `xxx` 或缺少 `AMAP_SECURITY_CODE`。
+> ⚠️ 若点「AI 生成」报错，先看提示文案：`DeepSeek API Key 未配置` = `.env` 里 `DEEPSEEK_API_KEY` 为空。
+> 修改 `.env` 后需要**重启服务**才生效（配置在启动时读取）。
 
 #### 4. 运行
 
 **浏览器端：**
 ```bash
-python src/web_app.py
+uv run src/web_app.py
 # 自动打开浏览器访问 http://localhost:18443
+```
+
+**桌面端：**
+```bash
+uv run src/desktop_app.py
+# 也可直接双击 run_desktop.bat
 ```
 
 ### 方式三：自行打包
 
 ```bash
-# 安装 PyInstaller
-pip install pyinstaller
-
-# 执行打包
 build.bat
+# 等价于：uv sync && uv run pyinstaller roadbook.spec --clean
 ```
 
 打包完成后，`dist\roadbook.exe` 即为桌面应用。
@@ -233,7 +260,7 @@ photo/
 **通过命令行：**
 
 ```bash
-python src/photo_track.py my-trip
+uv run src/photo_track.py my-trip
 ```
 
 ### 参数说明
@@ -463,6 +490,10 @@ roadbook/
 |------|------|--------|
 | `AMAP_WEB_AK` | 高德 Web 端 Key（地图展示） | - |
 | `AMAP_SERVER_AK` | 高德 Web 服务 Key（地理编码） | - |
+| `AMAP_SECURITY_CODE` | 高德 JS API 安全密钥（jscode，新 Key 必填） | - |
+| `DEEPSEEK_API_KEY` | DeepSeek（或任意 OpenAI 兼容）API Key，AI 路书必填 | - |
+| `DEEPSEEK_API_URL` | AI 接口地址 | `https://api.deepseek.com` |
+| `DEEPSEEK_MODEL` | AI 模型名 | `deepseek-reasoner` |
 | `ORIGINAL_IMAGE_QUALITY` | 原图压缩质量 (1-100) | `50` |
 | `DISTANCE_THRESHOLD` | 坐标合并距离阈值（米） | `1000` |
 | `TIME_THRESHOLD` | 坐标合并时间阈值（秒） | `7200` |

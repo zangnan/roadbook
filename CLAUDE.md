@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 路书 RoadBook — 将旅行照片转化为交互式轨迹地图的工具。从照片 EXIF 信息中提取 GPS 坐标，自动生成可交互的轨迹地图和时间轴页面。
 
-- Python 3.11+
+- Python 3.12（由 uv 按 `.python-version` 自动管理，勿手工 pip 安装依赖）
 - Windows 桌面应用 (PyWebView) + 浏览器访问
 - 依赖高德地图 API
 
@@ -14,18 +14,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### 安装依赖
 ```bash
-pip install -r requirements.txt
+uv sync                  # 创建 .venv 并按 uv.lock 安装（含 dev 组 PyInstaller）
+uv sync --no-group dev   # 只装运行时依赖
+uv lock --upgrade        # 升级依赖后重新锁版本
 ```
 
 ### 运行应用
 ```bash
 # Web 应用
-python src/web_app.py
+uv run src/web_app.py
 # 访问 http://localhost:18443
 
+# 桌面应用
+uv run src/desktop_app.py
+
 # CLI 轨迹生成
-python src/photo_track.py <photo_dir> [选项]
+uv run src/photo_track.py <photo_dir> [选项]
 ```
+
+> 依赖改动请改 `pyproject.toml`（唯一来源），`requirements.txt` 由
+> `uv export --frozen --no-emit-project --no-dev --no-hashes -o requirements.txt` 生成，不要手改。
 
 ### CLI 选项
 | 选项 | 说明 | 默认值 |

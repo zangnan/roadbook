@@ -1,0 +1,32 @@
+[project]
+name = "roadbook"
+version = "1.1.0"
+description = "将旅行照片转化为交互式轨迹地图"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "flask>=2.0",
+    "exifread>=3.0",
+    "pillow>=9.0",
+    "python-dotenv>=0.19",
+    "requests>=2.28",
+    # 锁 5.x：6.x 会引入 proxy-tools（只有 sdist、无 wheel，需本地编译），
+    # 且 6.x 存在破坏性变更，本项目用的是 5.x API
+    "pywebview>=5.0,<6",
+    "openai>=1.0",
+    "openpyxl>=3.0",
+]
+
+# 打包/开发用依赖：uv sync 默认会一并安装；
+# 只想装运行时依赖时用 uv sync --no-group dev
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.0",
+]
+
+[tool.uv]
+# 本项目是脚本集合而非可安装包（src/ 下为顶层模块，无 roadbook 包），
+# uv sync 时不要把项目本身安装进 .venv
+package = false
+# 固定用 3.12：PyInstaller / pywebview 在该版本上支持最成熟
+python-preference = "only-managed"

@@ -3,6 +3,8 @@
 /cache
 /dist
 /build
+/.venv
+/.workbuddy
 /.claude
 /src/*.log
 **/__pycache__
